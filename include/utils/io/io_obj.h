@@ -28,6 +28,7 @@ namespace wh{
             void save_graph_obj(const std::string file_name,const wh::basic::adt::Graph<T>* const graph_ptr);
             
             //曲线curve
+            //保存一系列曲线
             template <typename T>
             void save_curves_obj(const std::string file_name,const std::vector< wh::basic::adt::Curve<T> >* const curves_ptr);
             //读取一条曲线

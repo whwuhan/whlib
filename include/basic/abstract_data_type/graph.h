@@ -13,14 +13,14 @@ namespace wh{
         namespace adt{   
             template <typename T>
             class Graph{
-            protected:
-                std::vector<T> nodes;//图的节点
-                std::vector< std::pair<unsigned int, unsigned int> > edges;//图的边
-                unsigned int size;//图的点的个数
             public:
                 Graph();
                 Graph(const std::vector<T>& nodes, const std::vector< std::pair<unsigned int, unsigned int> >& edges);
                 
+                std::vector<T> nodes;//图的节点
+                std::vector< std::pair<unsigned int, unsigned int> > edges;//图的边
+                unsigned int size;//图的点的个数
+
                 //get函数
                 std::vector<T>& get_nodes();
                 std::vector< std::pair<unsigned int, unsigned int> >& get_edges();
