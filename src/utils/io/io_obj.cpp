@@ -467,3 +467,69 @@ void wh::utils::io::save_polygon_mesh_obj(const std::string file_name,wh::basic:
     cout<<"Save Polygon Mesh Successfully!"<<endl;
     data_destination.close();
 }
+
+// load skeleton obj
+void wh::utils::io::load_skeleton_obj(const std::string file_name,wh::basic::Skeleton *skeleton_ptr){
+     //打开文件
+    ifstream data_source(file_name);
+    if(!data_source.is_open()){
+        cout << "no data source." << endl;
+        return;
+    }
+
+    //读入文件
+    string line;
+    vector<string> line_split;
+    unsigned int points_amount = 0;//骨架点数量
+    unsigned int edges_amount = 0;//连线数量
+
+    //确定数量
+    while(getline(data_source, line)){   
+        if(line[0] == 'v'){   
+            points_amount++;
+        }
+        if(line[0] == 'l'){
+            edges_amount++;
+        }
+    }
+
+    data_source.clear();//先要clear()才能回到文件头
+    data_source.seekg(0, ios::beg);
+    
+
+
+    cout<<"points_amount:"<<points_amount<<endl;
+    cout<<"edges_amount:"<<edges_amount<<endl;
+
+    skeleton_ptr->points.resize(points_amount,3);
+    skeleton_ptr->edges.resize(edges_amount,2);
+
+    points_amount=0;
+    edges_amount=0;
+    while(getline(data_source, line)){   
+        switch(line[0]){   
+            case 'v':
+                line_split = split(line, " ");
+                skeleton_ptr->points(points_amount, 0) = atof(line_split[1].c_str());
+                skeleton_ptr->points(points_amount, 1) = atof(line_split[2].c_str());
+                skeleton_ptr->points(points_amount, 2) = atof(line_split[3].c_str());
+                points_amount++;
+                break;
+            case 'l':
+                line_split = split(line, " ");
+                skeleton_ptr->edges(edges_amount,0) = atoi(line_split[1].c_str());
+                skeleton_ptr->edges(edges_amount,1) = atoi(line_split[2].c_str());
+                edges_amount++;
+                break;
+            default:
+                cout<<line<<endl;
+        }
+    }
+    cout<<"Load Skeleton Successfull!"<<endl;
+    data_source.close();
+}
+
+// save skeleton obj
+void wh::utils::io::save_skeleton_obj(const std::string file_name,wh::basic::Skeleton *skeleton_ptr){
+    
+}

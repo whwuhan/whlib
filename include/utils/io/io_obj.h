@@ -8,6 +8,7 @@
 #include <vector>
 #include <set>
 #include <basic/point_cloud.h>
+#include <basic/skeleton.h>
 #include <basic/abstract_data_type/graph.h>
 #include <basic/abstract_data_type/curve.h>
 #include <basic/polygon_mesh.h>
@@ -31,6 +32,9 @@ namespace wh{
             //保存一系列曲线
             template <typename T>
             void save_curves_obj(const std::string file_name,const std::vector< wh::basic::adt::Curve<T> >* const curves_ptr);
+            //保存一条曲线
+            template <typename T>
+            void save_curve_obj(const std::string file_name,std::vector< wh::basic::adt::Curve<T> >* curves_ptr);
             //读取一条曲线
             template <typename T>
             void load_curve_obj(const std::string file_name,wh::basic::adt::Curve<T>* curve_ptr);
@@ -49,6 +53,9 @@ namespace wh{
             void load_polygon_mesh_obj(const std::string file_name,wh::basic::Polygon_mesh *polygon_mesh_ptr);
             void save_polygon_mesh_obj(const std::string file_name,wh::basic::Polygon_mesh *polygon_mesh_ptr);
             
+            //skeleton 骨架线
+            void load_skeleton_obj(const std::string file_name,wh::basic::Skeleton *skeleton_ptr);
+            void save_skeleton_obj(const std::string file_name,wh::basic::Skeleton *skeleton_ptr);
 
             //=========模板方法实现=========
             template <typename T>
@@ -97,6 +104,35 @@ namespace wh{
                 data_destination.close();
             }
 
+            //保存一条曲线
+            template <typename T>
+            void save_curve_obj(const std::string file_name,wh::basic::adt::Curve<T>* curve_ptr){
+                //打开文件
+                std::ofstream data_destination(file_name);
+                data_destination << "# whlib curve obj file" << std::endl;//文件头注释
+                
+                //获取当地时间
+                time_t now = time(0);
+                std::string date_time(ctime(&now));
+
+                //注意时间后面自带换行
+                data_destination << "# " << date_time;//写入存储时间
+                data_destination << "o " << date_time;//以时间命名obj对象
+
+                //存入数据
+                //先存点
+                const std::vector<T>& points = curve_ptr->get_points();
+                for(unsigned int i = 0; i < curve_ptr->get_size(); i++){
+                    data_destination << "v" << " " << std::setiosflags(std::ios::fixed) << std::setprecision(10) << points[i].data[0];
+                    data_destination << " " << std::setiosflags(std::ios::fixed) << std::setprecision(10) << points[i].data[1];
+                    data_destination << " " << std::setiosflags(std::ios::fixed) << std::setprecision(10) << points[i].data[2] << std::endl;
+                }
+                //再存边
+                for(unsigned int i = 0; i < curve_ptr->get_size()-1; i++){
+                    data_destination << "l" << " " << i+1 << " " << (i+2) << std::endl;
+                }
+                data_destination.close();
+            }
 
             //读取一条曲线
             template <typename T>
