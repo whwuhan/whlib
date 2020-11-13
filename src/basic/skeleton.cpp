@@ -58,7 +58,7 @@ std::vector< wh::basic::adt::Curve< wh::basic::Point3d > > wh::basic::Skeleton::
         //获取下一个度为一的，没有被访问的点位置
         if(-1 != next_one_degree_index){
             Point3d new_point(points.row(next_one_degree_index));
-            curve.add_point(new_point);
+            curve.add_point_back(new_point);
             row = next_one_degree_index;
             flag[next_one_degree_index]=1;
         }
@@ -68,7 +68,7 @@ std::vector< wh::basic::adt::Curve< wh::basic::Point3d > > wh::basic::Skeleton::
             for(int col=0;col<adj_mat.cols();col++){
                 if(adj_mat(row,col) == 1 && flag[col] == 0){
                     Point3d new_point(points.row(col));
-                    curve.add_point(new_point);
+                    curve.add_point_back(new_point);
                     flag[col]=1;
                     row = col;
                     break;
@@ -87,6 +87,28 @@ std::vector< wh::basic::adt::Curve< wh::basic::Point3d > > wh::basic::Skeleton::
     // save_curves_obj("curve.obj",&res);
     return res;
 }
+
+//获取相邻骨架点的平均间隔距离
+double wh::basic::Skeleton::get_ave_interval(){
+    int edge_size = edges.rows();
+    double dis_sum = get_tol_len();
+    return dis_sum / edge_size;
+}
+
+
+double wh::basic::Skeleton::get_tol_len(){
+    int edge_size = edges.rows();
+    double dis_sum = 0.0;
+    for(int i=0;i<edge_size;i++){
+        dis_sum += (points.row(edges(i,0)-1) - points.row(edges(i,1)-1)).norm();
+        //cout << "dis_sum:" << dis_sum << endl;
+    }
+    return dis_sum;
+}
+
+
+
+
 
 //是否所有点都被访问
 bool is_all_visited(vector<int>& flag){
@@ -107,3 +129,4 @@ int get_next_degree_1_index(vector<int>& flag,vector<int>& points_degree){
     }
     return -1;
 }
+

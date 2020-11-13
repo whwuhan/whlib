@@ -26,8 +26,8 @@ namespace wh{
                 void show();
                 //获取曲线长度
                 double get_len();
-                //增加点
-                void add_point(T& t);
+                //在最后增加点
+                void add_point_back(T& t);
             };
             
             //构造函数
@@ -82,12 +82,11 @@ namespace wh{
 
             //增加点
             template <typename T>
-            void Curve<T>::add_point(T& t){
+            void Curve<T>::add_point_back(T& t){
                 T new_point(t);
                 points.push_back(new_point);
                 size++;
             }
-
         }
     }
 }
