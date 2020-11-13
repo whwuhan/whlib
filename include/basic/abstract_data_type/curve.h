@@ -16,18 +16,24 @@ namespace wh{
                 Curve(const std::vector<T>& points);
                 std::vector<T> points;//一条曲线上按顺序排列的点
                 unsigned int size;//曲线点的个数
-                //获取曲线所有点数据
-                std::vector<T>& get_points();
-                //获取曲线点的个数
-                unsigned int get_size();
-                //设置点数量
-                void resize(const unsigned int new_size);
-                //显示曲线点的信息
-                void show();
-                //获取曲线长度
-                double get_len();
-                //在最后增加点
-                void add_point_back(T& t);
+                
+                std::vector<T>& get_points();//获取曲线所有点数据
+                
+                unsigned int get_size();//获取曲线点的个数
+                
+                void resize(const unsigned int new_size);//设置点数量
+                
+                void show();//显示曲线点的信息
+                
+                double get_len();//获取曲线长度
+                
+                void add_point_back(T& t);//在曲线的最后增加点
+                
+                void add_point_front(T& t);//在曲线的最前面加点
+
+                void add_points_back(std::vector<T>& points);//在曲线后面插入多个点
+
+                void add_points_front(std::vector<T>& points);//在曲线前面插入多个点
             };
             
             //构造函数
@@ -62,7 +68,9 @@ namespace wh{
             void Curve<T>::show(){
                 if(size <= 0){
                     std::cout << "no points data." << std::endl;
+                    return;
                 }
+                std::cout << "Curve's size: " << size << std::endl;
                 for(auto it = points.cbegin(); it != points.cend(); it++){
                     std::cout << *it << std::endl;
                 }
@@ -80,13 +88,46 @@ namespace wh{
                 return len;
             }
 
-            //增加点
+            //在曲线的最后增加点
             template <typename T>
             void Curve<T>::add_point_back(T& t){
                 T new_point(t);
                 points.push_back(new_point);
                 size++;
             }
+
+            //在曲线的最前面加点
+            template <typename T>
+            void Curve<T>::add_point_front(T& t){
+                T new_point(t);
+                points.emplace(points.begin(),new_point);
+                size++;
+            }
+
+            //在曲线后面插入多个点
+            template <typename T>
+            void Curve<T>::add_points_back(std::vector<T>& points){
+                int add_points_size = points.size();
+                for(T t:points){
+                    this->points.push_back(t);
+                }
+                this->size += add_points_size;
+            }
+
+            //在曲线前面插入多个点
+            template <typename T>
+            void Curve<T>::add_points_front(std::vector<T>& points){
+                int add_points_size = points.size();
+                for(int i=add_points_size-1;i>-1;i--){
+                    this->points.emplace(this->points.begin(),points[i]);
+                }
+                this->size += add_points_size;
+            }
+
+
+
+
+
         }
     }
 }
