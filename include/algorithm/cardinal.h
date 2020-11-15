@@ -29,7 +29,7 @@ namespace wh{
             double delta = (1.0 - tightness) / 2.0;//用tightness控制松紧程度
             for(int i = 0; i < inter_amount; i++){
                 double u = (i + 1) / (1.0 + inter_amount);
-                std::cout << "u:" << u <<std::endl;
+                //std::cout << "u:" << u <<std::endl;
                 //计算插入点
                 T inter_point= \
                 points[0] * ((-delta * std::pow(u,3)) + 2 * delta * std::pow(u,2) - delta * u) +\
