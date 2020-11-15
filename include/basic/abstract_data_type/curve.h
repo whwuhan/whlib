@@ -27,6 +27,8 @@ namespace wh{
                 
                 double get_len();//获取曲线长度
                 
+                std::vector<T> get_end_points();//获取曲线的两端点
+
                 void add_point_back(T& t);//在曲线的最后增加点
                 
                 void add_point_front(T& t);//在曲线的最前面加点
@@ -93,7 +95,7 @@ namespace wh{
             void Curve<T>::add_point_back(T& t){
                 T new_point(t);
                 points.push_back(new_point);
-                size++;
+                this->size++;
             }
 
             //在曲线的最前面加点
@@ -101,7 +103,7 @@ namespace wh{
             void Curve<T>::add_point_front(T& t){
                 T new_point(t);
                 points.emplace(points.begin(),new_point);
-                size++;
+                this->size++;
             }
 
             //在曲线后面插入多个点
@@ -124,8 +126,14 @@ namespace wh{
                 this->size += add_points_size;
             }
 
-
-
+            //获取曲线的两端点
+            template <typename T>
+            std::vector<T> Curve<T>::get_end_points(){
+                std::vector<T> res(2);
+                res[0] = points[0];
+                res[1] = points[points.size()-1];
+                return res;
+            }
 
 
         }
