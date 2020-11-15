@@ -87,3 +87,11 @@ void wh::basic::Point3d::syn_data_to_xyz(){
         z = data[2];
     }
 }
+
+Point3d wh::basic::Point3d::normalize(){
+    data.normalize();
+    x = data[0];
+    y = data[1];
+    z = data[2];
+    return *this;
+}
