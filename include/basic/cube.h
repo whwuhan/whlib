@@ -30,6 +30,8 @@ namespace wh{
             void show_inf()const;//显示cube信息
             void position_side_len_to_vertices();//位置边长表示转化成顶点表示（正方体）
             void position_side_len_to_vertices_cuboid();//位置边长表示转化成顶点表示（长方体）
+            Eigen::RowVector3d get_center(); //获取中心
+            double get_max_side_len();//获取最长边长
 
             
             //细分

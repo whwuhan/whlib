@@ -202,3 +202,4 @@ set<Cube> Point_cloud::voxelization(wh::basic::Cube& boundingbox,double leaf_siz
     }
     return res;
 }
+

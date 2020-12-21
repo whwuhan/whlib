@@ -141,3 +141,13 @@ vector<Cube> Cube::subdivision(double leaf_size){
     return res;
 }
 
+// 获取Cube中心
+Eigen::RowVector3d Cube::get_center(){
+    return position;
+}
+
+// 获取最大边长
+double Cube::get_max_side_len(){
+    double res = (x > y) ? x : y;
+    return (res > z) ? res : z;
+}

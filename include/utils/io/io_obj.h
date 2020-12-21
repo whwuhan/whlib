@@ -70,8 +70,9 @@ namespace wh{
 
                 //注意时间后面自带换行
                 data_destination << "# " << date_time;//写入存储时间
-                data_destination << "o " << date_time;//以时间命名obj对象
-
+                std::vector<std::string> file_name_split = wh::utils::split(file_name,"./");//obj对象命名
+                data_destination << "o " << file_name_split[file_name_split.size()-2] << std::endl;//obj对象命名
+                
                 //存入数据
                 //先存点
                 for(auto it = curves_ptr->begin(); it != curves_ptr->end(); it++){
@@ -100,7 +101,7 @@ namespace wh{
                     }
                     curves_points_sum = curves_points_sum + curve_points_count[i];
                 }
-
+                std::cout << "Save Curves Successfully" << std::endl;
                 data_destination.close();
             }
 
@@ -117,7 +118,9 @@ namespace wh{
 
                 //注意时间后面自带换行
                 data_destination << "# " << date_time;//写入存储时间
-                data_destination << "o " << date_time;//以时间命名obj对象
+                std::vector<std::string> file_name_split = wh::utils::split(file_name,"./");//obj对象命名
+                data_destination << "o " << file_name_split[file_name_split.size()-2] << std::endl;//obj对象命名
+
 
                 //存入数据
                 //先存点

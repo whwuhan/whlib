@@ -497,7 +497,7 @@ void wh::utils::io::load_skeleton_obj(const std::string file_name,wh::basic::Ske
     data_source.seekg(0, ios::beg);
     
 
-
+    
     cout<<"points_amount:"<<points_amount<<endl;
     cout<<"edges_amount:"<<edges_amount<<endl;
 
@@ -525,11 +525,40 @@ void wh::utils::io::load_skeleton_obj(const std::string file_name,wh::basic::Ske
                 cout<<line<<endl;
         }
     }
-    cout<<"Load Skeleton Successfull!"<<endl;
+    cout<<"Load Skeleton Successfully!"<<endl;
     data_source.close();
 }
 
 // save skeleton obj
 void wh::utils::io::save_skeleton_obj(const std::string file_name,wh::basic::Skeleton *skeleton_ptr){
-    
+    //打开文件
+    ofstream data_destination(file_name);
+    data_destination << "# whlib Skeleton obj file" << endl;//文件头注释
+
+    //获取当地时间
+    time_t now = time(0);
+    string date_time(ctime(&now));
+
+    //注意时间后面自带换行
+    data_destination << "# " << date_time;//写入存储时间
+
+    //存储对象名
+    std::vector<std::string> file_name_split = wh::utils::split(file_name,"/.\\");
+    int file_name_index = file_name_split.size() - 2;
+    data_destination << "o " << file_name_split[file_name_index]<<endl;//obj对象 
+
+    int points_size = skeleton_ptr->points.rows();
+    for(int i = 0;i < points_size; i++){//写入骨架点
+        data_destination << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << skeleton_ptr->points.row(i)[0];
+        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << skeleton_ptr->points.row(i)[1];
+        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << skeleton_ptr->points.row(i)[2] << endl;
+    }
+
+    int edges_size = skeleton_ptr->edges.rows();
+    for(int i = 0;i < edges_size; i++){
+        data_destination << "l" << " " << skeleton_ptr->edges(i, 0);
+        data_destination << " " << skeleton_ptr->edges(i, 1) << endl;
+    }
+    cout<<"Save Skeleton Successfully!"<<endl;
+    data_destination.close();
 }
