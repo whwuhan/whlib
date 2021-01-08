@@ -8,20 +8,24 @@
 #include <vector>
 #include <utility> //std::pair<>
 #include <Eigen/Dense>
-namespace wh{
-    namespace basic{
-        namespace adt{   
+namespace wh
+{
+    namespace basic
+    {
+        namespace adt
+        {
             template <typename T>
-            class Graph{
+            class Graph
+            {
             public:
                 Graph();
                 //Graph(const std::vector<T>& nodes, const std::vector< std::pair<unsigned int, unsigned int> >& edges);
-                
+
                 Eigen::MatrixXd points;
                 Eigen::MatrixXi edges;
                 // std::vector<T> nodes;//图的节点
                 // std::vector< std::pair<unsigned int, unsigned int> > edges;//图的边
-                unsigned int size;//图的点的个数
+                unsigned int size; //图的点的个数
 
                 //get函数
                 // std::vector<T>& get_nodes();
@@ -43,8 +47,8 @@ namespace wh{
             // }
 
             template <typename T>
-            Graph<T>::Graph():points(),edges(),size(0){
-
+            Graph<T>::Graph() : points(), edges(), size(0)
+            {
             }
 
             // template <typename T>
@@ -58,12 +62,12 @@ namespace wh{
             // std::vector<T>& Graph<T>::get_nodes(){
             //     return nodes;
             // }
-            
+
             // template <typename T>
             // std::vector< std::pair<unsigned int, unsigned int> >& Graph<T>::get_edges(){
             //     return edges;
             // }
-            
+
             // template <typename T>
             // unsigned int Graph<T>::get_size(){
             //     return size;
@@ -86,8 +90,8 @@ namespace wh{
             //     }
             //     return res;
             // }
-        }
-    }
-}
+        } // namespace adt
+    }     // namespace basic
+} // namespace wh
 
 #endif
