@@ -9,8 +9,8 @@
 #include <set>
 #include <basic/point_cloud.h>
 #include <basic/skeleton.h>
-#include <basic/abstract_data_type/graph.h>
-#include <basic/abstract_data_type/curve.h>
+#include <basic/graph.h>
+#include <basic/curve.h>
 #include <basic/polygon_mesh.h>
 #include <utils/string_lib.h>
 #include <utils/io/io_obj.h>
@@ -27,20 +27,20 @@ namespace wh
 
             //图Graph
             template <typename T>
-            void load_graph_obj(const std::string file_name, wh::basic::adt::Graph<T> *graph_ptr);
+            void load_graph_obj(const std::string file_name, wh::basic::Graph<T> *graph_ptr);
             template <typename T>
-            void save_graph_obj(const std::string file_name, const wh::basic::adt::Graph<T> *const graph_ptr);
+            void save_graph_obj(const std::string file_name, const wh::basic::Graph<T> *const graph_ptr);
 
             //曲线curve
             //保存一系列曲线
             template <typename T>
-            void save_curves_obj(const std::string file_name, const std::vector<wh::basic::adt::Curve<T>> *const curves_ptr);
+            void save_curves_obj(const std::string file_name, const std::vector<wh::basic::Curve<T>> *const curves_ptr);
             //保存一条曲线
             template <typename T>
-            void save_curve_obj(const std::string file_name, std::vector<wh::basic::adt::Curve<T>> *curves_ptr);
+            void save_curve_obj(const std::string file_name, std::vector<wh::basic::Curve<T>> *curves_ptr);
             //读取一条曲线
             template <typename T>
-            void load_curve_obj(const std::string file_name, wh::basic::adt::Curve<T> *curve_ptr);
+            void load_curve_obj(const std::string file_name, wh::basic::Curve<T> *curve_ptr);
 
             //存储立方体cube mesh
             //存储为三角网格模型
@@ -61,7 +61,7 @@ namespace wh
 
             //=========模板方法实现=========
             template <typename T>
-            void save_curves_obj(const std::string file_name, std::vector<wh::basic::adt::Curve<T>> *const curves_ptr)
+            void save_curves_obj(const std::string file_name, std::vector<wh::basic::Curve<T>> *const curves_ptr)
             {
                 //打开文件
                 std::ofstream data_destination(file_name);
@@ -116,7 +116,7 @@ namespace wh
 
             //保存一条曲线
             template <typename T>
-            void save_curve_obj(const std::string file_name, wh::basic::adt::Curve<T> *curve_ptr)
+            void save_curve_obj(const std::string file_name, wh::basic::Curve<T> *curve_ptr)
             {
                 //打开文件
                 std::ofstream data_destination(file_name);
@@ -152,7 +152,7 @@ namespace wh
 
             //读取一条曲线
             template <typename T>
-            void load_curve_obj(const std::string file_name, wh::basic::adt::Curve<T> *curve_ptr)
+            void load_curve_obj(const std::string file_name, wh::basic::Curve<T> *curve_ptr)
             {
                 std::ifstream data_source(file_name);
                 if (!data_source.is_open())

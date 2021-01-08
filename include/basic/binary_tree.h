@@ -11,8 +11,6 @@ namespace wh
 {
     namespace basic
     {
-        namespace adt
-        {
             //=================二叉树节点=================
             /**
              * 只能指定具体类型的typedef
@@ -209,7 +207,6 @@ namespace wh
             {
                 delete_tree(root);
             }
-        } // namespace adt
     }     // namespace basic
 } // namespace wh
 

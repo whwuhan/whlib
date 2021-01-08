@@ -10,8 +10,6 @@ namespace wh
 {
     namespace basic
     {
-        namespace adt
-        {
             template <typename T>
             class Curve
             {
@@ -153,8 +151,6 @@ namespace wh
                 res[1] = points[points.size() - 1];
                 return res;
             }
-
-        } // namespace adt
     }     // namespace basic
 } // namespace wh
 #endif

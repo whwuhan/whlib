@@ -12,8 +12,6 @@ namespace wh
 {
     namespace basic
     {
-        namespace adt
-        {
             template <typename T>
             class Graph
             {
@@ -90,7 +88,6 @@ namespace wh
             //     }
             //     return res;
             // }
-        } // namespace adt
     }     // namespace basic
 } // namespace wh
 

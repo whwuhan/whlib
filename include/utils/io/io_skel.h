@@ -3,7 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <fstream>
-#include <basic/abstract_data_type/curve.h>
+#include <basic/curve.h>
 #include <utils/string_lib.h>
 namespace wh
 {
@@ -14,14 +14,14 @@ namespace wh
             //======声明======
             //读取skel文件中的骨架线
             template <typename T>
-            void load_curves_skel(const std::string file_name, std::vector<wh::basic::adt::Curve<T>> *curves_ptr);
+            void load_curves_skel(const std::string file_name, std::vector<wh::basic::Curve<T> > *curves_ptr);
 
             //
 
             //=====实现=======
             //读取skel文件中的骨架线
             template <typename T>
-            void load_curves_skel(const std::string file_name, std::vector<wh::basic::adt::Curve<T>> *curves_ptr)
+            void load_curves_skel(const std::string file_name, std::vector<wh::basic::Curve<T> > *curves_ptr)
             {
                 //打开文件
                 std::ifstream data_source(file_name);
@@ -69,7 +69,7 @@ namespace wh
                             }
                         }
                         //将curve放入curves
-                        (*curves_ptr)[curves_count++] = wh::basic::adt::Curve<T>(curve);
+                        (*curves_ptr)[curves_count++] = wh::basic::Curve<T>(curve);
                     }
                 }
                 data_source.close();

@@ -4,7 +4,7 @@
 #include <utils/io/io_obj.h>
 #include <utils/io/io_skel.h>
 #include <utils/string_lib.h>
-#include <basic/abstract_data_type/curve.h>
+#include <basic/curve.h>
 #include <basic/point3d.h>
 using namespace wh::utils;
 using namespace wh::basic;
@@ -25,7 +25,7 @@ int main()
         cout << line_split[0] << endl;
         if ("skel" == line_split[1])
         {
-            vector<adt::Curve<Point3d>> curves;
+            vector<Curve<Point3d> > curves;
             io::load_curves_skel("/Users/wuhan/wuhan/CodingSpace/MultilevelDividedSkeletonExtraction/ExperimentData/skel/" + line, &curves);
             io::save_curves_obj("/Users/wuhan/wuhan/CodingSpace/MultilevelDividedSkeletonExtraction/ExperimentData/skel_obj/" + line_split[0] + ".obj", &curves);
         }

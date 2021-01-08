@@ -4,7 +4,6 @@
 #include <utils/io/io_obj.h>
 using namespace std;
 using namespace wh::basic;
-using namespace wh::basic::adt;
 using namespace wh::utils::io;
 using namespace Eigen;
 bool is_all_visited(vector<int> &flag);                                     //是否所有点都被访问
@@ -33,7 +32,7 @@ Eigen::MatrixXi wh::basic::Skeleton::get_adj_mat()
 //显示特化要放到实现文件中，不能放到头文件中
 //获取分支数组
 template <>
-std::vector<wh::basic::adt::Curve<wh::basic::Point3d>> wh::basic::Skeleton::get_branches()
+std::vector<wh::basic::Curve<wh::basic::Point3d> > wh::basic::Skeleton::get_branches()
 {
     MatrixXi adj_mat = get_adj_mat(); //获取邻接矩阵
 

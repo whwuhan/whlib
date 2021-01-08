@@ -2,11 +2,33 @@
 
 ##  0 简介
 
-* 这是一个基于Eigen写的点云库。
+* 这是一个基于Eigen写的点云库；
 
-* 支持obj格式点云文件的读写
+* 支持obj格式点云文件的读写；
 
 ## 1 目录结构
+
+* whilb
+  * bin
+    * mac
+    * win
+  * deps
+    * boost
+    * eigen
+  * include
+    * algorithm
+    * basic
+    * utils
+  * makefile
+  * obj
+  * src
+  * temp
+  * test
+  * README.md
+
+
+
+## 2 
 
 ## 其他
 

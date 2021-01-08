@@ -2,7 +2,7 @@
 #define SKELETON_H
 #include <iostream>
 #include <Eigen/Dense>
-#include <basic/abstract_data_type/curve.h>
+#include <basic/curve.h>
 #include <basic/point3d.h>
 namespace wh
 {
@@ -22,7 +22,7 @@ namespace wh
             double get_ave_interval(); //获取相邻骨架点的平均间隔距离
 
             template <typename T>
-            std::vector<wh::basic::adt::Curve<T>> get_branches();
+            std::vector<wh::basic::Curve<T> > get_branches();
         } SKELETON;
     } // namespace basic
 } // namespace wh
