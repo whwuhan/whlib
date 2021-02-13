@@ -90,7 +90,7 @@ bool wh::basic::Point3d::operator==(const Point3d &point) const
     return data == point.data;
 }
 //xyz和data同步
-void wh::basic::Point3d::syn_xyz_to_data()
+void wh::basic::Point3d::synXYZToData()
 {
     if (x != data[0] || y != data[1] || z != data[2])
     {
@@ -101,7 +101,7 @@ void wh::basic::Point3d::syn_xyz_to_data()
 }
 
 //data和xyz同步
-void wh::basic::Point3d::syn_data_to_xyz()
+void wh::basic::Point3d::synDataToXYZ()
 {
     if (x != data[0] || y != data[1] || z != data[2])
     {

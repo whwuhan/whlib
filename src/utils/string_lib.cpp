@@ -7,8 +7,8 @@ using namespace std;
 vector<string> wh::utils::split(const string &s, const string &seperator)
 {
     vector<string> result;
-    typedef string::size_type string_size;
-    string_size i = 0;
+    typedef string::size_type stringSize;
+    stringSize i = 0;
 
     while (i != s.size())
     {
@@ -17,7 +17,7 @@ vector<string> wh::utils::split(const string &s, const string &seperator)
         while (i != s.size() && flag == 0)
         {
             flag = 1;
-            for (string_size x = 0; x < seperator.size(); ++x)
+            for (stringSize x = 0; x < seperator.size(); ++x)
                 if (s[i] == seperator[x])
                 {
                     ++i;
@@ -28,10 +28,10 @@ vector<string> wh::utils::split(const string &s, const string &seperator)
 
         //找到又一个分隔符，将两个分隔符之间的字符串取出；
         flag = 0;
-        string_size j = i;
+        stringSize j = i;
         while (j != s.size() && flag == 0)
         {
-            for (string_size x = 0; x < seperator.size(); ++x)
+            for (stringSize x = 0; x < seperator.size(); ++x)
                 if (s[j] == seperator[x])
                 {
                     flag = 1;

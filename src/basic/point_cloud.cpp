@@ -80,24 +80,24 @@ void PointCloud::resize(const unsigned int rows, const unsigned int cols)
 //重新确定维度，且不会改变内部数据(Eigen似乎有bug还是会改变数据)
 //如果维度比原有的维度小，那么数据不改变，相当于裁剪矩阵，如果扩张了维度，数据会是随机值
 //慎用！！！
-void PointCloud::conservative_resize(const unsigned int rows, const unsigned int cols)
+void PointCloud::conservativeResize(const unsigned int rows, const unsigned int cols)
 {
     size = rows;
     points.conservativeResize(rows, cols);
 }
 
 //获取点云几何中心
-RowVector3d PointCloud::get_geometric_center()
+RowVector3d PointCloud::getGeometricCenter()
 {
     RowVector3d center = points.colwise().sum(); //colwise()按照矩阵每一列的方向上排列 这里相当于每一行相加
     return center / size;
 }
 
 //将点云放回原点
-void PointCloud::get_centered_point_cloud()
+void PointCloud::getCenteredPointCloud()
 {
     //获取点云几何中心
-    RowVector3d center = get_geometric_center();
+    RowVector3d center = getGeometricCenter();
     //将点云数据放回坐标原点
     for (int i = 0; i < size; i++)
     {
@@ -106,27 +106,27 @@ void PointCloud::get_centered_point_cloud()
 }
 
 //归一化点云
-Cube PointCloud::get_normalized_point_cloud()
+Cube PointCloud::getNormalizedPointCloud()
 {
     RowVector3d max_xyz = points.colwise().maxCoeff(); //xyz坐标的最大值
     RowVector3d min_xyz = points.colwise().minCoeff(); //xyz坐标的最小值
 
     //包围盒中心
-    RowVector3d boundingbox_center = (max_xyz + min_xyz) / 2.0;
+    RowVector3d boundingBoxCenter = (max_xyz + min_xyz) / 2.0;
     //将点云中心放置到坐标原点
     for (int i = 0; i < size; i++)
     {
-        points.row(i) = points.row(i) - boundingbox_center;
+        points.row(i) = points.row(i) - boundingBoxCenter;
     }
 
-    //boundingbox的xyz轴上的边长
-    RowVector3d boundingbox_side_length = max_xyz - min_xyz;
+    //boundingBox的xyz轴上的边长
+    RowVector3d boundingBoxSideLength = max_xyz - min_xyz;
 
     //获取最长边长
-    double max_side_length = boundingbox_side_length.maxCoeff();
+    double maxSideLen = boundingBoxSideLength.maxCoeff();
 
     //缩放大小
-    double scale = max_side_length / 2.0;
+    double scale = maxSideLen / 2.0;
 
     //将坐标归一化到[-1,1]
     for (int i = 0; i < size; i++)
@@ -134,14 +134,14 @@ Cube PointCloud::get_normalized_point_cloud()
         points.row(i) = points.row(i) / scale;
     }
 
-    boundingbox_side_length = boundingbox_side_length / scale; //同时缩放boudingbox的大小（归一化boundingbox）
-    Cube boundingbox(RowVector3d(0.0, 0.0, 0.0), boundingbox_side_length[0], boundingbox_side_length[1], boundingbox_side_length[2]);
-    boundingbox.position_side_len_to_vertices_cuboid(); //将位置边长表达形式表示成顶点形式
-    return boundingbox;
+    boundingBoxSideLength = boundingBoxSideLength / scale; //同时缩放boudingbox的大小（归一化boundingBox）
+    Cube boundingBox(RowVector3d(0.0, 0.0, 0.0), boundingBoxSideLength[0], boundingBoxSideLength[1], boundingBoxSideLength[2]);
+    boundingBox.positionSideLenToVerticesCuboid(); //将位置边长表达形式表示成顶点形式
+    return boundingBox;
 }
 
 //点云转化为vector存储
-vector<Point3d> PointCloud::points_to_vector()
+vector<Point3d> PointCloud::pointsToVector()
 {
     vector<Point3d> res(size);
     for (int i = 0; i < size; i++)
@@ -151,48 +151,48 @@ vector<Point3d> PointCloud::points_to_vector()
     return res;
 }
 
-//获取boundingbox
-Cube PointCloud::get_boundingbox()
+//获取boundingBox
+Cube PointCloud::getBoundingBox()
 {
     RowVector3d max_xyz = points.colwise().maxCoeff(); //xyz坐标的最大值
     RowVector3d min_xyz = points.colwise().minCoeff(); //xyz坐标的最小值
 
     //包围盒中心
-    RowVector3d boundingbox_center = (max_xyz + min_xyz) / 2.0;
-    //boundingbox的xyz轴上的边长
-    RowVector3d boundingbox_side_length = max_xyz - min_xyz;
+    RowVector3d boundingBoxCenter = (max_xyz + min_xyz) / 2.0;
+    //boundingBox的xyz轴上的边长
+    RowVector3d boundingBoxSideLength = max_xyz - min_xyz;
 
-    Cube boundingbox(boundingbox_center, boundingbox_side_length[0], boundingbox_side_length[1], boundingbox_side_length[2]);
-    return boundingbox;
+    Cube boundingBox(boundingBoxCenter, boundingBoxSideLength[0], boundingBoxSideLength[1], boundingBoxSideLength[2]);
+    return boundingBox;
 }
 
 //体素化点云
-set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingbox, double leaf_size)
+set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leaf_size)
 {
     set<Cube> res;
-    //先细分boundingbox，
-    vector<Cube> voxel = boundingbox.subdivision(leaf_size);
+    //先细分boundingBox，
+    vector<Cube> voxel = boundingBox.subdivision(leaf_size);
 
     //获取xyz方向细分的个数
-    int x_amount = boundingbox.x / leaf_size;
-    int y_amount = boundingbox.y / leaf_size;
-    int z_amount = boundingbox.z / leaf_size;
+    int x_amount = boundingBox.x / leaf_size;
+    int y_amount = boundingBox.y / leaf_size;
+    int z_amount = boundingBox.z / leaf_size;
 
     // 边界位置增加一个cube
     // x_amount++;
     // y_amount++;
     // z_amount++;
 
-    // 边界位置不增加cube，即一个点恰好在boundingbox的一个面上，不在增加细分cube的个数
-    if (x_amount < boundingbox.x / leaf_size)
+    // 边界位置不增加cube，即一个点恰好在boundingBox的一个面上，不在增加细分cube的个数
+    if (x_amount < boundingBox.x / leaf_size)
         x_amount++;
-    if (y_amount < boundingbox.y / leaf_size)
+    if (y_amount < boundingBox.y / leaf_size)
         y_amount++;
-    if (z_amount < boundingbox.z / leaf_size)
+    if (z_amount < boundingBox.z / leaf_size)
         z_amount++;
 
     //原点
-    RowVector3d origin = boundingbox.vertices.row(0);
+    RowVector3d origin = boundingBox.vertices.row(0);
     //体素的位置
     int x_index = 0;
     int y_index = 0;
@@ -205,7 +205,7 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingbox, double leaf_siz
         y_index = index[1];
         z_index = index[2];
         //计算体素在vector中的位置
-        //边界位置处理（恰好在boundingbox的一个面上）
+        //边界位置处理（恰好在boundingBox的一个面上）
         if (x_index == x_amount)
             x_index--;
         if (y_index == y_amount)

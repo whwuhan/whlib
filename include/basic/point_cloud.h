@@ -18,46 +18,46 @@ namespace wh{
             
             //构造函数
             PointCloud();
-            PointCloud(const unsigned int size, const int point_size = POINT3D_SIZE);
+            PointCloud(const unsigned int size, const int pointSize = POINT3D_SIZE);
             PointCloud(const Eigen::MatrixXd& points);
 
             //重载运算符
-            PointCloud operator+(const PointCloud& point_cloud);
-            PointCloud operator-(const PointCloud& point_cloud);
-            PointCloud operator*(const Eigen::MatrixXd transform_matrix);
+            PointCloud operator+(const PointCloud& pointCloud);
+            PointCloud operator-(const PointCloud& pointCloud);
+            PointCloud operator*(const Eigen::MatrixXd transformMatrix);
             Point3d operator[](const unsigned int index);
-            friend std::ostream& operator<<(std::ostream& ost, const PointCloud point_cloud);
+            friend std::ostream& operator<<(std::ostream& ost, const PointCloud pointCloud);
 
             //改变维度，注意resize()会改变矩阵内部数据
             void resize(const unsigned int rows, const unsigned int cols);
 
             //如果维度比原有的维度小，那么数据不改变，相当于裁剪矩阵，如果扩张了维度，数据会是随机值
-            void conservative_resize (const unsigned int rows, const unsigned int cols);
+            void conservativeResize (const unsigned int rows, const unsigned int cols);
 
             //获取点云几何中心
-            Eigen::RowVector3d get_geometric_center();
+            Eigen::RowVector3d getGeometricCenter();
 
             //将点云放回原点
-            void get_centered_point_cloud();
+            void getCenteredPointCloud();
 
             //归一化点云
-            wh::basic::Cube get_normalized_point_cloud();
+            wh::basic::Cube getNormalizedPointCloud();
 
             //点云转化为vector存储
-            std::vector<Point3d> points_to_vector();
+            std::vector<Point3d> pointsToVector();
 
             //点云体素化
-            std::set<wh::basic::Cube> voxelization(wh::basic::Cube& boundingbox,double leaf_size);
+            std::set<wh::basic::Cube> voxelization(wh::basic::Cube& boundingBox,double leafSize);
 
             //获取Boundingbox
-            wh::basic::Cube get_boundingbox();
+            wh::basic::Cube getBoundingBox();
 
         } POINT_CLOUD;
         //注意这里要声明友元函数，结构体里面不是声明这个函数，而是说明这个是友元函数
-        std::ostream& operator<<(std::ostream& ost, const PointCloud point_cloud);
+        std::ostream& operator<<(std::ostream& ost, const PointCloud pointCloud);
 
         //体素化点云
-        typedef struct Voxel_point_cloud{
+        typedef struct VoxelPointCloud{
 
         } VOXEL_POINT_CLOUD;
     }

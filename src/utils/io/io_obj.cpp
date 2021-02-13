@@ -6,15 +6,16 @@
 #include <iomanip>
 #include <utils/io/io_obj.h>
 #include <utils/string_lib.h>
+#include <basic/polygon_mesh.h>
 using namespace std;
 using namespace wh::utils::io;
 using namespace wh::basic;
 //读取obj点云文件
-void wh::utils::io::load_point_cloud_obj(const string file_name, struct PointCloud *point_cloud_ptr)
+void wh::utils::io::loadPointCloudObj(const string fileName, struct PointCloud *pointCloudPtr)
 {
     //打开文件
-    ifstream data_source(file_name);
-    if (!data_source.is_open())
+    ifstream dataSrc(fileName);
+    if (!dataSrc.is_open())
     {
         cout << "no data source." << endl;
         return;
@@ -22,213 +23,213 @@ void wh::utils::io::load_point_cloud_obj(const string file_name, struct PointClo
 
     //读入文件
     string line;
-    vector<string> line_split;
+    vector<string> lineSplit;
     unsigned int count = 0; //obj文件点的数量
 
-    while (getline(data_source, line))
+    while (getline(dataSrc, line))
     {
         if (line[0] == 'v')
         {
-            //line_split = split(line, " ");
+            //lineSplit = split(line, " ");
             count++;
             //cout << count << endl;
             /** resize()效率太低，改成先遍历点的个数，再resize()一次
-            point_cloud_ptr->conservative_resize((++point_cloud_ptr->size), 3);
-            point_cloud_ptr->points(point_cloud_ptr->size-1, 0) = atof(line_split[1].c_str());
-            point_cloud_ptr->points(point_cloud_ptr->size-1, 1) = atof(line_split[2].c_str());
-            point_cloud_ptr->points(point_cloud_ptr->size-1, 2) = atof(line_split[3].c_str());
+            pointCloudPtr->conservativeResize((++pointCloudPtr->size), 3);
+            pointCloudPtr->points(pointCloudPtr->size-1, 0) = atof(lineSplit[1].c_str());
+            pointCloudPtr->points(pointCloudPtr->size-1, 1) = atof(lineSplit[2].c_str());
+            pointCloudPtr->points(pointCloudPtr->size-1, 2) = atof(lineSplit[3].c_str());
             */
         }
     }
     cout << "Point Cloud size:" << count << endl;
-    data_source.clear(); //先要clear()才能回到文件头
-    data_source.seekg(0, ios::beg);
-    point_cloud_ptr->resize(count, 3);
+    dataSrc.clear(); //先要clear()才能回到文件头
+    dataSrc.seekg(0, ios::beg);
+    pointCloudPtr->resize(count, 3);
     count = 0;
 
-    while (getline(data_source, line))
+    while (getline(dataSrc, line))
     {
         switch (line[0])
         {
         case 'v':
-            line_split = split(line, " ");
-            point_cloud_ptr->points(count, 0) = atof(line_split[1].c_str());
-            point_cloud_ptr->points(count, 1) = atof(line_split[2].c_str());
-            point_cloud_ptr->points(count, 2) = atof(line_split[3].c_str());
+            lineSplit = split(line, " ");
+            pointCloudPtr->points(count, 0) = atof(lineSplit[1].c_str());
+            pointCloudPtr->points(count, 1) = atof(lineSplit[2].c_str());
+            pointCloudPtr->points(count, 2) = atof(lineSplit[3].c_str());
             count++;
             break;
         }
     }
     cout << "Load Point Cloud Successfully!" << endl;
-    data_source.close();
+    dataSrc.close();
 }
 
 //点云存入obj文件
-void wh::utils::io::save_point_cloud_obj(const string file_name, const struct PointCloud *const point_cloud_ptr)
+void wh::utils::io::savePointCloudObj(const string fileName, const struct PointCloud *const pointCloudPtr)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib point cloud obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib point cloud obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入数据
-    for (int i = 0; i < point_cloud_ptr->size; i++)
+    for (int i = 0; i < pointCloudPtr->size; i++)
     {
-        data_destination << "v"
-                         << " " << setiosflags(ios::fixed) << setprecision(10) << point_cloud_ptr->points.row(i)[0];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << point_cloud_ptr->points.row(i)[1];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << point_cloud_ptr->points.row(i)[2] << endl;
+        dataDes << "v"
+                         << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[0];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[1];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[2] << endl;
     }
     cout << "Save Point Cloud Successfully!" << endl;
-    data_destination.close();
+    dataDes.close();
 }
 
 //cube triangular mesh 写入obj文件
-void wh::utils::io::save_tri_cube_mesh_obj(const std::string file_name, wh::basic::Cube *cube_ptr)
+void wh::utils::io::saveTriCubeMeshObj(const std::string fileName, wh::basic::Cube *cubePtr)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib cube mesh obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib cube mesh obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入点数据
-    for (int i = 0; i < cube_ptr->vertices.rows(); i++)
+    for (int i = 0; i < cubePtr->vertices.rows(); i++)
     {
-        data_destination << "v"
-                         << " " << setiosflags(ios::fixed) << setprecision(10) << cube_ptr->vertices.row(i)[0];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube_ptr->vertices.row(i)[1];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube_ptr->vertices.row(i)[2] << endl;
+        dataDes << "v"
+                         << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[0];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[1];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[2] << endl;
     }
 
     //写入面数据（注意顺序首个索引从小到大）
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "1"
                      << " "
                      << "2"
                      << " "
                      << "3" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "1"
                      << " "
                      << "3"
                      << " "
                      << "4" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "1"
                      << " "
                      << "4"
                      << " "
                      << "5" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "1"
                      << " "
                      << "5"
                      << " "
                      << "8" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "1"
                      << " "
                      << "2"
                      << " "
                      << "7" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "1"
                      << " "
                      << "7"
                      << " "
                      << "8" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "2"
                      << " "
                      << "3"
                      << " "
                      << "6" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "2"
                      << " "
                      << "6"
                      << " "
                      << "7" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "3"
                      << " "
                      << "4"
                      << " "
                      << "6" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "4"
                      << " "
                      << "5"
                      << " "
                      << "6" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "5"
                      << " "
                      << "6"
                      << " "
                      << "7" << endl;
-    data_destination << "f"
+    dataDes << "f"
                      << " "
                      << "5"
                      << " "
                      << "7"
                      << " "
                      << "8" << endl;
-    data_destination.close();
+    dataDes.close();
 }
 
 //保存triangular cube meshes
-void wh::utils::io::save_tri_cube_meshes_obj(const std::string file_name, const std::vector<wh::basic::Cube> &cubes)
+void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::vector<wh::basic::Cube> &cubes)
 {
     //打开文件
-    ofstream data_destination(file_name);
+    ofstream dataDes(fileName);
 
-    data_destination << "# whlib cube mesh obj file" << endl; //文件头注释
+    dataDes << "# whlib cube mesh obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入点数据
     for (Cube cube : cubes)
@@ -236,64 +237,64 @@ void wh::utils::io::save_tri_cube_meshes_obj(const std::string file_name, const 
         //cout<<cube.vertices.size()<<endl;
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            data_destination << "v"
+            dataDes << "v"
                              << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
     }
 
     //存入面数据
     for (int i = 0; i < cubes.size(); i++)
     {
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 5 << " " << 8 * i + 8 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 7 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 2 << " " << 8 * i + 3 << " " << 8 * i + 6 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 2 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 3 << " " << 8 * i + 4 << " " << 8 * i + 6 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 4 << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 5 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 5 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
     }
 
-    data_destination.close();
+    dataDes.close();
 }
 
 //重载保存triangular cube meshes
-void wh::utils::io::save_tri_cube_meshes_obj(const std::string file_name, const std::set<wh::basic::Cube> &cubes)
+void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::set<wh::basic::Cube> &cubes)
 {
     //打开文件
-    ofstream data_destination(file_name);
+    ofstream dataDes(fileName);
 
-    data_destination << "# whlib cube mesh obj file" << endl; //文件头注释
+    dataDes << "# whlib cube mesh obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入点数据
     for (Cube cube : cubes)
@@ -301,10 +302,10 @@ void wh::utils::io::save_tri_cube_meshes_obj(const std::string file_name, const 
         // cout<<cube.vertices.rows()<<endl;
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            data_destination << "v"
+            dataDes << "v"
                              << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
     }
 
@@ -312,256 +313,256 @@ void wh::utils::io::save_tri_cube_meshes_obj(const std::string file_name, const 
     // cout<<"size:"<<cubes.size()<<endl;
     for (int i = 0; i < cubes.size(); i++)
     {
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 5 << " " << 8 * i + 8 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 7 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 1 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 2 << " " << 8 * i + 3 << " " << 8 * i + 6 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 2 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 3 << " " << 8 * i + 4 << " " << 8 * i + 6 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 4 << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 5 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        data_destination << "f"
+        dataDes << "f"
                          << " " << 8 * i + 5 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
     }
 
-    data_destination.close();
+    dataDes.close();
 }
 
 //cube wireframe（线框写入obj文件）
-void wh::utils::io::save_cube_wireframe_obj(const std::string file_name, wh::basic::Cube *cube_ptr)
+void wh::utils::io::saveCubeWireframeObj(const std::string fileName, wh::basic::Cube *cubePtr)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib cube wireframe obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib cube wireframe obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入点数据
-    for (int i = 0; i < cube_ptr->vertices.rows(); i++)
+    for (int i = 0; i < cubePtr->vertices.rows(); i++)
     {
-        data_destination << "v"
-                         << " " << setiosflags(ios::fixed) << setprecision(10) << cube_ptr->vertices.row(i)[0];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube_ptr->vertices.row(i)[1];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube_ptr->vertices.row(i)[2] << endl;
+        dataDes << "v"
+                         << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[0];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[1];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[2] << endl;
     }
 
     //写入线框（注意顺序首个索引从小到大）
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "1"
                      << " "
                      << "2" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "2"
                      << " "
                      << "3" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "3"
                      << " "
                      << "4" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "4"
                      << " "
                      << "1" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "4"
                      << " "
                      << "5" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "5"
                      << " "
                      << "6" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "6"
                      << " "
                      << "3" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "6"
                      << " "
                      << "7" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "7"
                      << " "
                      << "2" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "7"
                      << " "
                      << "8" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "8"
                      << " "
                      << "1" << endl;
-    data_destination << "l"
+    dataDes << "l"
                      << " "
                      << "8"
                      << " "
                      << "5" << endl;
-    data_destination.close();
+    dataDes.close();
 }
 
 //cube wireframes（多个线框写入obj文件）
-void wh::utils::io::save_cube_wireframes_obj(const string file_name, const vector<wh::basic::Cube> &cubes)
+void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<wh::basic::Cube> &cubes)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib cube wireframes obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib cube wireframes obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入点数据
     for (Cube cube : cubes)
     {
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            data_destination << "v"
+            dataDes << "v"
                              << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
     }
 
     //写入线框（注意顺序首个索引从小到大）
     for (int i = 0; i < cubes.size(); i++)
     {
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 1 << " " << 8 * i + 2 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 4 << " " << 8 * i + 1 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 6 << " " << 8 * i + 3 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 7 << " " << 8 * i + 2 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 8 << " " << 8 * i + 1 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 8 << " " << 8 * i + 5 << endl;
     }
-    data_destination.close();
+    dataDes.close();
 }
 
-void wh::utils::io::save_cube_wireframes_obj(const std::string file_name, const std::set<wh::basic::Cube> &cubes)
+void wh::utils::io::saveCubeWireframesObj(const std::string fileName, const std::set<wh::basic::Cube> &cubes)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib cube wireframes obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib cube wireframes obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
     //存入点数据
     for (Cube cube : cubes)
     {
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            data_destination << "v"
+            dataDes << "v"
                              << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
-            data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
+            dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
     }
 
     //写入线框（注意顺序首个索引从小到大）
     for (int i = 0; i < cubes.size(); i++)
     {
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 1 << " " << 8 * i + 2 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 4 << " " << 8 * i + 1 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 6 << " " << 8 * i + 3 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 7 << " " << 8 * i + 2 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 8 << " " << 8 * i + 1 << endl;
-        data_destination << "l"
+        dataDes << "l"
                          << " " << 8 * i + 8 << " " << 8 * i + 5 << endl;
     }
-    data_destination.close();
+    dataDes.close();
 }
 
 //读取polygon mesh
-void wh::utils::io::load_polygon_mesh_obj(const std::string file_name, wh::basic::PolygonMesh *polygon_mesh_ptr)
+void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::PolygonMesh *polygonMeshPtr)
 {
     //打开文件
-    ifstream data_source(file_name);
-    if (!data_source.is_open())
+    ifstream dataSrc(fileName);
+    if (!dataSrc.is_open())
     {
         cout << "no data source." << endl;
         return;
@@ -569,128 +570,128 @@ void wh::utils::io::load_polygon_mesh_obj(const std::string file_name, wh::basic
 
     //读入文件
     string line;
-    vector<string> line_split;
-    unsigned int vertices_amount = 0; //顶点数量
-    unsigned int faces_amount = 0;    //面片数量
+    vector<string> lineSplit;
+    unsigned int verticesAmount = 0; //顶点数量
+    unsigned int facesAmount = 0;    //面片数量
 
-    bool polygon_mesh_type_is_confirmed = false; // polygon mesh类型是否确定
-    int polygon_type = 3;                        //polygon_mesh的类型（三角面片还是四边形面片，默认是三角面片）
+    bool polygonMeshTypeIsConfirmed = false; // polygon mesh类型是否确定
+    int polygonType = 3;                        //polygon mesh的类型（三角面片还是四边形面片，默认是三角面片）
     //确定
-    while (getline(data_source, line))
+    while (getline(dataSrc, line))
     {
         if (line[0] == 'v')
         {
-            //line_split = split(line, " ");
-            vertices_amount++;
+            //lineSplit = split(line, " ");
+            verticesAmount++;
             //cout << count << endl;
             /** resize()效率太低，改成先遍历点的个数，再resize()一次
-            point_cloud_ptr->conservative_resize((++point_cloud_ptr->size), 3);
-            point_cloud_ptr->points(point_cloud_ptr->size-1, 0) = atof(line_split[1].c_str());
-            point_cloud_ptr->points(point_cloud_ptr->size-1, 1) = atof(line_split[2].c_str());
-            point_cloud_ptr->points(point_cloud_ptr->size-1, 2) = atof(line_split[3].c_str());
+            pointCloudPtr->conservativeResize((++pointCloudPtr->size), 3);
+            pointCloudPtr->points(pointCloudPtr->size-1, 0) = atof(lineSplit[1].c_str());
+            pointCloudPtr->points(pointCloudPtr->size-1, 1) = atof(lineSplit[2].c_str());
+            pointCloudPtr->points(pointCloudPtr->size-1, 2) = atof(lineSplit[3].c_str());
             */
         }
 
         if (line[0] == 'f')
         {
-            faces_amount++;
-            if (!polygon_mesh_type_is_confirmed)
+            facesAmount++;
+            if (!polygonMeshTypeIsConfirmed)
             {
-                line_split = split(line, " ");
-                polygon_type = line_split.size() - 1;
+                lineSplit = split(line, " ");
+                polygonType = lineSplit.size() - 1;
             }
         }
     }
 
-    data_source.clear(); //先要clear()才能回到文件头
-    data_source.seekg(0, ios::beg);
+    dataSrc.clear(); //先要clear()才能回到文件头
+    dataSrc.seekg(0, ios::beg);
 
-    polygon_mesh_ptr->vertices.resize(vertices_amount, 3);
-    polygon_mesh_ptr->faces.resize(faces_amount, polygon_type);
+    polygonMeshPtr->vertices.resize(verticesAmount, 3);
+    polygonMeshPtr->faces.resize(facesAmount, polygonType);
 
-    cout << "vertices_amount:" << vertices_amount << endl;
-    cout << "faces_amount:" << faces_amount << endl;
+    cout << "verticesAmount:" << verticesAmount << endl;
+    cout << "facesAmount:" << facesAmount << endl;
 
-    vertices_amount = 0;
-    faces_amount = 0;
-    while (getline(data_source, line))
+    verticesAmount = 0;
+    facesAmount = 0;
+    while (getline(dataSrc, line))
     {
         switch (line[0])
         {
         case 'v':
-            line_split = split(line, " ");
-            polygon_mesh_ptr->vertices(vertices_amount, 0) = atof(line_split[1].c_str());
-            polygon_mesh_ptr->vertices(vertices_amount, 1) = atof(line_split[2].c_str());
-            polygon_mesh_ptr->vertices(vertices_amount, 2) = atof(line_split[3].c_str());
-            vertices_amount++;
+            lineSplit = split(line, " ");
+            polygonMeshPtr->vertices(verticesAmount, 0) = atof(lineSplit[1].c_str());
+            polygonMeshPtr->vertices(verticesAmount, 1) = atof(lineSplit[2].c_str());
+            polygonMeshPtr->vertices(verticesAmount, 2) = atof(lineSplit[3].c_str());
+            verticesAmount++;
             break;
         case 'f':
-            line_split = split(line, " ");
-            for (int i = 0; i < polygon_type; i++)
+            lineSplit = split(line, " ");
+            for (int i = 0; i < polygonType; i++)
             {
-                polygon_mesh_ptr->faces(faces_amount, i) = atoi(line_split[i + 1].c_str());
+                polygonMeshPtr->faces(facesAmount, i) = atoi(lineSplit[i + 1].c_str());
             }
-            faces_amount++;
+            facesAmount++;
             break;
         default:
             cout << line << endl;
         }
     }
     cout << "Load Polygon Mesh Successfull!" << endl;
-    data_source.close();
+    dataSrc.close();
 }
 
 //保存Polygon mesh
-void wh::utils::io::save_polygon_mesh_obj(const std::string file_name, wh::basic::PolygonMesh *polygon_mesh_ptr)
+void wh::utils::io::savePolygonMeshObj(const std::string fileName, wh::basic::PolygonMesh *polygonMeshPtr)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib polygon mesh obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib polygon mesh obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
-    cout << "vertices_amount:" << polygon_mesh_ptr->vertices.rows() << endl;
-    cout << "faces_amount:" << polygon_mesh_ptr->faces.rows() << endl;
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
+    cout << "verticesAmount:" << polygonMeshPtr->vertices.rows() << endl;
+    cout << "facesAmount:" << polygonMeshPtr->faces.rows() << endl;
     //存入点数据
-    for (int i = 0; i < polygon_mesh_ptr->vertices.rows(); i++)
+    for (int i = 0; i < polygonMeshPtr->vertices.rows(); i++)
     {
-        data_destination << "v"
-                         << " " << setiosflags(ios::fixed) << setprecision(10) << polygon_mesh_ptr->vertices.row(i)[0];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << polygon_mesh_ptr->vertices.row(i)[1];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << polygon_mesh_ptr->vertices.row(i)[2] << endl;
+        dataDes << "v"
+                         << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[0];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[1];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[2] << endl;
     }
 
     //写入面片信息
-    int polygon_mesh_type = polygon_mesh_ptr->faces.cols(); //获取是三角面片是是正方形面片
-    for (int i = 0; i < polygon_mesh_ptr->faces.rows(); i++)
+    int polygonMeshType = polygonMeshPtr->faces.cols(); //获取是三角面片是是正方形面片
+    for (int i = 0; i < polygonMeshPtr->faces.rows(); i++)
     {
-        data_destination << "f";
-        for (int j = 0; j < polygon_mesh_type; j++)
+        dataDes << "f";
+        for (int j = 0; j < polygonMeshType; j++)
         {
-            //cout<<"face:"<<polygon_mesh_ptr->faces.row(i)[j]<<endl;
-            data_destination << " " << polygon_mesh_ptr->faces.row(i)[j];
+            //cout<<"face:"<<polygonMeshPtr->faces.row(i)[j]<<endl;
+            dataDes << " " << polygonMeshPtr->faces.row(i)[j];
         }
-        data_destination << endl;
+        dataDes << endl;
     }
     cout << "Save Polygon Mesh Successfully!" << endl;
-    data_destination.close();
+    dataDes.close();
 }
 
 // load skeleton obj
-void wh::utils::io::load_skeleton_obj(const std::string file_name, wh::basic::Skeleton *skeleton_ptr)
+void wh::utils::io::loadSkeletonObj(const std::string fileName, wh::basic::Skeleton *skeletonPtr)
 {
     //打开文件
-    ifstream data_source(file_name);
-    if (!data_source.is_open())
+    ifstream dataSrc(fileName);
+    if (!dataSrc.is_open())
     {
         cout << "no data source." << endl;
         return;
@@ -698,94 +699,94 @@ void wh::utils::io::load_skeleton_obj(const std::string file_name, wh::basic::Sk
 
     //读入文件
     string line;
-    vector<string> line_split;
-    unsigned int points_amount = 0; //骨架点数量
-    unsigned int edges_amount = 0;  //连线数量
+    vector<string> lineSplit;
+    unsigned int pointsAmount = 0; //骨架点数量
+    unsigned int edgesAmount = 0;  //连线数量
 
     //确定数量
-    while (getline(data_source, line))
+    while (getline(dataSrc, line))
     {
         if (line[0] == 'v')
         {
-            points_amount++;
+            pointsAmount++;
         }
         if (line[0] == 'l')
         {
-            edges_amount++;
+            edgesAmount++;
         }
     }
 
-    data_source.clear(); //先要clear()才能回到文件头
-    data_source.seekg(0, ios::beg);
+    dataSrc.clear(); //先要clear()才能回到文件头
+    dataSrc.seekg(0, ios::beg);
 
-    cout << "points_amount:" << points_amount << endl;
-    cout << "edges_amount:" << edges_amount << endl;
+    cout << "pointsAmount:" << pointsAmount << endl;
+    cout << "edgesAmount:" << edgesAmount << endl;
 
-    skeleton_ptr->points.resize(points_amount, 3);
-    skeleton_ptr->edges.resize(edges_amount, 2);
+    skeletonPtr->points.resize(pointsAmount, 3);
+    skeletonPtr->edges.resize(edgesAmount, 2);
 
-    points_amount = 0;
-    edges_amount = 0;
-    while (getline(data_source, line))
+    pointsAmount = 0;
+    edgesAmount = 0;
+    while (getline(dataSrc, line))
     {
         switch (line[0])
         {
         case 'v':
-            line_split = split(line, " ");
-            skeleton_ptr->points(points_amount, 0) = atof(line_split[1].c_str());
-            skeleton_ptr->points(points_amount, 1) = atof(line_split[2].c_str());
-            skeleton_ptr->points(points_amount, 2) = atof(line_split[3].c_str());
-            points_amount++;
+            lineSplit = split(line, " ");
+            skeletonPtr->points(pointsAmount, 0) = atof(lineSplit[1].c_str());
+            skeletonPtr->points(pointsAmount, 1) = atof(lineSplit[2].c_str());
+            skeletonPtr->points(pointsAmount, 2) = atof(lineSplit[3].c_str());
+            pointsAmount++;
             break;
         case 'l':
-            line_split = split(line, " ");
-            skeleton_ptr->edges(edges_amount, 0) = atoi(line_split[1].c_str());
-            skeleton_ptr->edges(edges_amount, 1) = atoi(line_split[2].c_str());
-            edges_amount++;
+            lineSplit = split(line, " ");
+            skeletonPtr->edges(edgesAmount, 0) = atoi(lineSplit[1].c_str());
+            skeletonPtr->edges(edgesAmount, 1) = atoi(lineSplit[2].c_str());
+            edgesAmount++;
             break;
         default:
             cout << line << endl;
         }
     }
     cout << "Load Skeleton Successfully!" << endl;
-    data_source.close();
+    dataSrc.close();
 }
 
 // save skeleton obj
-void wh::utils::io::save_skeleton_obj(const std::string file_name, wh::basic::Skeleton *skeleton_ptr)
+void wh::utils::io::saveSkeletonObj(const std::string fileName, wh::basic::Skeleton *skeletonPtr)
 {
     //打开文件
-    ofstream data_destination(file_name);
-    data_destination << "# whlib Skeleton obj file" << endl; //文件头注释
+    ofstream dataDes(fileName);
+    dataDes << "# whlib Skeleton obj file" << endl; //文件头注释
 
     //获取当地时间
     time_t now = time(0);
-    string date_time(ctime(&now));
+    string dateTime(ctime(&now));
 
     //注意时间后面自带换行
-    data_destination << "# " << date_time; //写入存储时间
+    dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> file_name_split = wh::utils::split(file_name, "/.\\");
-    int file_name_index = file_name_split.size() - 2;
-    data_destination << "o " << file_name_split[file_name_index] << endl; //obj对象
+    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    int fileNameIndex = fileNameSplit.size() - 2;
+    dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
-    int points_size = skeleton_ptr->points.rows();
-    for (int i = 0; i < points_size; i++)
+    int pointsSize = skeletonPtr->points.rows();
+    for (int i = 0; i < pointsSize; i++)
     { //写入骨架点
-        data_destination << "v"
-                         << " " << setiosflags(ios::fixed) << setprecision(10) << skeleton_ptr->points.row(i)[0];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << skeleton_ptr->points.row(i)[1];
-        data_destination << " " << setiosflags(ios::fixed) << setprecision(10) << skeleton_ptr->points.row(i)[2] << endl;
+        dataDes << "v"
+                         << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[0];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[1];
+        dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[2] << endl;
     }
 
-    int edges_size = skeleton_ptr->edges.rows();
-    for (int i = 0; i < edges_size; i++)
+    int edgesSize = skeletonPtr->edges.rows();
+    for (int i = 0; i < edgesSize; i++)
     {
-        data_destination << "l"
-                         << " " << skeleton_ptr->edges(i, 0);
-        data_destination << " " << skeleton_ptr->edges(i, 1) << endl;
+        dataDes << "l"
+                         << " " << skeletonPtr->edges(i, 0);
+        dataDes << " " << skeletonPtr->edges(i, 1) << endl;
     }
     cout << "Save Skeleton Successfully!" << endl;
-    data_destination.close();
+    dataDes.close();
 }

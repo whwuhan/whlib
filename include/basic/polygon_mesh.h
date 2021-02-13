@@ -19,16 +19,16 @@ namespace wh
             PolygonMesh(Eigen::MatrixXd &vertices, Eigen::MatrixXi &faces);
 
             //mesh 细分
-            void tri_mesh_subdivision(); //三角面片细分
-            void loop_subdivision();     //loop细分
+            void triMeshSubdivision(); //三角面片细分
+            void loopSubdivision();     //loop细分
 
             //=======其他功能
             //生成边集
-            std::set<wh::basic::Edge> creat_unordered_edges(); //无序边
-            std::set<wh::basic::Edge> creat_ordered_edges();   //有序边
+            std::set<wh::basic::Edge> creatUnorderedEdges(); //无序边
+            std::set<wh::basic::Edge> creatOrderedEdges();   //有序边
 
             //找到边的相邻面片
-            std::map<wh::basic::Edge, std::set<wh::basic::Face>> find_edge_near_faces(std::set<wh::basic::Edge> &edges);
+            std::map<wh::basic::Edge, std::set<wh::basic::Face>> findEdgeNearFaces(std::set<wh::basic::Edge> &edges);
         } POLYGON_MESH;
     } // namespace basic
 } // namespace wh

@@ -28,8 +28,8 @@ namespace wh
             friend Point3d operator*(Point3d &point3d, double coefficient);
             friend Point3d operator*(double coefficient, Point3d &point3d);
             //同步方法未来可能随xyz一同删除
-            void syn_xyz_to_data(); //xyz和data同步
-            void syn_data_to_xyz(); //data和xyz同步
+            void synXYZToData(); //xyz和data同步
+            void synDataToXYZ(); //data和xyz同步
 
             //归一化
             Point3d normalize();

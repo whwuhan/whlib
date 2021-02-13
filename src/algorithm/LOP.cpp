@@ -25,7 +25,7 @@ wh::alg::LOP::LOP(
     LOP_PARAMETER &parameters) : fileName(fileName), X(X), P(P), parameters(parameters)
 {
     PointCloud pointCloud;
-    load_point_cloud_obj(fileName, &pointCloud);
+    loadPointCloudObj(fileName, &pointCloud);
     P = pointCloud.points;
 }
 
@@ -44,7 +44,7 @@ void wh::alg::LOP::init()
     auto fileNameSplit = split(fileName, "./\\");
     string outFileName = fileNameSplit[fileNameSplit.size() - 2];
     PointCloud pointCloud;
-    load_point_cloud_obj(fileName, &pointCloud);
+    loadPointCloudObj(fileName, &pointCloud);
     P = pointCloud.points;
     if (P.rows() != 0 && P.cols() != 0)
     {
@@ -52,14 +52,14 @@ void wh::alg::LOP::init()
         string randSaveName = outFileName + "_rand.obj";
         cout << "随机初始化点云保存到文件:" << randSaveName << endl;
         PointCloud randPointCloud(X);
-        save_point_cloud_obj(randSaveName, &randPointCloud);
+        savePointCloudObj(randSaveName, &randPointCloud);
 
         MatrixXd X = getXPrime1(); //从随机点得到初始迭代点
         cout << "正在获取初始迭代点" << endl;
         string initSaveName = outFileName + "_init.obj";
         cout << "初始迭代点云保存到文件:" << initSaveName << endl;
         PointCloud initPointCloud(X);
-        save_point_cloud_obj(initSaveName, &initPointCloud);
+        savePointCloudObj(initSaveName, &initPointCloud);
     }
     else
     {
@@ -88,7 +88,7 @@ void wh::alg::LOP::run()
         string saveName = outFileName + "_iter_" + to_string(iter + 1) + ".obj";
         cout << "第" << iter + 1 << "次迭代结束，保存到文件" << saveName << endl;
         PointCloud pointCloud(X);
-        save_point_cloud_obj(saveName, &pointCloud);
+        savePointCloudObj(saveName, &pointCloud);
     }
 }
 

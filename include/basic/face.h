@@ -8,12 +8,12 @@ namespace wh
     {
         typedef struct Face
         {
-            unsigned int fir_ver_index; //第一个顶点位置
-            unsigned int sec_ver_index; //第二个顶点位置
-            unsigned int thd_ver_index; //第三个顶点位置
+            unsigned int firVerIndex; //第一个顶点位置
+            unsigned int secVerIndex; //第二个顶点位置
+            unsigned int thdVerIndex; //第三个顶点位置
             Face();
-            Face(Eigen::RowVector3i face_index);
-            Face(unsigned int fir_ver_index, unsigned int sec_ver_index, unsigned int thd_ver_index);
+            Face(Eigen::RowVector3i faceIndex);
+            Face(unsigned int firVerIndex, unsigned int secVerIndex, unsigned int thdVerIndex);
             friend std::ostream &operator<<(std::ostream &ost, const wh::basic::Face face);
             bool operator<(const Face &face) const;
         } FACE;

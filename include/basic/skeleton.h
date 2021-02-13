@@ -16,13 +16,13 @@ namespace wh
             Skeleton();
             Skeleton(Eigen::MatrixXd &points, Eigen::MatrixXi &edges);
 
-            Eigen::MatrixXi get_adj_mat(); //获取邻接矩阵
+            Eigen::MatrixXi getAdjMat(); //获取邻接矩阵
 
-            double get_tol_len();      //获取骨架线总的长度
-            double get_ave_interval(); //获取相邻骨架点的平均间隔距离
+            double getTolLen();      //获取骨架线总的长度
+            double getAveInterval(); //获取相邻骨架点的平均间隔距离
 
             template <typename T>
-            std::vector<wh::basic::Curve<T> > get_branches();
+            std::vector<wh::basic::Curve<T> > getBranches();
         } SKELETON;
     } // namespace basic
 } // namespace wh

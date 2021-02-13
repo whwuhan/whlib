@@ -4,7 +4,7 @@ using namespace Eigen;
 using namespace wh::basic;
 
 //构造函数
-Cube::Cube() : position(0.0, 0.0, 0.0), side_len(0.0), vertices(), x(0.0), y(0.0), z(0.0) {}
+Cube::Cube() : position(0.0, 0.0, 0.0), sideLen(0.0), vertices(), x(0.0), y(0.0), z(0.0) {}
 
 Cube::Cube(MatrixXd vertices) : vertices(vertices)
 {
@@ -22,13 +22,13 @@ Cube::Cube(MatrixXd vertices) : vertices(vertices)
 
     if ((x - y < 0.00000001) && (y - z < 0.00000001))
     {
-        side_len = x;
+        sideLen = x;
     }
 }
 
-Cube::Cube(RowVector3d position, double side_len) : position(position), side_len(side_len)
+Cube::Cube(RowVector3d position, double sideLen) : position(position), sideLen(sideLen)
 {
-    double half_size = side_len / 2.0;
+    double half_size = sideLen / 2.0;
     vertices.resize(8, 3);
 
     vertices.row(0) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] - half_size);
@@ -39,17 +39,17 @@ Cube::Cube(RowVector3d position, double side_len) : position(position), side_len
     vertices.row(5) = RowVector3d(position[0] + half_size, position[1] + half_size, position[2] + half_size);
     vertices.row(6) = RowVector3d(position[0] + half_size, position[1] - half_size, position[2] + half_size);
     vertices.row(7) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] + half_size);
-    // position_side_len_to_vertices();
+    // positionSideLenToVertices();
 
-    x = side_len;
-    y = side_len;
-    z = side_len;
+    x = sideLen;
+    y = sideLen;
+    z = sideLen;
 }
 
 Cube::Cube(Eigen::RowVector3d position, double x, double y, double z) : position(position), x(x), y(y), z(z)
 {
-    side_len = 0.0;
-    position_side_len_to_vertices_cuboid();
+    sideLen = 0.0;
+    positionSideLenToVerticesCuboid();
 }
 
 //运算符重载
@@ -65,25 +65,25 @@ bool Cube::operator<(const Cube &cube) const
 }
 
 //显示信息
-void Cube::show_inf()
+void Cube::showInf()
 {
     cout << "position:" << position << endl;
-    cout << "side_len:" << side_len << endl;
+    cout << "sideLen:" << sideLen << endl;
     cout << "x:" << x << " y:" << y << " z:" << z << endl;
 }
 
 //显示信息
-void Cube::show_inf() const
+void Cube::showInf() const
 {
     cout << "position:" << position << endl;
-    cout << "side_len:" << side_len << endl;
+    cout << "sideLen:" << sideLen << endl;
     cout << "x:" << x << " y:" << y << " z:" << z << endl;
 }
-//将position side_len转化成顶点表达式
-void Cube::position_side_len_to_vertices()
+//将position sideLen转化成顶点表达式
+void Cube::positionSideLenToVertices()
 {
     vertices.resize(8, 3);
-    double half_size = side_len / 2.0;
+    double half_size = sideLen / 2.0;
     vertices.row(0) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] - half_size);
     vertices.row(1) = RowVector3d(position[0] + half_size, position[1] - half_size, position[2] - half_size);
     vertices.row(2) = RowVector3d(position[0] + half_size, position[1] + half_size, position[2] - half_size);
@@ -94,8 +94,8 @@ void Cube::position_side_len_to_vertices()
     vertices.row(7) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] + half_size);
 }
 
-//将position side_len转化成顶点表达式
-void Cube::position_side_len_to_vertices_cuboid()
+//将position sideLen转化成顶点表达式
+void Cube::positionSideLenToVerticesCuboid()
 {
     vertices.resize(8, 3);
     vertices.row(0) = position + RowVector3d(-x / 2.0, -y / 2.0, -z / 2.0);
@@ -162,13 +162,13 @@ vector<Cube> Cube::subdivision(double leaf_size)
 }
 
 // 获取Cube中心
-Eigen::RowVector3d Cube::get_center()
+Eigen::RowVector3d Cube::getCenter()
 {
     return position;
 }
 
 // 获取最大边长
-double Cube::get_max_side_len()
+double Cube::getMaxSideLen()
 {
     double res = (x > y) ? x : y;
     return (res > z) ? res : z;
