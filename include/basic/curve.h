@@ -19,25 +19,25 @@ namespace wh
                 std::vector<T> points; //一条曲线上按顺序排列的点
                 unsigned int size;     //曲线点的个数
 
-                std::vector<T> &get_points(); //获取曲线所有点数据
+                std::vector<T> &getPoints(); //获取曲线所有点数据
 
-                unsigned int get_size(); //获取曲线点的个数
+                unsigned int getSize(); //获取曲线点的个数
 
-                void resize(const unsigned int new_size); //设置点数量
+                void resize(const unsigned int newSize); //设置点数量
 
                 void show(); //显示曲线点的信息
 
-                double get_len(); //获取曲线长度
+                double getLen(); //获取曲线长度
 
-                std::vector<T> get_end_points(); //获取曲线的两端点
+                std::vector<T> getEndPoints(); //获取曲线的两端点
 
-                void add_point_back(T &t); //在曲线的最后增加点
+                void addPointBack(T &t); //在曲线的最后增加点
 
-                void add_point_front(T &t); //在曲线的最前面加点
+                void addPointFront(T &t); //在曲线的最前面加点
 
-                void add_points_back(std::vector<T> &points); //在曲线后面插入多个点
+                void addPointsBack(std::vector<T> &points); //在曲线后面插入多个点
 
-                void add_points_front(std::vector<T> &points); //在曲线前面插入多个点
+                void addPointsFront(std::vector<T> &points); //在曲线前面插入多个点
             };
 
             //构造函数
@@ -51,23 +51,23 @@ namespace wh
 
             //get函数
             template <typename T>
-            std::vector<T> &Curve<T>::get_points()
+            std::vector<T> &Curve<T>::getPoints()
             {
                 return points;
             }
 
             template <typename T>
-            unsigned int Curve<T>::get_size()
+            unsigned int Curve<T>::getSize()
             {
                 return size;
             }
 
             //设置点数量
             template <typename T>
-            void Curve<T>::resize(const unsigned int new_size)
+            void Curve<T>::resize(const unsigned int newSize)
             {
-                size = new_size;
-                points.resize(new_size);
+                size = newSize;
+                points.resize(newSize);
             }
 
             //显示曲线点的信息
@@ -88,7 +88,7 @@ namespace wh
 
             //获取曲线长度
             template <typename T>
-            double Curve<T>::get_len()
+            double Curve<T>::getLen()
             {
                 double len; //长度
                 for (int i = 0; i < size - 1; i++)
@@ -102,49 +102,49 @@ namespace wh
 
             //在曲线的最后增加点
             template <typename T>
-            void Curve<T>::add_point_back(T &t)
+            void Curve<T>::addPointBack(T &t)
             {
-                T new_point(t);
-                points.push_back(new_point);
+                T newPoint(t);
+                points.push_back(newPoint);
                 this->size++;
             }
 
             //在曲线的最前面加点
             template <typename T>
-            void Curve<T>::add_point_front(T &t)
+            void Curve<T>::addPointFront(T &t)
             {
-                T new_point(t);
-                points.emplace(points.begin(), new_point);
+                T newPoint(t);
+                points.emplace(points.begin(), newPoint);
                 this->size++;
             }
 
             //在曲线后面插入多个点
             template <typename T>
-            void Curve<T>::add_points_back(std::vector<T> &points)
+            void Curve<T>::addPointsBack(std::vector<T> &points)
             {
-                int add_points_size = points.size();
+                int addPointsSize = points.size();
                 for (T t : points)
                 {
                     this->points.push_back(t);
                 }
-                this->size += add_points_size;
+                this->size += addPointsSize;
             }
 
             //在曲线前面插入多个点
             template <typename T>
-            void Curve<T>::add_points_front(std::vector<T> &points)
+            void Curve<T>::addPointsFront(std::vector<T> &points)
             {
-                int add_points_size = points.size();
-                for (int i = add_points_size - 1; i > -1; i--)
+                int addPointsSize = points.size();
+                for (int i = addPointsSize - 1; i > -1; i--)
                 {
                     this->points.emplace(this->points.begin(), points[i]);
                 }
-                this->size += add_points_size;
+                this->size += addPointsSize;
             }
 
             //获取曲线的两端点
             template <typename T>
-            std::vector<T> Curve<T>::get_end_points()
+            std::vector<T> Curve<T>::getEndPoints()
             {
                 std::vector<T> res(2);
                 res[0] = points[0];
