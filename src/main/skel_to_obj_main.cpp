@@ -11,24 +11,24 @@ using namespace wh::basic;
 using namespace std;
 int main()
 {
-    ifstream file_list("/Users/wuhan/wuhan/CodingSpace/MultilevelDividedSkeletonExtraction/ExperimentData/skel/file_list.txt");
-    if (!file_list.is_open())
+    ifstream fileList("C:\\Users\\Administrator\\Desktop\\Alan\\skel\\FileList.txt");
+    if (!fileList.is_open())
     {
-        cout << "no file_list." << endl;
+        cout << "no fileList." << endl;
         return 0;
     }
     string line;
-    vector<string> line_split;
-    while (getline(file_list, line))
+    vector<string> lineSplit;
+    while (getline(fileList, line))
     {
-        line_split = split(line, ".");
-        cout << line_split[0] << endl;
-        if ("skel" == line_split[1])
+        lineSplit = split(line, ".");
+        cout << lineSplit[0] << endl;
+        if ("skel" == lineSplit[1])
         {
             vector<Curve<Point3d> > curves;
-            io::load_curves_skel("/Users/wuhan/wuhan/CodingSpace/MultilevelDividedSkeletonExtraction/ExperimentData/skel/" + line, &curves);
-            io::save_curves_obj("/Users/wuhan/wuhan/CodingSpace/MultilevelDividedSkeletonExtraction/ExperimentData/skel_obj/" + line_split[0] + ".obj", &curves);
+            io::loadCurvesSkel("C:\\Users\\Administrator\\Desktop\\Alan\\skel\\" + line, &curves);
+            io::saveCurvesObj("C:\\Users\\Administrator\\Desktop\\Alan\\skel\\" + lineSplit[0] + ".obj", &curves);
         }
     }
-    file_list.close();
+    fileList.close();
 }

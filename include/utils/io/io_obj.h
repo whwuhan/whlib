@@ -11,7 +11,7 @@
 #include <basic/skeleton.h>
 #include <basic/graph.h>
 #include <basic/curve.h>
-#include <basic/polygonMesh.h>
+#include <basic/polygon_mesh.h>
 #include <utils/string_lib.h>
 #include <utils/io/io_obj.h>
 namespace wh

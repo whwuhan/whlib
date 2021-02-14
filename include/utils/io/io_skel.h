@@ -14,14 +14,12 @@ namespace wh
             //======声明======
             //读取skel文件中的骨架线
             template <typename T>
-            void load_curves_skel(const std::string fileName, std::vector<wh::basic::Curve<T> > *curvesPtr);
-
-            //
+            void loadCurvesSkel(const std::string fileName, std::vector<wh::basic::Curve<T> > *curvesPtr);
 
             //=====实现=======
             //读取skel文件中的骨架线
             template <typename T>
-            void load_curves_skel(const std::string fileName, std::vector<wh::basic::Curve<T> > *curvesPtr)
+            void loadCurvesSkel(const std::string fileName, std::vector<wh::basic::Curve<T> > *curvesPtr)
             {
                 //打开文件
                 std::ifstream dataSrc(fileName);
