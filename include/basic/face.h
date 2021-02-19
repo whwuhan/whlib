@@ -1,5 +1,4 @@
-#ifndef FACE_H
-#define FACE_H
+#pragma once
 #include <iostream>
 #include <Eigen/Dense>
 namespace wh
@@ -20,4 +19,3 @@ namespace wh
         std::ostream &operator<<(std::ostream &ost, const wh::basic::Face face);
     } // namespace basic
 } // namespace wh
-#endif

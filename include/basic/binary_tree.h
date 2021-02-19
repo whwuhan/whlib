@@ -4,8 +4,7 @@
  * 2020.08.17
  * 
 */
-#ifndef BINARY_TREE_H
-#define BINARY_TREE_H
+#pragma once
 #include <vector>
 namespace wh
 {
@@ -210,4 +209,3 @@ namespace wh
     }     // namespace basic
 } // namespace wh
 
-#endif

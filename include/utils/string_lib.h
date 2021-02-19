@@ -1,5 +1,4 @@
-#ifndef STRING_LIB_H
-#define STRING_LIB_H
+#pragma once
 #include <vector>
 #include <string>
 #include <iostream>
@@ -11,4 +10,3 @@ namespace wh
         std::vector<std::string> split(const std::string &s, const std::string &seperator);
     }
 } // namespace wh
-#endif

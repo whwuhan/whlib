@@ -3,8 +3,7 @@
  * 2020.08.20
  * wuhan
 */
-#ifndef GRAPH_H
-#define GRAPH_H
+#pragma once
 #include <vector>
 #include <utility> //std::pair<>
 #include <Eigen/Dense>
@@ -90,5 +89,3 @@ namespace wh
             // }
     }     // namespace basic
 } // namespace wh
-
-#endif

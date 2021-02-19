@@ -1,6 +1,5 @@
 //八叉树结构体
-#ifndef OCTREE_H
-#define OCTREE_H
+#pragma once
 #include <basic/face.h>
 #include <Eigen/Dense>
 #include <set>
@@ -14,14 +13,14 @@ namespace wh
         enum OctreeNodeType
         {
             ROOT,               //根
-            BOTTOM_LEFT_FRONT,  // 1
-            BOTTOM_RIGHT_FRONT, // 2
-            BOTTOM_LEFT_BACK,   // 3
-            BOTTOM_RIGHT_BACK,  // 4
-            TOP_LEFT_FRONT,     // 5
-            TOP_RIGHT_FRONT,    // 6
-            TOP_LEFT_BACK,      // 7
-            TOP_RIGHT_BACK,     // 8
+            BOTTOMLEFTFRONT,  // 1
+            BOTTOMRIGHTFRONT, // 2
+            BOTTOMLEFTBACK,   // 3
+            BOTTOMRIGHTBACK,  // 4
+            TOPLEFTFRONT,     // 5
+            TOPRIGHTFRONT,    // 6
+            TOPLEFTBACK,      // 7
+            TOPRIGHTBACK,     // 8
             UN_DEFINE           // 9
         };
 
@@ -39,14 +38,14 @@ namespace wh
             double z;
 
             //节点的子结点
-            OctreeNode<T> *top_left_front;
-            OctreeNode<T> *top_left_back;
-            OctreeNode<T> *top_right_front;
-            OctreeNode<T> *top_right_back;
-            OctreeNode<T> *bottom_left_front;
-            OctreeNode<T> *bottom_left_back;
-            OctreeNode<T> *bottom_right_front;
-            OctreeNode<T> *bottom_right_back;
+            OctreeNode<T> *topLeftFront;
+            OctreeNode<T> *topLeftBack;
+            OctreeNode<T> *topRightFront;
+            OctreeNode<T> *topRightBack;
+            OctreeNode<T> *bottomLeftFront;
+            OctreeNode<T> *bottomLeftBack;
+            OctreeNode<T> *bottomRightFront;
+            OctreeNode<T> *bottomRightBack;
 
             unsigned int level;    //当前层级
             unsigned int maxLevel; //最大层级
@@ -59,14 +58,14 @@ namespace wh
                 double x,                      //节点x长度
                 double y,                      //节点y长度
                 double z,                      //节点z长度
-                // OctreeNode <T>*top_left_front,
-                // OctreeNode <T>*top_left_back,
-                // OctreeNode <T>*top_right_front,
-                // OctreeNode <T>*top_right_back,
-                // OctreeNode <T>*bottom_left_front,
-                // OctreeNode <T>*bottom_left_back,
-                // OctreeNode <T>*bottom_right_front,
-                // OctreeNode <T>*bottom_right_back,
+                // OctreeNode <T>*topLeftFront,
+                // OctreeNode <T>*topLeftBack,
+                // OctreeNode <T>*topRightFront,
+                // OctreeNode <T>*topRightBack,
+                // OctreeNode <T>*bottomLeftFront,
+                // OctreeNode <T>*bottomLeftBack,
+                // OctreeNode <T>*bottomRightFront,
+                // OctreeNode <T>*bottomRightBack,
                 unsigned int level,   //节点层数
                 unsigned int maxLevel //最大层数
             );
@@ -92,14 +91,14 @@ namespace wh
         OctreeNode<T>::OctreeNode()
             : data(), octreeNodeType(UN_DEFINE), position(),
               x(0.0), y(0.0), z(0.0),
-              top_left_front(nullptr),
-              top_left_back(nullptr),
-              top_right_front(nullptr),
-              top_right_back(nullptr),
-              bottom_left_front(nullptr),
-              bottom_left_back(nullptr),
-              bottom_right_front(nullptr),
-              bottom_right_back(nullptr),
+              topLeftFront(nullptr),
+              topLeftBack(nullptr),
+              topRightFront(nullptr),
+              topRightBack(nullptr),
+              bottomLeftFront(nullptr),
+              bottomLeftBack(nullptr),
+              bottomRightFront(nullptr),
+              bottomRightBack(nullptr),
               level(0),
               maxLevel(0)
         {
@@ -114,14 +113,14 @@ namespace wh
             double x,
             double y,
             double z,
-            // OctreeNode <T>*top_left_front,
-            // OctreeNode <T>*top_left_back,
-            // OctreeNode <T>*top_right_front,
-            // OctreeNode <T>*top_right_back,
-            // OctreeNode <T>*bottom_left_front,
-            // OctreeNode <T>*bottom_left_back,
-            // OctreeNode <T>*bottom_right_front,
-            // OctreeNode <T>*bottom_right_back,
+            // OctreeNode <T>*topLeftFront,
+            // OctreeNode <T>*topLeftBack,
+            // OctreeNode <T>*topRightFront,
+            // OctreeNode <T>*topRightBack,
+            // OctreeNode <T>*bottomLeftFront,
+            // OctreeNode <T>*bottomLeftBack,
+            // OctreeNode <T>*bottomRightFront,
+            // OctreeNode <T>*bottomRightBack,
             unsigned int level,
             unsigned int maxLevel) : data(data),
                                      octreeNodeType(octreeNodeType),
@@ -129,14 +128,14 @@ namespace wh
                                      x(x),
                                      y(y),
                                      z(z),
-                                     // top_left_front(top_left_front),
-                                     // top_left_back(top_left_back),
-                                     // top_right_front(top_right_front),
-                                     // top_right_back(top_right_back),
-                                     // bottom_left_front(bottom_left_front),
-                                     // bottom_left_back(bottom_left_back),
-                                     // bottom_right_front(bottom_right_front),
-                                     // bottom_right_back(bottom_right_back),
+                                     // topLeftFront(topLeftFront),
+                                     // topLeftBack(topLeftBack),
+                                     // topRightFront(topRightFront),
+                                     // topRightBack(topRightBack),
+                                     // bottomLeftFront(bottomLeftFront),
+                                     // bottomLeftBack(bottomLeftBack),
+                                     // bottomRightFront(bottomRightFront),
+                                     // bottomRightBack(bottomRightBack),
                                      level(level),
                                      maxLevel(maxLevel)
         {
@@ -195,9 +194,9 @@ namespace wh
             {
                 for (int i = 0; i < size; i++)
                 {
-                    data(i, 0) = iter->fir_ver_index;
-                    data(i, 1) = iter->sec_ver_index;
-                    data(i, 2) = iter->thd_ver_index;
+                    data(i, 0) = iter->firVerIndex;
+                    data(i, 1) = iter->secVerIndex;
+                    data(i, 2) = iter->thdVerIndex;
                 }
             }
             return data;
@@ -233,25 +232,24 @@ namespace wh
             T TRFData = getDataAt(TRFPos, x / 2.0, y / 2.0, z / 2.0, vertices);
             T TLBData = getDataAt(TLBPos, x / 2.0, y / 2.0, z / 2.0, vertices);
             T TRBData = getDataAt(TRBPos, x / 2.0, y / 2.0, z / 2.0, vertices);
-            OctreeNode<T> *bottom_left_front_node = new OctreeNode<T>(BLFData, BOTTOM_LEFT_FRONT, BLFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *bottom_right_front_node = new OctreeNode<T>(BRFData, BOTTOM_RIGHT_FRONT, BRFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *bottom_left_back_node = new OctreeNode<T>(BLBData, BOTTOM_LEFT_BACK, BLBData, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *bottom_right_back_node = new OctreeNode<T>(BRBData, BOTTOM_RIGHT_BACK, BRBPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *top_left_front_node = new OctreeNode<T>(TLFData, TOP_LEFT_FRONT, TLFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *top_right_front_node = new OctreeNode<T>(TRFData, TOP_RIGHT_FRONT, TRFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *top_left_back_node = new OctreeNode<T>(TLBData, TOP_LEFT_BACK, TLBPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
-            OctreeNode<T> *top_right_back_node = new OctreeNode<T>(TRBData, TOP_RIGHT_BACK, TRBPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *bottomLeftFront_node = new OctreeNode<T>(BLFData, BOTTOMLEFTFRONT, BLFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *bottomRightFront_node = new OctreeNode<T>(BRFData, BOTTOMRIGHTFRONT, BRFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *bottomLeftBack_node = new OctreeNode<T>(BLBData, BOTTOMLEFTBACK, BLBData, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *bottomRightBack_node = new OctreeNode<T>(BRBData, BOTTOMRIGHTBACK, BRBPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *topLeftFront_node = new OctreeNode<T>(TLFData, TOPLEFTFRONT, TLFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *topRightFront_node = new OctreeNode<T>(TRFData, TOPRIGHTFRONT, TRFPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *topLeftBack_node = new OctreeNode<T>(TLBData, TOPLEFTBACK, TLBPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
+            OctreeNode<T> *topRightBack_node = new OctreeNode<T>(TRBData, TOPRIGHTBACK, TRBPos, x / 2.0, y / 2.0, z / 2.0, level + 1, maxLevel);
 
             //递归构造
-            bottom_left_front_node->createOctree(level + 1);
-            bottom_right_front_node->createOctree(level + 1);
-            bottom_left_back_node->createOctree(level + 1);
-            bottom_right_back_node->createOctree(level + 1);
-            top_left_front_node->createOctree(level + 1);
-            top_right_front_node->createOctree(level + 1);
-            top_left_back_node->createOctree(level + 1);
-            top_right_back_node->createOctree(level + 1);
+            bottomLeftFront_node->createOctree(level + 1);
+            bottomRightFront_node->createOctree(level + 1);
+            bottomLeftBack_node->createOctree(level + 1);
+            bottomRightBack_node->createOctree(level + 1);
+            topLeftFront_node->createOctree(level + 1);
+            topRightFront_node->createOctree(level + 1);
+            topLeftBack_node->createOctree(level + 1);
+            topRightBack_node->createOctree(level + 1);
         }
     } // namespace basic
 } // namespace wh
-#endif

@@ -1,5 +1,4 @@
-#ifndef POINT3D_H
-#define POINT3D_H
+#pragma once
 #include <iostream>
 #include <Eigen/Dense>
 namespace wh
@@ -40,4 +39,3 @@ namespace wh
         Point3d operator*(double coefficient, Point3d &point3d);
     } // namespace basic
 } // namespace wh
-#endif

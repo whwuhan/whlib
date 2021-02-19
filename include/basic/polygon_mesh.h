@@ -1,5 +1,4 @@
-#ifndef POLYGON_MESH_H
-#define POLYGON_MESH_H
+#pragma once
 #include <Eigen/Dense>
 #include <basic/edge.h>
 #include <basic/face.h>
@@ -32,5 +31,3 @@ namespace wh
         } POLYGON_MESH;
     } // namespace basic
 } // namespace wh
-
-#endif

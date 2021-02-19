@@ -1,5 +1,4 @@
-#ifndef CUBE_H
-#define CUBE_H
+#pragma once
 #include <iostream>
 #include <vector>
 #include <Eigen/Dense>
@@ -42,4 +41,3 @@ namespace wh
         } CUBE;
     } // namespace basic
 } // namespace wh
-#endif

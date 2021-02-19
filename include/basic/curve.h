@@ -3,8 +3,7 @@
  * 2020.08.21
  * wuhan
 */
-#ifndef CURVE_H
-#define CURVE_H
+#pragma once
 #include <vector>
 namespace wh
 {
@@ -153,4 +152,3 @@ namespace wh
             }
     }     // namespace basic
 } // namespace wh
-#endif

@@ -1,5 +1,4 @@
-#ifndef SKELETON_H
-#define SKELETON_H
+#pragma once
 #include <iostream>
 #include <Eigen/Dense>
 #include <basic/curve.h>
@@ -26,4 +25,3 @@ namespace wh
         } SKELETON;
     } // namespace basic
 } // namespace wh
-#endif

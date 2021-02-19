@@ -1,5 +1,4 @@
-#ifndef POINT_CLOUD_H
-#define POINT_CLOUD_H
+#pragma once
 #include <iostream>
 #include <vector>
 #include <Eigen/Dense>
@@ -62,4 +61,3 @@ namespace wh{
         } VOXEL_POINT_CLOUD;
     }
 }
-#endif

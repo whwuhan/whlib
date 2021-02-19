@@ -1,5 +1,4 @@
-#ifndef EDGE_H
-#define EDGE_H
+#pragma once
 #include <iostream>
 namespace wh
 {
@@ -19,4 +18,3 @@ namespace wh
         std::ostream &operator<<(std::ostream &ost, const wh::basic::Edge edge);
     } // namespace basic
 } // namespace wh
-#endif

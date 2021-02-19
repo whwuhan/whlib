@@ -1,5 +1,4 @@
-#ifndef IO_H
-#define IO_H
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -191,4 +190,3 @@ namespace wh
         }// namespace io
     }// namespace utils
 }// namespace wh
-#endif
