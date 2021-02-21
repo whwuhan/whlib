@@ -3,11 +3,35 @@ using namespace std;
 using namespace Eigen;
 using namespace wh::basic;
 //构造函数
-PointCloud::PointCloud() : points(), size(0) {}
+PointCloud::PointCloud():
+points(), 
+size(0),
+VAO(0),
+VBO(0),
+show(true),
+color(0.06f, 0.729f, 0.941f, 1.0f),
+pointSize(10.0f)
+{}
 
-PointCloud::PointCloud(const unsigned int size, const int point_size) : points(size, point_size), size(size) {}
+PointCloud::PointCloud(const unsigned int size, const int point_size):
+points(size, point_size), 
+size(size) ,
+VAO(0),
+VBO(0),
+show(true),
+color(0.06f, 0.729f, 0.941f, 1.0f),
+pointSize(10.0f)
+{}
 
-PointCloud::PointCloud(const Eigen::MatrixXd &points) : points(points), size(points.rows()) {}
+PointCloud::PointCloud(const Eigen::MatrixXd &points):
+points(points), 
+size(points.rows()),
+VAO(0),
+VBO(0),
+show(true),
+color(0.06f, 0.729f, 0.941f, 1.0f),
+pointSize(10.0f)
+{}
 
 //重载运算符
 PointCloud PointCloud::operator+(const PointCloud &point_cloud)
@@ -228,3 +252,17 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leaf_siz
     }
     return res;
 }
+
+//获取C++原生数据
+// float* PointCloud::getGLData()
+// {
+//     float pointCloudData[size * POINT3D_SIZE];
+//     for(int i = 0; i < points.rows(); i++)
+//     {
+//         for(int j = 0; j < 3;j++)
+//         {
+//             pointCloudData[i + j] = points.row(i)[j];
+//         }
+//     }
+//     return pointCloudData;
+// }

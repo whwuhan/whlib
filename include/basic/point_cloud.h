@@ -14,7 +14,13 @@ namespace wh{
             Eigen::MatrixXd points;
             //点云大小
             unsigned int size;
-            
+
+            //适配Coolender
+            unsigned int VAO;
+            unsigned int VBO;
+            bool show;//是否显示
+            Eigen::RowVector4f color;//颜色
+            float pointSize;//点的大小
             //构造函数
             PointCloud();
             PointCloud(const unsigned int size, const int pointSize = POINT3D_SIZE);
@@ -50,6 +56,9 @@ namespace wh{
 
             //获取Boundingbox
             wh::basic::Cube getBoundingBox();
+
+            //获取C++原生数据
+            // float* getGLData();
 
         } POINT_CLOUD;
         //注意这里要声明友元函数，结构体里面不是声明这个函数，而是说明这个是友元函数
