@@ -10,6 +10,7 @@ VAO(0),
 VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
+model(1.0f),
 pointSize(10.0f)
 {}
 
@@ -20,6 +21,7 @@ VAO(0),
 VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
+model(1.0f),
 pointSize(10.0f)
 {}
 
@@ -30,6 +32,7 @@ VAO(0),
 VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
+model(1.0f),
 pointSize(10.0f)
 {}
 

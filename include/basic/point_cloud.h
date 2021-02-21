@@ -5,6 +5,7 @@
 #include <basic/point3d.h>
 #include <basic/cube.h>
 #include <set>
+#include <glm/glm.hpp>
 namespace wh{
     namespace basic{
         const int POINT3D_SIZE = 3;
@@ -19,8 +20,10 @@ namespace wh{
             unsigned int VAO;
             unsigned int VBO;
             bool show;//是否显示
-            Eigen::RowVector4f color;//颜色
+            glm::vec4 color;//颜色
+            glm::mat4 model;//model矩阵
             float pointSize;//点的大小
+            
             //构造函数
             PointCloud();
             PointCloud(const unsigned int size, const int pointSize = POINT3D_SIZE);

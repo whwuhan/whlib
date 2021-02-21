@@ -10,4 +10,8 @@ libwhlib : $(OBJS)
 
 # $<:所有依赖文件 $@:目标文件
 $(OBJS) : %.o : %.cpp
-	g++ -std=c++11 -Iinclude -Ideps/eigen-3.3.7 $< -c -o $@
+	g++ -std=c++11 -Iinclude -Ideps/eigen-3.3.7 -Ideps/boost/1.72.0_3/include -Ideps/glm $< -c -o $@
+	
+.PHONY : clean
+clean : 
+	-rm -rf Coolender $(OBJS)
