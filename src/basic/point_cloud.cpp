@@ -11,6 +11,13 @@ VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
+scale(1.0f),
+transX(0.0f),
+transY(0.0f),
+transZ(0.0f),
+rotateX(0.0f),
+rotateY(0.0f),
+rotateZ(0.0f),
 pointSize(10.0f)
 {}
 
@@ -22,6 +29,13 @@ VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
+scale(1.0f),
+transX(0.0f),
+transY(0.0f),
+transZ(0.0f),
+rotateX(0.0f),
+rotateY(0.0f),
+rotateZ(0.0f),
 pointSize(10.0f)
 {}
 
@@ -33,6 +47,13 @@ VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
+scale(1.0f),
+transX(0.0f),
+transY(0.0f),
+transZ(0.0f),
+rotateX(0.0f),
+rotateY(0.0f),
+rotateZ(0.0f),
 pointSize(10.0f)
 {}
 
