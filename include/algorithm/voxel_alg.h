@@ -14,7 +14,11 @@ namespace wh
         {
         public:
             //获取实心的体素
-            static void getSolidVoxel(std::vector<wh::basic::Cube>, std::set<wh::basic::Cube>& voxel);
+            static void getSolidVoxel
+            (
+                std::vector<wh::basic::Cube>& boundingBoxVoxel, //包围盒的体素
+                std::set<wh::basic::Cube>& modelVoxel           //模型的体素
+            );
         };
     }
 }

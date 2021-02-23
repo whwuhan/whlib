@@ -119,17 +119,8 @@ void Cube::positionSideLenToVerticesCuboid()
 }
 
 //细分
-//TODO
-//参数：细分的总个数
-vector<Cube> Cube::subdivision(int amount)
-{
-    vector<Cube> res;
-    return res;
-}
-
-//细分
-//细分的立方体边长
-vector<Cube> Cube::subdivision(double leafSize)
+//leafSize细分的立方体边长
+vector<Cube> Cube::voxelization(double leafSize)
 {
     vector<Cube> res;
     //Cube的边长不够细分
@@ -163,12 +154,13 @@ vector<Cube> Cube::subdivision(double leafSize)
     double halfSize = leafSize / 2.0;
 
     //计算细分后的正方体
-    for (int i = 0; i < xAmount; i++)
+    for (int k = 0; k < zAmount; k++)
     {
         for (int j = 0; j < yAmount; j++)
         {
-            for (int k = 0; k < zAmount; k++)
+            for (int i = 0; i < xAmount; i++)
             {
+                //顺序按照xyz依次增加
                 RowVector3d pos((2 * i + 1) * halfSize, (2 * j + 1) * halfSize, (2 * k + 1) * halfSize);
                 pos += vertices.row(0);
                 res.push_back(Cube(pos, leafSize));//按照xyz轴的顺序优先存放体素

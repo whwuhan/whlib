@@ -34,10 +34,8 @@ namespace wh
             Eigen::RowVector3d getCenter();                 //获取中心
             double getMaxSideLen();                         //获取最长边长
 
-            //细分
-            std::vector<wh::basic::Cube> subdivision(int amount);      //参数：总细分的个数 TODO
-            std::vector<wh::basic::Cube> subdivision(double leafSize); //参数：细分的立方体边长
-
+            //体素化
+            std::vector<wh::basic::Cube> voxelization(double leafSize); //参数：体素化的立方体边长
         } CUBE;
     } // namespace basic
 } // namespace wh

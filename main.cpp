@@ -16,14 +16,29 @@ int main()
     );
     Cube boundingBox = pointcloud.getBoundingBox();
     double leafSize = 0.05;
-    //获取体素
-    std::set<wh::basic::Cube> voxel =
+    //获取点云体素
+    set<Cube> pointCloudVoxel =
     pointcloud.voxelization(boundingBox, leafSize);
     
     saveTriCubeMeshesObj
     (
         "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_vox_0.05.obj",
-        voxel
+        pointCloudVoxel
     );
+
+    saveCubeWireframesObj
+    (
+        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_bb_wf_vox_0.05.obj",
+        pointCloudVoxel
+    );
+
+    vector<Cube> boundingBoxVoxel = boundingBox.voxelization(0.05);
+
+    saveTriCubeMeshesObj
+    (
+        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_bb_vox_0.05.obj",
+        boundingBoxVoxel
+    );
+    
     return 0;
 }

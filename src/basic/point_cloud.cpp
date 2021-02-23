@@ -218,8 +218,8 @@ Cube PointCloud::getBoundingBox()
 set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize)
 {
     set<Cube> res;
-    //先细分boundingBox，
-    vector<Cube> voxel = boundingBox.subdivision(leafSize);
+    //体素化boundingBox，
+    vector<Cube> voxel = boundingBox.voxelization(leafSize);
 
     //获取xyz方向细分的个数
     int xAmount = boundingBox.x / leafSize;
@@ -231,7 +231,7 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
     // yAmount++;
     // zAmount++;
 
-    // 边界位置不增加cube，即一个点恰好在boundingBox的一个面上，不在增加细分cube的个数
+    // 边界位置不增加cube，即一个点恰好在boundingBox的一个面上，不再增加细分cube的个数
     if (xAmount < boundingBox.x / leafSize)
     {
         xAmount++;
@@ -274,8 +274,8 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
             zIndex--;
         }
         //获取体素的位置
-        int voxIndex = xIndex * yAmount * zAmount + yIndex * zAmount + zIndex;
-
+        //int voxIndex = xIndex * yAmount * zAmount + yIndex * zAmount + zIndex;
+        int voxIndex = zIndex * xAmount * yAmount + yIndex * xAmount + xIndex;
         // index越界检验
         // if(voxel[voxIndex].vertices.rows()!=8){
         //     cout<<"index[0]:"<<index[0]<<endl;
