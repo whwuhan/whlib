@@ -59,11 +59,17 @@ Cube::Cube(Eigen::RowVector3d position, double x, double y, double z) : position
 bool Cube::operator<(const Cube &cube) const
 {
     if (position[0] < cube.position[0])
+    {
         return true;
+    }
     if (position[1] < cube.position[1])
+    {
         return true;
+    }
     if (position[2] < cube.position[2])
+    {
         return true;
+    }
     return false;
 }
 
@@ -140,7 +146,7 @@ vector<Cube> Cube::subdivision(double leafSize)
     // yAmount++;
     // zAmount++;
 
-    //边界位置不增加cube
+    //边界位置不增加cube的数量
     if (xAmount < x / leafSize)
     {
         xAmount++;
@@ -165,7 +171,7 @@ vector<Cube> Cube::subdivision(double leafSize)
             {
                 RowVector3d pos((2 * i + 1) * halfSize, (2 * j + 1) * halfSize, (2 * k + 1) * halfSize);
                 pos += vertices.row(0);
-                res.push_back(Cube(pos, leafSize));
+                res.push_back(Cube(pos, leafSize));//按照xyz轴的顺序优先存放体素
             }
         }
     }

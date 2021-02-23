@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm/cardinal.h>
 #include <algorithm/LOP.h>
+#include <algorithm/voxel_alg.h>
 
 #include <basic/cube.h>
 #include <basic/curve.h>

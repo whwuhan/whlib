@@ -246,7 +246,7 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
     }
         
 
-    //原点
+    //坐标原点
     RowVector3d origin = boundingBox.vertices.row(0);
     //体素的位置
     int xIndex = 0;
