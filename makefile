@@ -8,7 +8,7 @@ OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 libwhlib : $(OBJS)
 	ar cr libwhlib.a $(OBJS)
 
-# $<:所有依赖文件 $@:目标文件
+# $^:所有的依赖文件 $<:第一个依赖文件 $@:目标文件
 $(OBJS) : %.o : %.cpp
 	g++ -std=c++11 -Iinclude -Ideps/eigen-3.3.7 -Ideps/boost/1.72.0_3/include -Ideps/glm $< -c -o $@
 	

@@ -6,6 +6,7 @@ using namespace wh::basic;
 //构造函数
 Cube::Cube() : position(0.0, 0.0, 0.0), sideLen(0.0), vertices(), x(0.0), y(0.0), z(0.0) {}
 
+//用所有的点表示cube
 Cube::Cube(MatrixXd vertices) : vertices(vertices)
 {
     RowVector3d center = vertices.colwise().sum(); //colwise()按照矩阵每一列的方向上排列 这里相当于每一行相加
@@ -26,19 +27,20 @@ Cube::Cube(MatrixXd vertices) : vertices(vertices)
     }
 }
 
+//中心位置和边长表示Cube
 Cube::Cube(RowVector3d position, double sideLen) : position(position), sideLen(sideLen)
 {
-    double half_size = sideLen / 2.0;
+    double halfSize = sideLen / 2.0;
     vertices.resize(8, 3);
 
-    vertices.row(0) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] - half_size);
-    vertices.row(1) = RowVector3d(position[0] + half_size, position[1] - half_size, position[2] - half_size);
-    vertices.row(2) = RowVector3d(position[0] + half_size, position[1] + half_size, position[2] - half_size);
-    vertices.row(3) = RowVector3d(position[0] - half_size, position[1] + half_size, position[2] - half_size);
-    vertices.row(4) = RowVector3d(position[0] - half_size, position[1] + half_size, position[2] + half_size);
-    vertices.row(5) = RowVector3d(position[0] + half_size, position[1] + half_size, position[2] + half_size);
-    vertices.row(6) = RowVector3d(position[0] + half_size, position[1] - half_size, position[2] + half_size);
-    vertices.row(7) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] + half_size);
+    vertices.row(0) = RowVector3d(position[0] - halfSize, position[1] - halfSize, position[2] - halfSize);
+    vertices.row(1) = RowVector3d(position[0] + halfSize, position[1] - halfSize, position[2] - halfSize);
+    vertices.row(2) = RowVector3d(position[0] + halfSize, position[1] + halfSize, position[2] - halfSize);
+    vertices.row(3) = RowVector3d(position[0] - halfSize, position[1] + halfSize, position[2] - halfSize);
+    vertices.row(4) = RowVector3d(position[0] - halfSize, position[1] + halfSize, position[2] + halfSize);
+    vertices.row(5) = RowVector3d(position[0] + halfSize, position[1] + halfSize, position[2] + halfSize);
+    vertices.row(6) = RowVector3d(position[0] + halfSize, position[1] - halfSize, position[2] + halfSize);
+    vertices.row(7) = RowVector3d(position[0] - halfSize, position[1] - halfSize, position[2] + halfSize);
     // positionSideLenToVertices();
 
     x = sideLen;
@@ -46,6 +48,7 @@ Cube::Cube(RowVector3d position, double sideLen) : position(position), sideLen(s
     z = sideLen;
 }
 
+//长方体
 Cube::Cube(Eigen::RowVector3d position, double x, double y, double z) : position(position), x(x), y(y), z(z)
 {
     sideLen = 0.0;
@@ -79,19 +82,20 @@ void Cube::showInf() const
     cout << "sideLen:" << sideLen << endl;
     cout << "x:" << x << " y:" << y << " z:" << z << endl;
 }
+
 //将position sideLen转化成顶点表达式
 void Cube::positionSideLenToVertices()
 {
     vertices.resize(8, 3);
-    double half_size = sideLen / 2.0;
-    vertices.row(0) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] - half_size);
-    vertices.row(1) = RowVector3d(position[0] + half_size, position[1] - half_size, position[2] - half_size);
-    vertices.row(2) = RowVector3d(position[0] + half_size, position[1] + half_size, position[2] - half_size);
-    vertices.row(3) = RowVector3d(position[0] - half_size, position[1] + half_size, position[2] - half_size);
-    vertices.row(4) = RowVector3d(position[0] - half_size, position[1] + half_size, position[2] + half_size);
-    vertices.row(5) = RowVector3d(position[0] + half_size, position[1] + half_size, position[2] + half_size);
-    vertices.row(6) = RowVector3d(position[0] + half_size, position[1] - half_size, position[2] + half_size);
-    vertices.row(7) = RowVector3d(position[0] - half_size, position[1] - half_size, position[2] + half_size);
+    double halfSize = sideLen / 2.0;
+    vertices.row(0) = RowVector3d(position[0] - halfSize, position[1] - halfSize, position[2] - halfSize);
+    vertices.row(1) = RowVector3d(position[0] + halfSize, position[1] - halfSize, position[2] - halfSize);
+    vertices.row(2) = RowVector3d(position[0] + halfSize, position[1] + halfSize, position[2] - halfSize);
+    vertices.row(3) = RowVector3d(position[0] - halfSize, position[1] + halfSize, position[2] - halfSize);
+    vertices.row(4) = RowVector3d(position[0] - halfSize, position[1] + halfSize, position[2] + halfSize);
+    vertices.row(5) = RowVector3d(position[0] + halfSize, position[1] + halfSize, position[2] + halfSize);
+    vertices.row(6) = RowVector3d(position[0] + halfSize, position[1] - halfSize, position[2] + halfSize);
+    vertices.row(7) = RowVector3d(position[0] - halfSize, position[1] - halfSize, position[2] + halfSize);
 }
 
 //将position sideLen转化成顶点表达式
@@ -119,42 +123,49 @@ vector<Cube> Cube::subdivision(int amount)
 
 //细分
 //细分的立方体边长
-vector<Cube> Cube::subdivision(double leaf_size)
+vector<Cube> Cube::subdivision(double leafSize)
 {
     vector<Cube> res;
-    if (x <= leaf_size || y <= leaf_size || z <= leaf_size)
+    //Cube的边长不够细分
+    if (x <= leafSize || y <= leafSize || z <= leafSize)
         return res;
 
     //获取xyz方向细分的个数
-    int x_amount = x / leaf_size;
-    int y_amount = y / leaf_size;
-    int z_amount = z / leaf_size;
+    int xAmount = x / leafSize;
+    int yAmount = y / leafSize;
+    int zAmount = z / leafSize;
 
     // 边界位置再增加一个cube
-    // x_amount++;
-    // y_amount++;
-    // z_amount++;
+    // xAmount++;
+    // yAmount++;
+    // zAmount++;
 
     //边界位置不增加cube
-    if (x_amount < x / leaf_size)
-        x_amount++;
-    if (y_amount < y / leaf_size)
-        y_amount++;
-    if (z_amount < z / leaf_size)
-        z_amount++;
-
-    double half_size = leaf_size / 2.0;
+    if (xAmount < x / leafSize)
+    {
+        xAmount++;
+    }
+    if (yAmount < y / leafSize)
+    {
+        yAmount++;
+    }
+    if (zAmount < z / leafSize)
+    {
+        zAmount++;
+    }
+        
+    double halfSize = leafSize / 2.0;
 
     //计算细分后的正方体
-    for (int i = 0; i < x_amount; i++)
+    for (int i = 0; i < xAmount; i++)
     {
-        for (int j = 0; j < y_amount; j++)
+        for (int j = 0; j < yAmount; j++)
         {
-            for (int k = 0; k < z_amount; k++)
+            for (int k = 0; k < zAmount; k++)
             {
-                RowVector3d pos((2 * i + 1) * half_size, (2 * j + 1) * half_size, (2 * k + 1) * half_size);
+                RowVector3d pos((2 * i + 1) * halfSize, (2 * j + 1) * halfSize, (2 * k + 1) * halfSize);
                 pos += vertices.row(0);
-                res.push_back(Cube(pos, leaf_size));
+                res.push_back(Cube(pos, leafSize));
             }
         }
     }

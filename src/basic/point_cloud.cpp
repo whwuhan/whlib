@@ -215,64 +215,77 @@ Cube PointCloud::getBoundingBox()
 }
 
 //体素化点云
-set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leaf_size)
+set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize)
 {
     set<Cube> res;
     //先细分boundingBox，
-    vector<Cube> voxel = boundingBox.subdivision(leaf_size);
+    vector<Cube> voxel = boundingBox.subdivision(leafSize);
 
     //获取xyz方向细分的个数
-    int x_amount = boundingBox.x / leaf_size;
-    int y_amount = boundingBox.y / leaf_size;
-    int z_amount = boundingBox.z / leaf_size;
+    int xAmount = boundingBox.x / leafSize;
+    int yAmount = boundingBox.y / leafSize;
+    int zAmount = boundingBox.z / leafSize;
 
     // 边界位置增加一个cube
-    // x_amount++;
-    // y_amount++;
-    // z_amount++;
+    // xAmount++;
+    // yAmount++;
+    // zAmount++;
 
     // 边界位置不增加cube，即一个点恰好在boundingBox的一个面上，不在增加细分cube的个数
-    if (x_amount < boundingBox.x / leaf_size)
-        x_amount++;
-    if (y_amount < boundingBox.y / leaf_size)
-        y_amount++;
-    if (z_amount < boundingBox.z / leaf_size)
-        z_amount++;
+    if (xAmount < boundingBox.x / leafSize)
+    {
+        xAmount++;
+    }
+    if (yAmount < boundingBox.y / leafSize)
+    {
+        yAmount++;
+    }
+    if (zAmount < boundingBox.z / leafSize)
+    {
+        zAmount++;
+    }
+        
 
     //原点
     RowVector3d origin = boundingBox.vertices.row(0);
     //体素的位置
-    int x_index = 0;
-    int y_index = 0;
-    int z_index = 0;
+    int xIndex = 0;
+    int yIndex = 0;
+    int zIndex = 0;
 
     for (int i = 0; i < points.rows(); i++)
     {
-        RowVector3d index = (points.row(i) - origin) / leaf_size; //获取体素位置
-        x_index = index[0];
-        y_index = index[1];
-        z_index = index[2];
+        RowVector3d index = (points.row(i) - origin) / leafSize; //获取体素位置
+        xIndex = index[0];
+        yIndex = index[1];
+        zIndex = index[2];
         //计算体素在vector中的位置
         //边界位置处理（恰好在boundingBox的一个面上）
-        if (x_index == x_amount)
-            x_index--;
-        if (y_index == y_amount)
-            y_index--;
-        if (z_index == z_amount)
-            z_index--;
-        int vox_index = x_index * y_amount * z_amount + y_index * z_amount + z_index;
+        if (xIndex == xAmount)
+        {
+            xIndex--;
+        }
+        if (yIndex == yAmount)
+        {
+            yIndex--;
+        }
+        if (zIndex == zAmount)
+        {
+            zIndex--;
+        }
+        //获取体素的位置
+        int voxIndex = xIndex * yAmount * zAmount + yIndex * zAmount + zIndex;
 
         // index越界检验
-        // if(voxel[vox_index].vertices.rows()!=8){
+        // if(voxel[voxIndex].vertices.rows()!=8){
         //     cout<<"index[0]:"<<index[0]<<endl;
         //     cout<<"index[1]:"<<index[1]<<endl;
         //     cout<<"index[2]:"<<index[2]<<endl;
-        //     cout<<"x_amount:"<<x_amount<<" y_amount:"<<y_amount<<" z_amount:"<<z_amount<<endl;
-        //     cout<<"x_index:"<<x_index<<" y_index:"<<y_index<<" z_index:"<<z_index<<endl;
-        //     cout<<"index wrong:"<<vox_index<<endl;
+        //     cout<<"xAmount:"<<xAmount<<" yAmount:"<<yAmount<<" zAmount:"<<zAmount<<endl;
+        //     cout<<"xIndex:"<<xIndex<<" yIndex:"<<yIndex<<" zIndex:"<<zIndex<<endl;
+        //     cout<<"index wrong:"<<voxIndex<<endl;
         // }
-
-        res.insert(voxel[vox_index]);
+        res.insert(voxel[voxIndex]);
     }
     return res;
 }

@@ -27,16 +27,16 @@ namespace wh
             //运算符重载
             bool operator<(const Cube &cube) const;
 
-            void showInf();                             //显示cube信息
-            void showInf() const;                       //显示cube信息
-            void positionSideLenToVertices();        //位置边长表示转化成顶点表示（正方体）
-            void positionSideLenToVerticesCuboid(); //位置边长表示转化成顶点表示（长方体）
-            Eigen::RowVector3d getCenter();             //获取中心
-            double getMaxSideLen();                   //获取最长边长
+            void showInf();                                 //显示cube信息
+            void showInf() const;                           //显示cube信息
+            void positionSideLenToVertices();               //位置边长表示转化成顶点表示（正方体）
+            void positionSideLenToVerticesCuboid();         //位置边长表示转化成顶点表示（长方体）
+            Eigen::RowVector3d getCenter();                 //获取中心
+            double getMaxSideLen();                         //获取最长边长
 
             //细分
-            std::vector<wh::basic::Cube> subdivision(int amount);       //参数：总细分的个数
-            std::vector<wh::basic::Cube> subdivision(double leaf_size); //参数：细分的立方体边长
+            std::vector<wh::basic::Cube> subdivision(int amount);      //参数：总细分的个数 TODO
+            std::vector<wh::basic::Cube> subdivision(double leafSize); //参数：细分的立方体边长
 
         } CUBE;
     } // namespace basic
