@@ -226,12 +226,7 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
     int yAmount = boundingBox.y / leafSize;
     int zAmount = boundingBox.z / leafSize;
 
-    // 边界位置增加一个cube
-    // xAmount++;
-    // yAmount++;
-    // zAmount++;
-
-    // 边界位置不增加cube，即一个点恰好在boundingBox的一个面上，不再增加细分cube的个数
+    //一个点恰好在boundingBox的一个面上，不再增加细分cube的个数，否则增加一个cube的长度
     if (xAmount < boundingBox.x / leafSize)
     {
         xAmount++;
@@ -245,8 +240,7 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
         zAmount++;
     }
         
-
-    //坐标原点
+    //cube的左下后方原点（cube的局部坐标系）
     RowVector3d origin = boundingBox.vertices.row(0);
     //体素的位置
     int xIndex = 0;
@@ -274,21 +268,83 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
             zIndex--;
         }
         //获取体素的位置
-        //int voxIndex = xIndex * yAmount * zAmount + yIndex * zAmount + zIndex;
         int voxIndex = zIndex * xAmount * yAmount + yIndex * xAmount + xIndex;
-        // index越界检验
-        // if(voxel[voxIndex].vertices.rows()!=8){
-        //     cout<<"index[0]:"<<index[0]<<endl;
-        //     cout<<"index[1]:"<<index[1]<<endl;
-        //     cout<<"index[2]:"<<index[2]<<endl;
-        //     cout<<"xAmount:"<<xAmount<<" yAmount:"<<yAmount<<" zAmount:"<<zAmount<<endl;
-        //     cout<<"xIndex:"<<xIndex<<" yIndex:"<<yIndex<<" zIndex:"<<zIndex<<endl;
-        //     cout<<"index wrong:"<<voxIndex<<endl;
-        // }
         res.insert(voxel[voxIndex]);
     }
     return res;
 }
+
+//获取点云体素在cube体素中的位置 vector里面是0表示当前cube体素不在点云体素中
+//1表示在点云的体素中
+vector<int> PointCloud::getVoxelIndex(wh::basic::Cube &boundingBox, double leafSize)
+{
+    //体素化boundingBox，
+    vector<Cube> voxel = boundingBox.voxelization(leafSize);
+
+    //获取xyz方向细分的个数
+    int xAmount = boundingBox.x / leafSize;
+    int yAmount = boundingBox.y / leafSize;
+    int zAmount = boundingBox.z / leafSize;
+
+    //一个点恰好在boundingBox的一个面上，不再增加细分cube的个数，否则增加一个cube的长度
+    if (xAmount < boundingBox.x / leafSize)
+    {
+        xAmount++;
+    }
+    if (yAmount < boundingBox.y / leafSize)
+    {
+        yAmount++;
+    }
+    if (zAmount < boundingBox.z / leafSize)
+    {
+        zAmount++;
+    }
+    
+    //返回结果初始化
+    vector<int> res(xAmount * yAmount * zAmount, 0);
+    
+    //cube的左下后方原点（cube的局部坐标系）
+    RowVector3d origin = boundingBox.vertices.row(0);
+    //体素的位置
+    int xIndex = 0;
+    int yIndex = 0;
+    int zIndex = 0;
+
+    for (int i = 0; i < points.rows(); i++)
+    {
+        RowVector3d index = (points.row(i) - origin) / leafSize; //获取体素位置
+        xIndex = index[0];
+        yIndex = index[1];
+        zIndex = index[2];
+        //计算体素在vector中的位置
+        //边界位置处理（恰好在boundingBox的一个面上）
+        if (xIndex == xAmount)
+        {
+            xIndex--;
+        }
+        if (yIndex == yAmount)
+        {
+            yIndex--;
+        }
+        if (zIndex == zAmount)
+        {
+            zIndex--;
+        }
+        //获取体素的位置
+        int voxIndex = zIndex * xAmount * yAmount + yIndex * xAmount + xIndex;
+        res[voxIndex] = 1;
+    }
+    return res;
+}
+
+
+
+
+
+
+
+
+
 
 //获取C++原生数据
 // float* PointCloud::getGLData()

@@ -4,10 +4,24 @@ using namespace Eigen;
 using namespace wh::basic;
 
 //构造函数
-Cube::Cube() : position(0.0, 0.0, 0.0), sideLen(0.0), vertices(), x(0.0), y(0.0), z(0.0) {}
+Cube::Cube():
+position(0.0, 0.0, 0.0), 
+sideLen(0.0), 
+vertices(), 
+x(0.0), 
+y(0.0), 
+z(0.0),
+xVoxelSize(0),
+yVoxelSize(0),
+zVoxelSize(0)
+{}
 
 //用所有的点表示cube
-Cube::Cube(MatrixXd vertices) : vertices(vertices)
+Cube::Cube(MatrixXd vertices):
+vertices(vertices),
+xVoxelSize(0),
+yVoxelSize(0),
+zVoxelSize(0)
 {
     RowVector3d center = vertices.colwise().sum(); //colwise()按照矩阵每一列的方向上排列 这里相当于每一行相加
     position = center / vertices.rows();
@@ -28,7 +42,12 @@ Cube::Cube(MatrixXd vertices) : vertices(vertices)
 }
 
 //中心位置和边长表示Cube
-Cube::Cube(RowVector3d position, double sideLen) : position(position), sideLen(sideLen)
+Cube::Cube(RowVector3d position, double sideLen):
+position(position), 
+sideLen(sideLen),
+xVoxelSize(0),
+yVoxelSize(0),
+zVoxelSize(0)
 {
     double halfSize = sideLen / 2.0;
     vertices.resize(8, 3);
@@ -118,8 +137,8 @@ void Cube::positionSideLenToVerticesCuboid()
     vertices.row(7) = position + RowVector3d(-x / 2.0, -y / 2.0, z / 2.0);
 }
 
-//细分
-//leafSize细分的立方体边长
+//Cube的体素化
+//leafSize:体素化立方体边长
 vector<Cube> Cube::voxelization(double leafSize)
 {
     vector<Cube> res;
@@ -132,12 +151,7 @@ vector<Cube> Cube::voxelization(double leafSize)
     int yAmount = y / leafSize;
     int zAmount = z / leafSize;
 
-    // 边界位置再增加一个cube
-    // xAmount++;
-    // yAmount++;
-    // zAmount++;
-
-    //边界位置不增加cube的数量
+    //如果恰好能分割成 xAmount  yAmount  zAmount就不增加数量了
     if (xAmount < x / leafSize)
     {
         xAmount++;
@@ -150,7 +164,10 @@ vector<Cube> Cube::voxelization(double leafSize)
     {
         zAmount++;
     }
-        
+    xVoxelSize = xAmount;
+    yVoxelSize = yAmount;
+    zVoxelSize = zAmount;
+    
     double halfSize = leafSize / 2.0;
 
     //计算细分后的正方体

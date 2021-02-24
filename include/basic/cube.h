@@ -18,6 +18,11 @@ namespace wh
             double y;
             double z;
 
+            //Cube分割成体素后的大小
+            int xVoxelSize;
+            int yVoxelSize;
+            int zVoxelSize;
+
             //构造函数
             Cube();                                                          //默认构造函数
             Cube(Eigen::MatrixXd vertices);                                  //8个顶点描述cube

@@ -168,6 +168,7 @@ void wh::basic::PolygonMesh::triMeshSubdivision()
 }
 
 //loop细分
+// TODO
 void wh::basic::PolygonMesh::loopSubdivision()
 {
     //subdivision非三角面片不能细分

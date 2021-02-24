@@ -63,6 +63,9 @@ namespace wh{
 
             //点云体素化
             std::set<wh::basic::Cube> voxelization(wh::basic::Cube& boundingBox,double leafSize);
+            //获取点云体素在cube体素中的位置 vector里面是0表示当前cube体素不在点云体素中
+            //1表示在点云的体素中
+            std::vector<int> getVoxelIndex(wh::basic::Cube& boundingBox,double leafSize);
 
             //获取Boundingbox
             wh::basic::Cube getBoundingBox();

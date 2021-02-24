@@ -19,7 +19,7 @@ namespace wh
 
             //mesh 细分
             void triMeshSubdivision(); //三角面片细分
-            void loopSubdivision();     //loop细分
+            void loopSubdivision();     //loop细分 TODO
 
             //=======其他功能
             //生成边集

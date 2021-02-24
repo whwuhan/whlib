@@ -20,25 +20,42 @@ int main()
     set<Cube> pointCloudVoxel =
     pointcloud.voxelization(boundingBox, leafSize);
     
-    saveTriCubeMeshesObj
-    (
-        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_vox_0.05.obj",
-        pointCloudVoxel
-    );
+    vector<int> voxelIndex = pointcloud.getVoxelIndex(boundingBox,leafSize);
+    vector<Cube> cubeVoxel = boundingBox.voxelization(leafSize);
+    set<Cube> res;
+    for(int i = 0; i < voxelIndex.size(); i++)
+    {
+        if(voxelIndex[i] == 1)
+        {
+            res.insert(cubeVoxel[i]);
+        }
+    }
+    // saveTriCubeMeshesObj
+    // (
+    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_vox_0.05_2.obj",
+    //     res
+    // );
 
-    saveCubeWireframesObj
-    (
-        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_bb_wf_vox_0.05.obj",
-        pointCloudVoxel
-    );
+    // saveTriCubeMeshesObj
+    // (
+    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_vox_0.05.obj",
+    //     pointCloudVoxel
+    // );
 
-    vector<Cube> boundingBoxVoxel = boundingBox.voxelization(0.05);
+    // saveCubeWireframesObj
+    // (
+    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_bb_wf_vox_0.05.obj",
+    //     pointCloudVoxel
+    // );
 
-    saveTriCubeMeshesObj
-    (
-        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_bb_vox_0.05.obj",
-        boundingBoxVoxel
-    );
+    // vector<Cube> boundingBoxVoxel = boundingBox.voxelization(0.05);
+
+    // saveTriCubeMeshesObj
+    // (
+    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/tree4_84336_nor_bb_vox_0.05.obj",
+    //     boundingBoxVoxel
+    // );
+
     
     return 0;
 }
