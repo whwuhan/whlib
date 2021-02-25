@@ -15,7 +15,7 @@ int main()
         &pointcloud
     );
     Cube boundingBox = pointcloud.getBoundingBox();
-    double leafSize = 0.05;
+    double leafSize = 0.02;
     //获取点云体素
     set<Cube> pointCloudVoxel =
     pointcloud.voxelization(boundingBox, leafSize);
@@ -34,17 +34,32 @@ int main()
         }
     }
 
-    saveTriCubeMeshesObj
+    saveCubeWireframesObj
     (
-        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_solid_vox_0.05_2.obj",
+        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_solid_vox_wf_0.02_2.obj",
         solidVoxel
     );
 
-    saveTriCubeMeshesObj
+    saveCubeWireframesObj
     (
-        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_vox_0.05_2.obj",
+        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_vox_wf_0.02_2.obj",
         pointCloudVoxel
     );
+
+    // PolygonMesh mesh;
+    // loadPolygonMeshObj
+    // (
+    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_vox_0.02_2.obj",
+    //     &mesh
+    // );
+
+    // mesh.triMeshSubdivision();
+
+    // savePolygonMeshObj
+    // (
+    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_vox_0.02_subdiv_2.obj",
+    //     &mesh
+    // );
 
     // saveTriCubeMeshesObj
     // (
