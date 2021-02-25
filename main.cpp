@@ -34,17 +34,16 @@ int main()
         }
     }
 
-    for(int i = 0; i < voxelIndexTemp.size(); i++)
-    {
-        if(voxelIndexTemp[i] != voxelIndex[i])
-        {
-            cout << i << endl;
-        }
-    }
     saveTriCubeMeshesObj
     (
         "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_solid_vox_0.05_2.obj",
         solidVoxel
+    );
+
+    saveTriCubeMeshesObj
+    (
+        "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_vox_0.05_2.obj",
+        pointCloudVoxel
     );
 
     // saveTriCubeMeshesObj

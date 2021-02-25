@@ -57,7 +57,7 @@ bool VoxelAlg::isInnerVoxel(RowVector3i& voxelXYZ, vector<int>& modelVoxelIndex,
     //判断x负方向是否有体素
     bool xNegFlag = false;
     compareVoxelXYZ = voxelXYZ;//要与voxelXYZ比较的体素
-    for(int x = compareVoxelXYZ[0] - 1; x > 0; x--)
+    for(int x = compareVoxelXYZ[0] - 1; x >= 0; x--)
     {
         compareVoxelXYZ[0] = x;
         int compareVoxelIndex = getVoxelIndex(compareVoxelXYZ, boundingBox);//获取要比较的体素index
@@ -82,10 +82,10 @@ bool VoxelAlg::isInnerVoxel(RowVector3i& voxelXYZ, vector<int>& modelVoxelIndex,
         }
     }
 
-    //判断负方向是否有体素
+    //判断y负方向是否有体素
     bool yNegFlag = false;
     compareVoxelXYZ = voxelXYZ;
-    for(int y = compareVoxelXYZ[1] - 1; y > 0; y--)
+    for(int y = compareVoxelXYZ[1] - 1; y >= 0; y--)
     {
         compareVoxelXYZ[1] = y;
         int compareVoxelIndex = getVoxelIndex(compareVoxelXYZ, boundingBox);//获取要比较的体素index
@@ -113,7 +113,7 @@ bool VoxelAlg::isInnerVoxel(RowVector3i& voxelXYZ, vector<int>& modelVoxelIndex,
     //判断z负方向是否有体素
     bool zNegFlag = false;
     compareVoxelXYZ = voxelXYZ;
-    for(int z = compareVoxelXYZ[2] - 1; z > 0; z--)
+    for(int z = compareVoxelXYZ[2] - 1; z >= 0; z--)
     {
         compareVoxelXYZ[2] = z;
         int compareVoxelIndex = getVoxelIndex(compareVoxelXYZ, boundingBox);//获取要比较的体素index
