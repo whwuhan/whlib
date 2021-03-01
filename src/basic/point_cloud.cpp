@@ -2,6 +2,9 @@
 using namespace std;
 using namespace Eigen;
 using namespace wh::basic;
+//static变量初始化
+
+
 //构造函数
 PointCloud::PointCloud():
 points(), 

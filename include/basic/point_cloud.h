@@ -11,6 +11,8 @@ namespace wh{
         const int POINT3D_SIZE = 3;
         //点云
         typedef struct PointCloud{
+            // C中的struct不允许定义static变量，但是C++的可以，一般直接编译会出现warning
+            // static enum pointType{POINT, SPHERE};
             //点云数据
             Eigen::MatrixXd points;
             //点云大小
