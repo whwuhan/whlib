@@ -9,10 +9,10 @@ using namespace wh::basic;
 PointCloud::PointCloud():
 points(), 
 size(0),
-pointVAO(0),//点状点云的VAO
-pointVBO(0),//点状点云的VBO
-sphereVAO(0),//球状点云的VAO
-sphereVBO(0),//球状点云的VBO
+pointTypeVAO(0),//点状点云的VAO
+pointTypeVBO(0),//点状点云的VBO
+sphereTypeVAO(0),//球状点云的VAO
+sphereTypeVBO(0),//球状点云的VBO
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
@@ -29,10 +29,10 @@ pointSize(10.0f)
 PointCloud::PointCloud(const unsigned int size, const int point_size):
 points(size, point_size), 
 size(size) ,
-pointVAO(0),//点状点云的VAO
-pointVBO(0),//点状点云的VBO
-sphereVAO(0),//球状点云的VAO
-sphereVBO(0),//球状点云的VBO
+pointTypeVAO(0),//点状点云的VAO
+pointTypeVBO(0),//点状点云的VBO
+sphereTypeVAO(0),//球状点云的VAO
+sphereTypeVBO(0),//球状点云的VBO
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
@@ -49,10 +49,10 @@ pointSize(10.0f)
 PointCloud::PointCloud(const Eigen::MatrixXd &points):
 points(points), 
 size(points.rows()),
-pointVAO(0),//点状点云的VAO
-pointVBO(0),//点状点云的VBO
-sphereVAO(0),//球状点云的VAO
-sphereVBO(0),//球状点云的VBO
+pointTypeVAO(0),//点状点云的VAO
+pointTypeVBO(0),//点状点云的VBO
+sphereTypeVAO(0),//球状点云的VAO
+sphereTypeVBO(0),//球状点云的VBO
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
