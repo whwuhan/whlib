@@ -32,6 +32,7 @@ namespace wh{
             float rotateY;//绕Y轴旋转
             float rotateZ;//绕Z轴旋转
             float pointSize;//点的大小
+            bool changePointSize;//是否改变了点云的pointSize
             
             //构造函数
             PointCloud();

@@ -21,7 +21,8 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(0.05f)
+pointSize(1.0f),
+changePointSize(false)
 {}
 
 PointCloud::PointCloud(const unsigned int size, const int point_size):
@@ -39,7 +40,8 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(0.05f)
+pointSize(1.0f),
+changePointSize(false)
 {}
 
 PointCloud::PointCloud(const Eigen::MatrixXd &points):
@@ -57,7 +59,8 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(0.05f)
+pointSize(1.0f),
+changePointSize(false)
 {}
 
 //重载运算符
