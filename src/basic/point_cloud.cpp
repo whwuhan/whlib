@@ -9,10 +9,8 @@ using namespace wh::basic;
 PointCloud::PointCloud():
 points(), 
 size(0),
-pointTypeVAO(0),//点状点云的VAO
-pointTypeVBO(0),//点状点云的VBO
-sphereTypeVAO(0),//球状点云的VAO
-sphereTypeVBO(0),//球状点云的VBO
+VAO(0),
+VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
@@ -23,16 +21,14 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(10.0f)
+pointSize(0.05f)
 {}
 
 PointCloud::PointCloud(const unsigned int size, const int point_size):
 points(size, point_size), 
 size(size) ,
-pointTypeVAO(0),//点状点云的VAO
-pointTypeVBO(0),//点状点云的VBO
-sphereTypeVAO(0),//球状点云的VAO
-sphereTypeVBO(0),//球状点云的VBO
+VAO(0),
+VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
@@ -43,16 +39,14 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(10.0f)
+pointSize(0.05f)
 {}
 
 PointCloud::PointCloud(const Eigen::MatrixXd &points):
 points(points), 
 size(points.rows()),
-pointTypeVAO(0),//点状点云的VAO
-pointTypeVBO(0),//点状点云的VBO
-sphereTypeVAO(0),//球状点云的VAO
-sphereTypeVBO(0),//球状点云的VBO
+VAO(0),
+VBO(0),
 show(true),
 color(0.06f, 0.729f, 0.941f, 1.0f),
 model(1.0f),
@@ -63,7 +57,7 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(10.0f)
+pointSize(0.05f)
 {}
 
 //重载运算符

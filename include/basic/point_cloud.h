@@ -19,10 +19,8 @@ namespace wh{
             unsigned int size;
 
             //适配Coolender
-            unsigned int pointTypeVAO;//点状点云的VAO
-            unsigned int pointTypeVBO;//点状点云的VBO
-            unsigned int sphereTypeVAO;//球状点云的VAO
-            unsigned int sphereTypeVBO;//球状点云的VBO
+            unsigned int VAO;//点状点云的VAO
+            unsigned int VBO;//点状点云的VBO
             bool show;//是否显示
             glm::vec4 color;//颜色
             glm::mat4 model;//model矩阵
