@@ -33,6 +33,7 @@ namespace wh{
             float rotateZ;//绕Z轴旋转
             float pointSize;//点的大小
             bool changePointSize;//是否改变了点云的pointSize
+            unsigned int pointModelMatricesBuffer;//点云存放的每个点的平移矩阵的buffer
             
             //构造函数
             PointCloud();
