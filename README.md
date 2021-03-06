@@ -14,12 +14,12 @@
   * deps
     * boost
     * eigen
+    * glm
   * include
     * algorithm
     * basic
     * utils
   * makefile
-  * obj
   * src
   * temp
   * test
@@ -37,13 +37,13 @@
 
 whlib的头文件目录。
 
-### makefile 
+### makefile_temp 
 
-存放makefile。
+存放临时的makefile文件。
 
-### obj
+### model
 
-存放.o文件的目录。
+存放测试模型文件。
 
 ### src
 
@@ -56,18 +56,6 @@ whlib的头文件目录。
 ### test
 
 存放测试相关的文件。
-
-## 2 
-
-
-
-
-
-
-
-
-
-
 
 ## 其他
 
