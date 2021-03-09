@@ -9,15 +9,32 @@
 using namespace std;
 using namespace wh::basic;
 using namespace Eigen;
+using namespace glm;
 bool isExist(const unsigned int i, const RowVector3i &vec); //判断vec中是否存在i
 //构造函数
-PolygonMesh::PolygonMesh() : vertices(), indices()
-{
-}
+PolygonMesh::PolygonMesh() : 
+vertices(), indices(), VAO(0), VBO(0), EBO(0), show(true), 
+color(0.6f, 0.6f, 0.6f, 1.0f), model(1.0f),
+scale(1.0f),
+transX(0.0f),
+transY(0.0f),
+transZ(0.0f),
+rotateX(0.0f),
+rotateY(0.0f),
+rotateZ(0.0f)
+{}
 
-PolygonMesh::PolygonMesh(MatrixXd &vertices, MatrixXi &indices) : vertices(vertices), indices(indices)
-{
-}
+PolygonMesh::PolygonMesh(MatrixXd &vertices, MatrixXi &indices) : 
+vertices(vertices), indices(indices), VAO(0), VBO(0), EBO(0), show(true), 
+color(0.6f, 0.6f, 0.6f, 1.0f), model(1.0f),
+scale(1.0f),
+transX(0.0f),
+transY(0.0f),
+transZ(0.0f),
+rotateX(0.0f),
+rotateY(0.0f),
+rotateZ(0.0f)
+{}
 
 set<Edge> PolygonMesh::creatUnorderedEdges()
 {

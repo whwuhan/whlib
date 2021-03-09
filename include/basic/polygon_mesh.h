@@ -4,6 +4,7 @@
 #include <basic/face.h>
 #include <set>
 #include <map>
+#include <glm/glm.hpp>
 namespace wh
 {
     namespace basic
@@ -11,7 +12,28 @@ namespace wh
         typedef struct PolygonMesh
         {
             Eigen::MatrixXd vertices; //多边型顶点
-            Eigen::MatrixXi indices;    //多边形面片索引
+            Eigen::MatrixXi indices;  //多边形面片索引
+
+            //适配Coolender
+            unsigned int VAO;//mesh的VAO
+            unsigned int VBO;//mesh的VBO
+            unsigned int EBO;//mesh的EBO
+            bool show;//是否显示
+            glm::vec4 color;//颜色
+            glm::mat4 model;//model矩阵
+            float scale;//缩放大小
+            float transX;//X轴的位移
+            float transY;//Y轴的位移
+            float transZ;//Z轴的位移
+            float rotateX;//绕X轴旋转
+            float rotateY;//绕Y轴旋转
+            float rotateZ;//绕Z轴旋转
+
+
+
+
+
+
             //std::set<wh::basic::Edge> edges;//边集合
             //构造函数
             PolygonMesh();
