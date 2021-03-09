@@ -13,7 +13,7 @@ using namespace glm;
 bool isExist(const unsigned int i, const RowVector3i &vec); //判断vec中是否存在i
 //构造函数
 PolygonMesh::PolygonMesh() : 
-vertices(), indices(), VAO(0), VBO(0), EBO(0), show(true), 
+vertices(), verticesIndices(), VAO(0), VBO(0), EBO(0), show(true), 
 color(0.6f, 0.6f, 0.6f, 1.0f), model(1.0f),
 scale(1.0f),
 transX(0.0f),
@@ -23,9 +23,9 @@ rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f)
 {}
-
-PolygonMesh::PolygonMesh(MatrixXd &vertices, MatrixXi &indices) : 
-vertices(vertices), indices(indices), VAO(0), VBO(0), EBO(0), show(true), 
+    
+PolygonMesh::PolygonMesh(MatrixXd &vertices, MatrixXi &verticesIndices) : 
+vertices(vertices), verticesIndices(verticesIndices), VAO(0), VBO(0), EBO(0), show(true), 
 color(0.6f, 0.6f, 0.6f, 1.0f), model(1.0f),
 scale(1.0f),
 transX(0.0f),
@@ -39,11 +39,11 @@ rotateZ(0.0f)
 set<Edge> PolygonMesh::creatUnorderedEdges()
 {
     set<Edge> res;
-    for (int i = 0; i < indices.rows(); i++)
+    for (int i = 0; i < verticesIndices.rows(); i++)
     {
-        res.insert(Edge(indices(i, 0), indices(i, 1)));
-        res.insert(Edge(indices(i, 1), indices(i, 2)));
-        res.insert(Edge(indices(i, 2), indices(i, 0)));
+        res.insert(Edge(verticesIndices(i, 0), verticesIndices(i, 1)));
+        res.insert(Edge(verticesIndices(i, 1), verticesIndices(i, 2)));
+        res.insert(Edge(verticesIndices(i, 2), verticesIndices(i, 0)));
     }
     return res;
 }
@@ -51,11 +51,11 @@ set<Edge> PolygonMesh::creatUnorderedEdges()
 std::set<Edge> PolygonMesh::creatOrderedEdges()
 {
     set<Edge> res;
-    for (int i = 0; i < indices.rows(); i++)
+    for (int i = 0; i < verticesIndices.rows(); i++)
     {
-        res.insert(Edge(indices(i, 0), indices(i, 1), false));
-        res.insert(Edge(indices(i, 1), indices(i, 2), false));
-        res.insert(Edge(indices(i, 2), indices(i, 0), false));
+        res.insert(Edge(verticesIndices(i, 0), verticesIndices(i, 1), false));
+        res.insert(Edge(verticesIndices(i, 1), verticesIndices(i, 2), false));
+        res.insert(Edge(verticesIndices(i, 2), verticesIndices(i, 0), false));
     }
     return res;
 }
@@ -64,7 +64,7 @@ std::set<Edge> PolygonMesh::creatOrderedEdges()
 void PolygonMesh::triMeshSubdivision()
 {
     //subdivision非三角面片不能细分
-    if (indices.cols() != 3)
+    if (verticesIndices.cols() != 3)
     {
         cout << "subdivision can not subdivide non-triangular mesh!" << endl;
         return;
@@ -77,29 +77,29 @@ void PolygonMesh::triMeshSubdivision()
     //vertices.conservativeResize(rows+unorderedEdges.size(),3);//直接用resize会调用析构函数，里面的数据会消失
     //细分面片
     MatrixXd newVertices(rows + unorderedEdges.size(), 3); //细分后的顶点
-    MatrixXi newIndices(indices.rows() * 4, 3);                 //细分后的面片
+    MatrixXi newverticesIndices(verticesIndices.rows() * 4, 3);                 //细分后的面片
     //set<Point3d> points;
     map<Point3d, unsigned int> newVerticesIndex;
     int vertexIndex = 0;
-    for (int i = 0; i < indices.rows(); i++)
+    for (int i = 0; i < verticesIndices.rows(); i++)
     {
         vector<Point3d> curPoints; //记录当前面片顶点
         for (int j = 0; j < 3; j++)
         {
             //存放原有的顶点
-            Point3d point(vertices.row(indices(i, j) - 1));
+            Point3d point(vertices.row(verticesIndices(i, j) - 1));
             curPoints.push_back(point);
             if (newVerticesIndex.count(point) == 0)
             {
                 //cout<<"point:"<<point<<endl;
                 //如果没有保存当前顶点(防止重复存储)
-                newVertices.row(vertexIndex++) = vertices.row(indices(i, j) - 1); //这个下标从0开始
+                newVertices.row(vertexIndex++) = vertices.row(verticesIndices(i, j) - 1); //这个下标从0开始
                 newVerticesIndex[point] = vertexIndex;                         //注意这个下标从1开始
             }
         }
 
         //新增顶点
-        Point3d newPoint1((vertices.row(indices(i, 0) - 1) + vertices.row(indices(i, 1) - 1)) / 2.0);
+        Point3d newPoint1((vertices.row(verticesIndices(i, 0) - 1) + vertices.row(verticesIndices(i, 1) - 1)) / 2.0);
         if (newVerticesIndex.count(newPoint1) == 0)
         {
             newVertices.row(vertexIndex++) = newPoint1.data; //这个下标从0开始
@@ -107,7 +107,7 @@ void PolygonMesh::triMeshSubdivision()
         }
         curPoints.push_back(newPoint1);
 
-        Point3d newPoint2((vertices.row(indices(i, 1) - 1) + vertices.row(indices(i, 2) - 1)) / 2.0);
+        Point3d newPoint2((vertices.row(verticesIndices(i, 1) - 1) + vertices.row(verticesIndices(i, 2) - 1)) / 2.0);
         if (newVerticesIndex.count(newPoint2) == 0)
         {
             newVertices.row(vertexIndex++) = newPoint2.data; //这个下标从0开始
@@ -115,7 +115,7 @@ void PolygonMesh::triMeshSubdivision()
         }
         curPoints.push_back(newPoint2);
 
-        Point3d newPoint3((vertices.row(indices(i, 2) - 1) + vertices.row(indices(i, 0) - 1)) / 2.0);
+        Point3d newPoint3((vertices.row(verticesIndices(i, 2) - 1) + vertices.row(verticesIndices(i, 0) - 1)) / 2.0);
         if (newVerticesIndex.count(newPoint3) == 0)
         {
             newVertices.row(vertexIndex++) = newPoint3.data; //这个下标从0开始
@@ -125,21 +125,21 @@ void PolygonMesh::triMeshSubdivision()
 
         //生成细分的面片
         //第一个细分面片
-        newIndices(4 * i, 0) = newVerticesIndex[curPoints[0]];
-        newIndices(4 * i, 1) = newVerticesIndex[curPoints[3]];
-        newIndices(4 * i, 2) = newVerticesIndex[curPoints[5]];
+        newverticesIndices(4 * i, 0) = newVerticesIndex[curPoints[0]];
+        newverticesIndices(4 * i, 1) = newVerticesIndex[curPoints[3]];
+        newverticesIndices(4 * i, 2) = newVerticesIndex[curPoints[5]];
         //第二个细分面片
-        newIndices(4 * i + 1, 0) = newVerticesIndex[curPoints[1]];
-        newIndices(4 * i + 1, 1) = newVerticesIndex[curPoints[3]];
-        newIndices(4 * i + 1, 2) = newVerticesIndex[curPoints[4]];
+        newverticesIndices(4 * i + 1, 0) = newVerticesIndex[curPoints[1]];
+        newverticesIndices(4 * i + 1, 1) = newVerticesIndex[curPoints[3]];
+        newverticesIndices(4 * i + 1, 2) = newVerticesIndex[curPoints[4]];
         //第三个细分面片
-        newIndices(4 * i + 2, 0) = newVerticesIndex[curPoints[2]];
-        newIndices(4 * i + 2, 1) = newVerticesIndex[curPoints[4]];
-        newIndices(4 * i + 2, 2) = newVerticesIndex[curPoints[5]];
+        newverticesIndices(4 * i + 2, 0) = newVerticesIndex[curPoints[2]];
+        newverticesIndices(4 * i + 2, 1) = newVerticesIndex[curPoints[4]];
+        newverticesIndices(4 * i + 2, 2) = newVerticesIndex[curPoints[5]];
         //第四个细分面片
-        newIndices(4 * i + 3, 0) = newVerticesIndex[curPoints[3]];
-        newIndices(4 * i + 3, 1) = newVerticesIndex[curPoints[4]];
-        newIndices(4 * i + 3, 2) = newVerticesIndex[curPoints[5]];
+        newverticesIndices(4 * i + 3, 0) = newVerticesIndex[curPoints[3]];
+        newverticesIndices(4 * i + 3, 1) = newVerticesIndex[curPoints[4]];
+        newverticesIndices(4 * i + 3, 2) = newVerticesIndex[curPoints[5]];
     }
 
     // cout<<"newVertices: \n"<<newVertices<<endl;
@@ -159,19 +159,19 @@ void PolygonMesh::triMeshSubdivision()
 
     //顶点构建邻居数据结构
     // map<int,set<int> > neighbors;
-    // for(int i=0;i<indices.rows();i++){
+    // for(int i=0;i<verticesIndices.rows();i++){
     //     for(int j=0;j<3;j++){
     //         for(int k=0;k<3;k++){
     //             if(j!=k){
-    //                 neighbors[indices(i,j)].insert(indices(i,k));
+    //                 neighbors[verticesIndices(i,j)].insert(verticesIndices(i,k));
     //             }
     //         }
     //     }
     // }
 
-    //将新的vertices和indices赋值给mesh
+    //将新的vertices和verticesIndices赋值给mesh
     vertices = newVertices;
-    indices = newIndices;
+    verticesIndices = newverticesIndices;
 
     // for(auto iter_map=neighbors.begin();iter_map!=neighbors.end();iter_map++){
     //     for(auto iter_set=iter_map->second.begin();iter_set!=iter_map->second.end();iter_set++){
@@ -189,7 +189,7 @@ void PolygonMesh::triMeshSubdivision()
 void PolygonMesh::loopSubdivision()
 {
     //subdivision非三角面片不能细分
-    if (indices.cols() != 3)
+    if (verticesIndices.cols() != 3)
     {
         cout << "loop subdivision can not subdivide non-triangular mesh!" << endl;
         return;
@@ -205,11 +205,11 @@ PolygonMesh::findEdgeNearFaces(std::set<Edge> &edges)
     map<Edge, set<Face>> res; //结果
     for (auto iter = edges.begin(); iter != edges.end(); iter++)
     {
-        for (int i = 0; i < indices.rows(); i++)
+        for (int i = 0; i < verticesIndices.rows(); i++)
         {
-            if (isExist(iter->firVerIndex, indices.row(i)) && isExist(iter->secVerIndex, indices.row(i)))
+            if (isExist(iter->firVerIndex, verticesIndices.row(i)) && isExist(iter->secVerIndex, verticesIndices.row(i)))
             {
-                res[*iter].insert(Face(indices.row(i)));
+                res[*iter].insert(Face(verticesIndices.row(i)));
             }
         }
     }

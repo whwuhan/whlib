@@ -20,7 +20,7 @@ void wh::utils::io::loadPointCloudObj(const string fileName, struct PointCloud *
         cout << "no data source." << endl;
         return;
     }
-
+    
     //读入文件
     string line;
     vector<string> lineSplit;
@@ -576,66 +576,58 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
     string line;
     vector<string> lineSplit;
     unsigned int verticesAmount = 0; //顶点数量
-    unsigned int indicesAmount = 0;    //面片数量
+    unsigned int facesAmount = 0;  //面片数量
+    unsigned int UVAmount = 0;//纹理坐标数量
+    unsigned int normalsAmount = 0;//法线数量
 
     bool polygonMeshTypeIsConfirmed = false; // polygon mesh类型是否确定
     int polygonType = 3;                     //polygon mesh的类型（三角面片还是四边形面片，默认是三角面片）
     //确定
-    while (getline(dataSrc, line))
-    {
-        if (line[0] == 'v')
-        {
-            //lineSplit = split(line, " ");
-            verticesAmount++;
-            //cout << count << endl;
-            /** resize()效率太低，改成先遍历点的个数，再resize()一次
-            pointCloudPtr->conservativeResize((++pointCloudPtr->size), 3);
-            pointCloudPtr->points(pointCloudPtr->size-1, 0) = atof(lineSplit[1].c_str());
-            pointCloudPtr->points(pointCloudPtr->size-1, 1) = atof(lineSplit[2].c_str());
-            pointCloudPtr->points(pointCloudPtr->size-1, 2) = atof(lineSplit[3].c_str());
-            */
-        }
+//     while (getline(dataSrc, line))
+//     {
+//         switch(line[0])
+//         {
+//         case 'v':
+//         verticesAmount++;
+//                 break;
+//         case 'f':
+//                 facesAmount++;
+//                 break;
+//         default:
+//                 cout << "loadPolygonMeshObj() wrong" << endl;
+//         }
 
-        if (line[0] == 'f')
-        {
-            indicesAmount++;
-            if (!polygonMeshTypeIsConfirmed)
-            {
-                lineSplit = split(line, " ");
-                polygonType = lineSplit.size() - 1;
-            }
-        }
-    }
+//     }
 
     dataSrc.clear(); //先要clear()才能回到文件头
     dataSrc.seekg(0, ios::beg);
 
     polygonMeshPtr->vertices.resize(verticesAmount, 3);
-    polygonMeshPtr->indices.resize(indicesAmount, polygonType);
+    polygonMeshPtr->verticesIndices.resize(facesAmount, polygonType);
 
     cout << "verticesAmount:" << verticesAmount << endl;
-    cout << "indicesAmount:" << indicesAmount << endl;
+    cout << "facesAmount:" << facesAmount << endl;
 
     verticesAmount = 0;
-    indicesAmount = 0;
+    facesAmount = 0;
     while (getline(dataSrc, line))
     {
         switch (line[0])
         {
         case 'v':
             lineSplit = split(line, " ");
-            polygonMeshPtr->vertices(verticesAmount, 0) = atof(lineSplit[1].c_str());
-            polygonMeshPtr->vertices(verticesAmount, 1) = atof(lineSplit[2].c_str());
-            polygonMeshPtr->vertices(verticesAmount, 2) = atof(lineSplit[3].c_str());
+            polygonMeshPtr->vertices(verticesAmount, 0) = stof(lineSplit[1]);
+            polygonMeshPtr->vertices(verticesAmount, 1) = stof(lineSplit[2]);
+            polygonMeshPtr->vertices(verticesAmount, 2) = stof(lineSplit[3]);
             verticesAmount++;
             break;
         case 'f':
             lineSplit = split(line, " ");
             for (int i = 0; i < polygonType; i++)
             {
-                polygonMeshPtr->indices(indicesAmount, i) = atoi(lineSplit[i + 1].c_str());
+                polygonMeshPtr->verticesIndices(facesAmount, i) = stoi(lineSplit[i + 1]);
             }
-            indicesAmount++;
+            facesAmount++;
             break;
         default:
             cout << line << endl;
@@ -664,7 +656,7 @@ void wh::utils::io::savePolygonMeshObj(const string fileName, PolygonMesh *polyg
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
     cout << "verticesAmount:" << polygonMeshPtr->vertices.rows() << endl;
-    cout << "indicesAmount:" << polygonMeshPtr->indices.rows() << endl;
+    cout << "facesAmount:" << polygonMeshPtr->verticesIndices.rows() << endl;
     //存入点数据
     for (int i = 0; i < polygonMeshPtr->vertices.rows(); i++)
     {
@@ -673,16 +665,15 @@ void wh::utils::io::savePolygonMeshObj(const string fileName, PolygonMesh *polyg
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[1];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[2] << endl;
     }
-
     //写入面片信息
-    int polygonMeshType = polygonMeshPtr->indices.cols(); //获取是三角面片是是正方形面片
-    for (int i = 0; i < polygonMeshPtr->indices.rows(); i++)
+    int polygonMeshType = polygonMeshPtr->verticesIndices.cols(); //获取是三角面片是是正方形面片
+    for (int i = 0; i < polygonMeshPtr->verticesIndices.rows(); i++)
     {
         dataDes << "f";
         for (int j = 0; j < polygonMeshType; j++)
         {
-            //cout<<"face:"<<polygonMeshPtr->indices.row(i)[j]<<endl;
-            dataDes << " " << polygonMeshPtr->indices.row(i)[j];
+            //cout<<"face:"<<polygonMeshPtr->verticesIndices.row(i)[j]<<endl;
+            dataDes << " " << polygonMeshPtr->verticesIndices.row(i)[j];
         }
         dataDes << endl;
     }

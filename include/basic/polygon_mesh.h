@@ -12,8 +12,13 @@ namespace wh
         typedef struct PolygonMesh
         {
             Eigen::MatrixXd vertices; //多边型顶点
-            Eigen::MatrixXi indices;  //多边形面片索引
+            Eigen::MatrixXd UVs;//纹理坐标
+            Eigen::MatrixXd normals;//法线
 
+            Eigen::MatrixXi verticesIndices;  //多边形面片索引
+            Eigen::MatrixXi UVIndices;//纹理坐标索引
+            Eigen::MatrixXi normalsIndices;//纹理坐标索引
+            
             //适配Coolender
             unsigned int VAO;//mesh的VAO
             unsigned int VBO;//mesh的VBO
@@ -37,7 +42,7 @@ namespace wh
             //std::set<wh::basic::Edge> edges;//边集合
             //构造函数
             PolygonMesh();
-            PolygonMesh(Eigen::MatrixXd &vertices, Eigen::MatrixXi &indices);
+            PolygonMesh(Eigen::MatrixXd &vertices, Eigen::MatrixXi &verticesIndices);
 
             //mesh 细分
             void triMeshSubdivision(); //三角面片细分
@@ -52,4 +57,4 @@ namespace wh
             std::map<wh::basic::Edge, std::set<wh::basic::Face> > findEdgeNearFaces(std::set<wh::basic::Edge> &edges);
         } POLYGON_MESH;
     } // namespace basic
-} // namespace wh
+} // namespace wh   
