@@ -63,7 +63,7 @@ void wh::utils::io::loadPointCloudObj(const string fileName, struct PointCloud *
     cout << "Load Point Cloud Successfully!" << endl;
     dataSrc.close();
 }
-
+        
 //点云存入obj文件
 void wh::utils::io::savePointCloudObj(const string fileName, const struct PointCloud *const pointCloudPtr)
 {
@@ -582,57 +582,78 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
 
     bool polygonMeshTypeIsConfirmed = false; // polygon mesh类型是否确定
     int polygonType = 3;                     //polygon mesh的类型（三角面片还是四边形面片，默认是三角面片）
-    //确定
-//     while (getline(dataSrc, line))
-//     {
-//         switch(line[0])
-//         {
-//         case 'v':
-//         verticesAmount++;
-//                 break;
-//         case 'f':
-//                 facesAmount++;
-//                 break;
-//         default:
-//                 cout << "loadPolygonMeshObj() wrong" << endl;
-//         }
 
-//     }
+    //获取数量
+    while (getline(dataSrc, line))
+    {
+        lineSplit = split(line, " ");
+        if(lineSplit.size() != 0)
+        {
+            if(line[0] == 'v')
+            {
+                if(lineSplit[0] == "v") verticesAmount++;
+                if(lineSplit[0] == "vt") UVAmount++;
+                if(lineSplit[0] == "vn") normalsAmount++;
+            }
+        if(lineSplit[0] == "f") facesAmount++;
+        }
+    }
 
     dataSrc.clear(); //先要clear()才能回到文件头
     dataSrc.seekg(0, ios::beg);
-
+    //注意 uv坐标 normal 的数量可能不等于面片的数量
+    //分配空间
     polygonMeshPtr->vertices.resize(verticesAmount, 3);
     polygonMeshPtr->verticesIndices.resize(facesAmount, polygonType);
+    polygonMeshPtr->UVs.resize(UVAmount, 2);
+    polygonMeshPtr->UVIndices.resize(facesAmount, polygonType);
+    polygonMeshPtr->normals.resize(normalsAmount, 3);
+    polygonMeshPtr->normalsIndices.resize(facesAmount, polygonType);
+    
 
     cout << "verticesAmount:" << verticesAmount << endl;
     cout << "facesAmount:" << facesAmount << endl;
+    cout << "UVAmount:" << UVAmount << endl;
+    cout << "normalsAmount:" << normalsAmount << endl;
 
     verticesAmount = 0;
     facesAmount = 0;
+    UVAmount = 0;
+    normalsAmount = 0;
+    
+    //读取数据
     while (getline(dataSrc, line))
     {
-        switch (line[0])
+        lineSplit = split(line, " ");
+        if(lineSplit.size() != 0)
         {
-        case 'v':
-            lineSplit = split(line, " ");
-            polygonMeshPtr->vertices(verticesAmount, 0) = stof(lineSplit[1]);
-            polygonMeshPtr->vertices(verticesAmount, 1) = stof(lineSplit[2]);
-            polygonMeshPtr->vertices(verticesAmount, 2) = stof(lineSplit[3]);
-            verticesAmount++;
-            break;
-        case 'f':
-            lineSplit = split(line, " ");
-            for (int i = 0; i < polygonType; i++)
+            if(line[0] == 'v')
             {
-                polygonMeshPtr->verticesIndices(facesAmount, i) = stoi(lineSplit[i + 1]);
+                if(lineSplit[0] == "v")
+                {
+                    polygonMeshPtr->vertices(verticesAmount, 0) = stof(lineSplit[1]);
+                    polygonMeshPtr->vertices(verticesAmount, 1) = stof(lineSplit[2]);
+                    polygonMeshPtr->vertices(verticesAmount, 2) = stof(lineSplit[3]);
+                    verticesAmount++;
+                }
+                if(lineSplit[0] == "vt")
+                {
+                    polygonMeshPtr->UVs(UVAmount, 0) = stof(lineSplit[1]);
+                    polygonMeshPtr->UVs(UVAmount, 1) = stof(lineSplit[2]);
+                    UVAmount++;
+                }
+                if(lineSplit[0] == "vn")
+                {
+                    polygonMeshPtr->normals(normalsAmount, 0) = stof(lineSplit[1]);
+                    polygonMeshPtr->normals(normalsAmount, 1) = stof(lineSplit[2]);
+                    polygonMeshPtr->normals(normalsAmount, 2) = stof(lineSplit[3]);
+                    normalsAmount++;
+                }
             }
-            facesAmount++;
-            break;
-        default:
-            cout << line << endl;
+        if(lineSplit[0] == "f") facesAmount++;
         }
     }
+    cout << polygonMeshPtr->normals << endl;
     cout << "Load Polygon Mesh Successfull!" << endl;
     dataSrc.close();
 }

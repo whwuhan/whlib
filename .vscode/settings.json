@@ -98,6 +98,8 @@
         "*.ipp": "cpp",
         "forward_list": "cpp",
         "scoped_allocator": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "span": "cpp",
+        "ranges": "cpp"
     }
 }

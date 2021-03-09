@@ -88,9 +88,9 @@ int main()
     // );
 
     PolygonMesh mesh;
-    loadPolygonMeshObj("model/BirdM2_vox_0.05_2.obj", &mesh);
-    cout << mesh.vertices << endl;
-    cout << mesh.verticesIndices << endl;
-    savePolygonMeshObj("model/BirdMeshTest.obj", &mesh);
+    loadPolygonMeshObj("model/african_head.obj", &mesh);
+    // cout << mesh.vertices << endl;
+    // cout << mesh.verticesIndices << endl;
+    //savePolygonMeshObj("model/BirdMeshTest.obj", &mesh);
     return 0;
 }
