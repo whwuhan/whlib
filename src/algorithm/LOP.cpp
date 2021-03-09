@@ -10,31 +10,28 @@ using namespace wh::alg;
 using namespace wh::utils::io;
 using namespace wh::utils;
 //构造函数
-wh::alg::LOPParameter::LOPParameter() : iter(10), h(1.0), mu(0.45), amount(1000) {}
+LOPParameter::LOPParameter() : iter(10), h(1.0), mu(0.45), amount(1000) {}
 
-wh::alg::LOPParameter::LOPParameter(int iter, int amount, double r, double h, double mu) : iter(iter), amount(amount), h(h), mu(mu)
+LOPParameter::LOPParameter(int iter, int amount, double r, double h, double mu) : iter(iter), amount(amount), h(h), mu(mu)
 {
 }
 
-wh::alg::LOP::LOP() {}
+LOP::LOP() {}
 
-wh::alg::LOP::LOP(
-    std::string &fileName,
-    Eigen::MatrixXd &X,
-    Eigen::MatrixXd &P,
-    LOP_PARAMETER &parameters) : fileName(fileName), X(X), P(P), parameters(parameters)
+LOP::LOP(string &fileName, MatrixXd &X, MatrixXd &P, LOP_PARAMETER &parameters) : 
+fileName(fileName), X(X), P(P), parameters(parameters)
 {
     PointCloud pointCloud;
     loadPointCloudObj(fileName, &pointCloud);
     P = pointCloud.points;
 }
 
-void wh::alg::LOP::setFileName(const std::string fileName)
+void LOP::setFileName(const string fileName)
 {
     this->fileName = fileName;
 }
 
-void wh::alg::LOP::init()
+void LOP::init()
 {
     if (fileName == "")
     {
@@ -48,7 +45,7 @@ void wh::alg::LOP::init()
     P = pointCloud.points;
     if (P.rows() != 0 && P.cols() != 0)
     {
-        X = Eigen::MatrixXd::Random(parameters.amount, P.cols()) * P.maxCoeff();
+        X = MatrixXd::Random(parameters.amount, P.cols()) * P.maxCoeff();
         string randSaveName = outFileName + "_rand.obj";
         cout << "随机初始化点云保存到文件:" << randSaveName << endl;
         PointCloud randPointCloud(X);
@@ -67,7 +64,7 @@ void wh::alg::LOP::init()
     }
 }
 
-void wh::alg::LOP::run()
+void LOP::run()
 {
     if (P.rows() == 0 || P.cols() == 0)
     {
@@ -92,17 +89,17 @@ void wh::alg::LOP::run()
     }
 }
 
-double wh::alg::LOP::theta(double r)
+double LOP::theta(double r)
 {
     return exp((-pow(r, 2)) / pow(parameters.h / 4, 2));
 }
 
-double wh::alg::LOP::eta(double r)
+double LOP::eta(double r)
 {
     return 1 / 3 * pow(r, 3);
 }
 
-Eigen::MatrixXd wh::alg::LOP::getXPrime1()
+MatrixXd LOP::getXPrime1()
 {
     int xSize = X.rows();
     int pSize = P.rows();
@@ -124,7 +121,7 @@ Eigen::MatrixXd wh::alg::LOP::getXPrime1()
     return XPrime;
 }
 
-double wh::alg::LOP::getAlpha(const Eigen::RowVector3d &xPrime, const Eigen::RowVector3d &p)
+double LOP::getAlpha(const RowVector3d &xPrime, const RowVector3d &p)
 {
     double resTop = theta((xPrime - p).norm());
     double resBottom = (xPrime - p).norm();
@@ -132,14 +129,14 @@ double wh::alg::LOP::getAlpha(const Eigen::RowVector3d &xPrime, const Eigen::Row
     return resTop / resBottom;
 }
 
-double wh::alg::LOP::getBeta(const Eigen::RowVector3d &x, const Eigen::RowVector3d &xPrime)
+double LOP::getBeta(const RowVector3d &x, const RowVector3d &xPrime)
 {
     double resTop = theta((xPrime - x).norm());
     double resBottom = (xPrime - x).norm();
     // cout<<"getBeta"<<endl;
     return resTop * resBottom;
 }
-Eigen::RowVector3d wh::alg::LOP::LOPInner(const Eigen::RowVector3d &xPrime)
+RowVector3d LOP::LOPInner(const RowVector3d &xPrime)
 {
     RowVector3d fir;
     RowVector3d sec;
@@ -175,7 +172,7 @@ Eigen::RowVector3d wh::alg::LOP::LOPInner(const Eigen::RowVector3d &xPrime)
     return fir + parameters.mu * sec;
 }
 
-Eigen::MatrixXd wh::alg::LOP::LOPOuter(const Eigen::MatrixXd &X, const Eigen::MatrixXd &P)
+MatrixXd LOP::LOPOuter(const MatrixXd &X, const MatrixXd &P)
 {
     int xSize = X.rows();
     MatrixXd XPrimeKAddOne(X.rows(), X.cols());

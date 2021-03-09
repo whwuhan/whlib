@@ -11,26 +11,26 @@ Face::Face() : firVerIndex(0), secVerIndex(0), thdVerIndex(0)
 
 Face::Face(unsigned int firVerIndex, unsigned int secVerIndex, unsigned int thdVerIndex)
 {
-    vector<unsigned int> indexes(3);
-    indexes[0] = firVerIndex;
-    indexes[1] = secVerIndex;
-    indexes[2] = thdVerIndex;
-    sort(indexes.begin(), indexes.end());
-    firVerIndex = indexes[0];
-    secVerIndex = indexes[1];
-    thdVerIndex = indexes[2];
+    vector<unsigned int> indices(3);
+    indices[0] = firVerIndex;
+    indices[1] = secVerIndex;
+    indices[2] = thdVerIndex;
+    sort(indices.begin(), indices.end());
+    firVerIndex = indices[0];
+    secVerIndex = indices[1];
+    thdVerIndex = indices[2];
 }
 
-Face::Face(Eigen::RowVector3i face_index)
+Face::Face(Eigen::RowVector3i faceIndex)
 {
-    vector<unsigned int> indexes(3);
-    indexes[0] = face_index[0];
-    indexes[1] = face_index[1];
-    indexes[2] = face_index[2];
-    sort(indexes.begin(), indexes.end());
-    firVerIndex = indexes[0];
-    secVerIndex = indexes[1];
-    thdVerIndex = indexes[2];
+    vector<unsigned int> indices(3);
+    indices[0] = faceIndex[0];
+    indices[1] = faceIndex[1];
+    indices[2] = faceIndex[2];
+    sort(indices.begin(), indices.end());
+    firVerIndex = indices[0];
+    secVerIndex = indices[1];
+    thdVerIndex = indices[2];
 }
 
 bool Face::operator<(const Face &face) const

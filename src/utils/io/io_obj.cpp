@@ -79,7 +79,7 @@ void wh::utils::io::savePointCloudObj(const string fileName, const struct PointC
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -96,7 +96,7 @@ void wh::utils::io::savePointCloudObj(const string fileName, const struct PointC
 }
 
 //cube triangular mesh 写入obj文件
-void wh::utils::io::saveTriCubeMeshObj(const std::string fileName, wh::basic::Cube *cubePtr)
+void wh::utils::io::saveTriCubeMeshObj(const string fileName, Cube *cubePtr)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -110,7 +110,7 @@ void wh::utils::io::saveTriCubeMeshObj(const std::string fileName, wh::basic::Cu
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -213,7 +213,7 @@ void wh::utils::io::saveTriCubeMeshObj(const std::string fileName, wh::basic::Cu
 }
 
 //保存triangular cube meshes
-void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::vector<wh::basic::Cube> &cubes)
+void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const vector<Cube> &cubes)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -228,7 +228,7 @@ void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -278,7 +278,7 @@ void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::
 }
 
 //重载保存triangular cube meshes
-void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::set<wh::basic::Cube> &cubes)
+void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const set<Cube> &cubes)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -293,7 +293,7 @@ void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -344,7 +344,7 @@ void wh::utils::io::saveTriCubeMeshesObj(const std::string fileName, const std::
 }
 
 //cube wireframe（线框写入obj文件）
-void wh::utils::io::saveCubeWireframeObj(const std::string fileName, wh::basic::Cube *cubePtr)
+void wh::utils::io::saveCubeWireframeObj(const string fileName, Cube *cubePtr)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -358,7 +358,7 @@ void wh::utils::io::saveCubeWireframeObj(const std::string fileName, wh::basic::
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -437,7 +437,7 @@ void wh::utils::io::saveCubeWireframeObj(const std::string fileName, wh::basic::
 }
 
 //cube wireframes（多个线框写入obj文件）
-void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<wh::basic::Cube> &cubes)
+void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<Cube> &cubes)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -451,7 +451,7 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<wh
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -499,7 +499,7 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<wh
     dataDes.close();
 }
 
-void wh::utils::io::saveCubeWireframesObj(const std::string fileName, const std::set<wh::basic::Cube> &cubes)
+void wh::utils::io::saveCubeWireframesObj(const string fileName, const set<Cube> &cubes)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -513,7 +513,7 @@ void wh::utils::io::saveCubeWireframesObj(const std::string fileName, const std:
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
@@ -562,7 +562,7 @@ void wh::utils::io::saveCubeWireframesObj(const std::string fileName, const std:
 }
 
 //读取polygon mesh
-void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::PolygonMesh *polygonMeshPtr)
+void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polygonMeshPtr)
 {
     //打开文件
     ifstream dataSrc(fileName);
@@ -576,7 +576,7 @@ void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::Po
     string line;
     vector<string> lineSplit;
     unsigned int verticesAmount = 0; //顶点数量
-    unsigned int facesAmount = 0;    //面片数量
+    unsigned int indicesAmount = 0;    //面片数量
 
     bool polygonMeshTypeIsConfirmed = false; // polygon mesh类型是否确定
     int polygonType = 3;                     //polygon mesh的类型（三角面片还是四边形面片，默认是三角面片）
@@ -598,7 +598,7 @@ void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::Po
 
         if (line[0] == 'f')
         {
-            facesAmount++;
+            indicesAmount++;
             if (!polygonMeshTypeIsConfirmed)
             {
                 lineSplit = split(line, " ");
@@ -611,13 +611,13 @@ void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::Po
     dataSrc.seekg(0, ios::beg);
 
     polygonMeshPtr->vertices.resize(verticesAmount, 3);
-    polygonMeshPtr->faces.resize(facesAmount, polygonType);
+    polygonMeshPtr->indices.resize(indicesAmount, polygonType);
 
     cout << "verticesAmount:" << verticesAmount << endl;
-    cout << "facesAmount:" << facesAmount << endl;
+    cout << "indicesAmount:" << indicesAmount << endl;
 
     verticesAmount = 0;
-    facesAmount = 0;
+    indicesAmount = 0;
     while (getline(dataSrc, line))
     {
         switch (line[0])
@@ -633,9 +633,9 @@ void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::Po
             lineSplit = split(line, " ");
             for (int i = 0; i < polygonType; i++)
             {
-                polygonMeshPtr->faces(facesAmount, i) = atoi(lineSplit[i + 1].c_str());
+                polygonMeshPtr->indices(indicesAmount, i) = atoi(lineSplit[i + 1].c_str());
             }
-            facesAmount++;
+            indicesAmount++;
             break;
         default:
             cout << line << endl;
@@ -646,7 +646,7 @@ void wh::utils::io::loadPolygonMeshObj(const std::string fileName, wh::basic::Po
 }
 
 //保存Polygon mesh
-void wh::utils::io::savePolygonMeshObj(const std::string fileName, wh::basic::PolygonMesh *polygonMeshPtr)
+void wh::utils::io::savePolygonMeshObj(const string fileName, PolygonMesh *polygonMeshPtr)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -660,11 +660,11 @@ void wh::utils::io::savePolygonMeshObj(const std::string fileName, wh::basic::Po
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
     cout << "verticesAmount:" << polygonMeshPtr->vertices.rows() << endl;
-    cout << "facesAmount:" << polygonMeshPtr->faces.rows() << endl;
+    cout << "indicesAmount:" << polygonMeshPtr->indices.rows() << endl;
     //存入点数据
     for (int i = 0; i < polygonMeshPtr->vertices.rows(); i++)
     {
@@ -675,14 +675,14 @@ void wh::utils::io::savePolygonMeshObj(const std::string fileName, wh::basic::Po
     }
 
     //写入面片信息
-    int polygonMeshType = polygonMeshPtr->faces.cols(); //获取是三角面片是是正方形面片
-    for (int i = 0; i < polygonMeshPtr->faces.rows(); i++)
+    int polygonMeshType = polygonMeshPtr->indices.cols(); //获取是三角面片是是正方形面片
+    for (int i = 0; i < polygonMeshPtr->indices.rows(); i++)
     {
         dataDes << "f";
         for (int j = 0; j < polygonMeshType; j++)
         {
-            //cout<<"face:"<<polygonMeshPtr->faces.row(i)[j]<<endl;
-            dataDes << " " << polygonMeshPtr->faces.row(i)[j];
+            //cout<<"face:"<<polygonMeshPtr->indices.row(i)[j]<<endl;
+            dataDes << " " << polygonMeshPtr->indices.row(i)[j];
         }
         dataDes << endl;
     }
@@ -691,7 +691,7 @@ void wh::utils::io::savePolygonMeshObj(const std::string fileName, wh::basic::Po
 }
 
 // load skeleton obj
-void wh::utils::io::loadSkeletonObj(const std::string fileName, wh::basic::Skeleton *skeletonPtr)
+void wh::utils::io::loadSkeletonObj(const string fileName, Skeleton *skeletonPtr)
 {
     //打开文件
     ifstream dataSrc(fileName);
@@ -757,7 +757,7 @@ void wh::utils::io::loadSkeletonObj(const std::string fileName, wh::basic::Skele
 }
 
 // save skeleton obj
-void wh::utils::io::saveSkeletonObj(const std::string fileName, wh::basic::Skeleton *skeletonPtr)
+void wh::utils::io::saveSkeletonObj(const string fileName, Skeleton *skeletonPtr)
 {
     //打开文件
     ofstream dataDes(fileName);
@@ -771,7 +771,7 @@ void wh::utils::io::saveSkeletonObj(const std::string fileName, wh::basic::Skele
     dataDes << "# " << dateTime; //写入存储时间
 
     //存储对象名
-    std::vector<std::string> fileNameSplit = wh::utils::split(fileName, "/.\\");
+    vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
     int fileNameIndex = fileNameSplit.size() - 2;
     dataDes << "o " << fileNameSplit[fileNameIndex] << endl; //obj对象
 
