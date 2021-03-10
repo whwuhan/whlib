@@ -33,6 +33,7 @@ namespace wh
             float rotateX;//绕X轴旋转
             float rotateY;//绕Y轴旋转
             float rotateZ;//绕Z轴旋转
+            float pointSize;//点的大小
 
 
 

@@ -490,12 +490,12 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
             }
         }
     }
-    // cout << polygonMeshPtr->verticesIndices.rows() << endl;
-    // cout << polygonMeshPtr->UVIndices.rows() << endl;
-    // cout << polygonMeshPtr->normalsIndices.rows() << endl;
-    // cout << polygonMeshPtr->vertices.rows() << endl;
-    // cout << polygonMeshPtr->UVs.rows() << endl;
-    // cout << polygonMeshPtr->normals.rows() << endl;
+    cout << polygonMeshPtr->verticesIndices.rows() << endl;
+    cout << polygonMeshPtr->UVIndices.rows() << endl;
+    cout << polygonMeshPtr->normalsIndices.rows() << endl;
+    cout << polygonMeshPtr->vertices.rows() << endl;
+    cout << polygonMeshPtr->UVs.rows() << endl;
+    cout << polygonMeshPtr->normals.rows() << endl;
     cout << "Load Polygon Mesh Successfully!" << endl;
     dataSrc.close();
 }

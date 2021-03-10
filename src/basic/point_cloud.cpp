@@ -21,7 +21,7 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(1.0f),
+pointSize(5.0f),
 changePointSize(false),
 pointModelMatricesBuffer(0)
 {}
@@ -41,7 +41,7 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(1.0f),
+pointSize(5.0f),
 changePointSize(false),
 pointModelMatricesBuffer(0)
 {}
@@ -61,7 +61,7 @@ transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
 rotateZ(0.0f),
-pointSize(1.0f),
+pointSize(5.0f),
 changePointSize(false),
 pointModelMatricesBuffer(0)
 {}

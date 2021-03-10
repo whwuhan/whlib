@@ -21,7 +21,8 @@ transY(0.0f),
 transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
-rotateZ(0.0f)
+rotateZ(0.0f),
+pointSize(5.0f)
 {}
     
 PolygonMesh::PolygonMesh(MatrixXd &vertices, MatrixXi &verticesIndices) : 
@@ -33,7 +34,8 @@ transY(0.0f),
 transZ(0.0f),
 rotateX(0.0f),
 rotateY(0.0f),
-rotateZ(0.0f)
+rotateZ(0.0f),
+pointSize(5.0f)
 {}
 
 set<Edge> PolygonMesh::creatUnorderedEdges()

@@ -100,6 +100,7 @@
         "scoped_allocator": "cpp",
         "filesystem": "cpp",
         "span": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "dense": "cpp"
     }
 }
