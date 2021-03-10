@@ -28,17 +28,13 @@ void wh::utils::io::loadPointCloudObj(const string fileName, struct PointCloud *
 
     while (getline(dataSrc, line))
     {
-        if (line[0] == 'v')
+        lineSplit = split(line, " ");
+        if(lineSplit.size() != 0)
         {
-            //lineSplit = split(line, " ");
-            count++;
-            //cout << count << endl;
-            /** resize()效率太低，改成先遍历点的个数，再resize()一次
-            pointCloudPtr->conservativeResize((++pointCloudPtr->size), 3);
-            pointCloudPtr->points(pointCloudPtr->size-1, 0) = atof(lineSplit[1].c_str());
-            pointCloudPtr->points(pointCloudPtr->size-1, 1) = atof(lineSplit[2].c_str());
-            pointCloudPtr->points(pointCloudPtr->size-1, 2) = atof(lineSplit[3].c_str());
-            */
+            if(lineSplit[0] == "v")
+            {
+                count++;
+            }
         }
     }
     cout << "Point Cloud size:" << count << endl;
@@ -49,15 +45,16 @@ void wh::utils::io::loadPointCloudObj(const string fileName, struct PointCloud *
 
     while (getline(dataSrc, line))
     {
-        switch (line[0])
+        lineSplit = split(line, " ");
+        if(lineSplit.size() != 0)//防止空行
         {
-        case 'v':
-            lineSplit = split(line, " ");
-            pointCloudPtr->points(count, 0) = atof(lineSplit[1].c_str());
-            pointCloudPtr->points(count, 1) = atof(lineSplit[2].c_str());
-            pointCloudPtr->points(count, 2) = atof(lineSplit[3].c_str());
-            count++;
-            break;
+            if(lineSplit[0] == "v")
+            {
+                pointCloudPtr->points(count, 0) = stof(lineSplit[1]);
+                pointCloudPtr->points(count, 1) = stof(lineSplit[2]);
+                pointCloudPtr->points(count, 2) = stof(lineSplit[3]);
+                count++;
+            }
         }
     }
     cout << "Load Point Cloud Successfully!" << endl;
@@ -86,8 +83,7 @@ void wh::utils::io::savePointCloudObj(const string fileName, const struct PointC
     //存入数据
     for (int i = 0; i < pointCloudPtr->size; i++)
     {
-        dataDes << "v"
-                << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[0];
+        dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[0];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[1];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << pointCloudPtr->points.row(i)[2] << endl;
     }
@@ -117,97 +113,24 @@ void wh::utils::io::saveTriCubeMeshObj(const string fileName, Cube *cubePtr)
     //存入点数据
     for (int i = 0; i < cubePtr->vertices.rows(); i++)
     {
-        dataDes << "v"
-                << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[0];
+        dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[0];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[1];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[2] << endl;
     }
 
     //写入面数据（注意顺序首个索引从小到大）
-    dataDes << "f"
-            << " "
-            << "1"
-            << " "
-            << "2"
-            << " "
-            << "3" << endl;
-    dataDes << "f"
-            << " "
-            << "1"
-            << " "
-            << "3"
-            << " "
-            << "4" << endl;
-    dataDes << "f"
-            << " "
-            << "1"
-            << " "
-            << "4"
-            << " "
-            << "5" << endl;
-    dataDes << "f"
-            << " "
-            << "1"
-            << " "
-            << "5"
-            << " "
-            << "8" << endl;
-    dataDes << "f"
-            << " "
-            << "1"
-            << " "
-            << "2"
-            << " "
-            << "7" << endl;
-    dataDes << "f"
-            << " "
-            << "1"
-            << " "
-            << "7"
-            << " "
-            << "8" << endl;
-    dataDes << "f"
-            << " "
-            << "2"
-            << " "
-            << "3"
-            << " "
-            << "6" << endl;
-    dataDes << "f"
-            << " "
-            << "2"
-            << " "
-            << "6"
-            << " "
-            << "7" << endl;
-    dataDes << "f"
-            << " "
-            << "3"
-            << " "
-            << "4"
-            << " "
-            << "6" << endl;
-    dataDes << "f"
-            << " "
-            << "4"
-            << " "
-            << "5"
-            << " "
-            << "6" << endl;
-    dataDes << "f"
-            << " "
-            << "5"
-            << " "
-            << "6"
-            << " "
-            << "7" << endl;
-    dataDes << "f"
-            << " "
-            << "5"
-            << " "
-            << "7"
-            << " "
-            << "8" << endl;
+    dataDes << "f" << " " << "1" << " " << "2" << " " << "3" << endl;
+    dataDes << "f" << " " << "1" << " " << "3" << " " << "4" << endl;
+    dataDes << "f" << " " << "1" << " " << "4" << " " << "5" << endl;
+    dataDes << "f" << " " << "1" << " " << "5" << " " << "8" << endl;
+    dataDes << "f" << " " << "1" << " " << "2" << " " << "7" << endl;
+    dataDes << "f" << " " << "1" << " " << "7" << " " << "8" << endl;
+    dataDes << "f" << " " << "2" << " " << "3" << " " << "6" << endl;
+    dataDes << "f" << " " << "2" << " " << "6" << " " << "7" << endl;
+    dataDes << "f" << " " << "3" << " " << "4" << " " << "6" << endl;
+    dataDes << "f" << " " << "4" << " " << "5" << " " << "6" << endl;
+    dataDes << "f" << " " << "5" << " " << "6" << " " << "7" << endl;
+    dataDes << "f" << " " << "5" << " " << "7" << " " << "8" << endl;
     cout << "Save Triangular Cube Mesh Successfully!" << endl;
     dataDes.close();
 }
@@ -238,8 +161,7 @@ void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const vector<Cub
         //cout<<cube.vertices.size()<<endl;
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            dataDes << "v"
-                    << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
+            dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
@@ -248,30 +170,18 @@ void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const vector<Cub
     //存入面数据
     for (int i = 0; i < cubes.size(); i++)
     {
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 5 << " " << 8 * i + 8 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 7 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 2 << " " << 8 * i + 3 << " " << 8 * i + 6 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 2 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 3 << " " << 8 * i + 4 << " " << 8 * i + 6 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 4 << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 5 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 5 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 5 << " " << 8 * i + 8 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 7 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
+        dataDes << "f" << " " << 8 * i + 2 << " " << 8 * i + 3 << " " << 8 * i + 6 << endl;
+        dataDes << "f" << " " << 8 * i + 2 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
+        dataDes << "f" << " " << 8 * i + 3 << " " << 8 * i + 4 << " " << 8 * i + 6 << endl;
+        dataDes << "f" << " " << 8 * i + 4 << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
+        dataDes << "f" << " " << 8 * i + 5 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
+        dataDes << "f" << " " << 8 * i + 5 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
     }
     cout << "Save Triangular Cube Meshes Successfully!" << endl;
     dataDes.close();
@@ -303,8 +213,7 @@ void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const set<Cube> 
         // cout<<cube.vertices.rows()<<endl;
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            dataDes << "v"
-                    << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
+            dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
@@ -314,30 +223,18 @@ void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const set<Cube> 
     // cout<<"size:"<<cubes.size()<<endl;
     for (int i = 0; i < cubes.size(); i++)
     {
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 5 << " " << 8 * i + 8 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 7 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 1 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 2 << " " << 8 * i + 3 << " " << 8 * i + 6 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 2 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 3 << " " << 8 * i + 4 << " " << 8 * i + 6 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 4 << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 5 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        dataDes << "f"
-                << " " << 8 * i + 5 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 5 << " " << 8 * i + 8 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 2 << " " << 8 * i + 7 << endl;
+        dataDes << "f" << " " << 8 * i + 1 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
+        dataDes << "f" << " " << 8 * i + 2 << " " << 8 * i + 3 << " " << 8 * i + 6 << endl;
+        dataDes << "f" << " " << 8 * i + 2 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
+        dataDes << "f" << " " << 8 * i + 3 << " " << 8 * i + 4 << " " << 8 * i + 6 << endl;
+        dataDes << "f" << " " << 8 * i + 4 << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
+        dataDes << "f" << " " << 8 * i + 5 << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
+        dataDes << "f" << " " << 8 * i + 5 << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
     }
     cout << "Save Triangular Cube Meshes Successfully!" << endl;
     dataDes.close();
@@ -365,73 +262,24 @@ void wh::utils::io::saveCubeWireframeObj(const string fileName, Cube *cubePtr)
     //存入点数据
     for (int i = 0; i < cubePtr->vertices.rows(); i++)
     {
-        dataDes << "v"
-                << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[0];
+        dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[0];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[1];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cubePtr->vertices.row(i)[2] << endl;
     }
 
     //写入线框（注意顺序首个索引从小到大）
-    dataDes << "l"
-            << " "
-            << "1"
-            << " "
-            << "2" << endl;
-    dataDes << "l"
-            << " "
-            << "2"
-            << " "
-            << "3" << endl;
-    dataDes << "l"
-            << " "
-            << "3"
-            << " "
-            << "4" << endl;
-    dataDes << "l"
-            << " "
-            << "4"
-            << " "
-            << "1" << endl;
-    dataDes << "l"
-            << " "
-            << "4"
-            << " "
-            << "5" << endl;
-    dataDes << "l"
-            << " "
-            << "5"
-            << " "
-            << "6" << endl;
-    dataDes << "l"
-            << " "
-            << "6"
-            << " "
-            << "3" << endl;
-    dataDes << "l"
-            << " "
-            << "6"
-            << " "
-            << "7" << endl;
-    dataDes << "l"
-            << " "
-            << "7"
-            << " "
-            << "2" << endl;
-    dataDes << "l"
-            << " "
-            << "7"
-            << " "
-            << "8" << endl;
-    dataDes << "l"
-            << " "
-            << "8"
-            << " "
-            << "1" << endl;
-    dataDes << "l"
-            << " "
-            << "8"
-            << " "
-            << "5" << endl;
+    dataDes << "l" << " " << "1" << " " << "2" << endl;
+    dataDes << "l" << " " << "2" << " " << "3" << endl;
+    dataDes << "l" << " " << "3" << " " << "4" << endl;
+    dataDes << "l" << " " << "4" << " " << "1" << endl;
+    dataDes << "l" << " " << "4" << " " << "5" << endl;
+    dataDes << "l" << " " << "5" << " " << "6" << endl;
+    dataDes << "l" << " " << "6" << " " << "3" << endl;
+    dataDes << "l" << " " << "6" << " " << "7" << endl;
+    dataDes << "l" << " " << "7" << " " << "2" << endl;
+    dataDes << "l" << " " << "7" << " " << "8" << endl;
+    dataDes << "l" << " " << "8" << " " << "1" << endl;
+    dataDes << "l" << " " << "8" << " " << "5" << endl;
     cout << "Save Triangular Cube Wireframe Successfully!" << endl;
     dataDes.close();
 }
@@ -460,8 +308,7 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<Cu
     {
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            dataDes << "v"
-                    << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
+            dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
@@ -470,30 +317,18 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<Cu
     //写入线框（注意顺序首个索引从小到大）
     for (int i = 0; i < cubes.size(); i++)
     {
-        dataDes << "l"
-                << " " << 8 * i + 1 << " " << 8 * i + 2 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 4 << " " << 8 * i + 1 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 6 << " " << 8 * i + 3 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 7 << " " << 8 * i + 2 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 8 << " " << 8 * i + 1 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 8 << " " << 8 * i + 5 << endl;
+        dataDes << "l" << " " << 8 * i + 1 << " " << 8 * i + 2 << endl;
+        dataDes << "l" << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
+        dataDes << "l" << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
+        dataDes << "l" << " " << 8 * i + 4 << " " << 8 * i + 1 << endl;
+        dataDes << "l" << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
+        dataDes << "l" << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
+        dataDes << "l" << " " << 8 * i + 6 << " " << 8 * i + 3 << endl;
+        dataDes << "l" << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
+        dataDes << "l" << " " << 8 * i + 7 << " " << 8 * i + 2 << endl;
+        dataDes << "l" << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
+        dataDes << "l" << " " << 8 * i + 8 << " " << 8 * i + 1 << endl;
+        dataDes << "l" << " " << 8 * i + 8 << " " << 8 * i + 5 << endl;
     }
     cout << "Save Triangular Cube Wireframes Successfully!" << endl;
     dataDes.close();
@@ -522,8 +357,7 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const set<Cube>
     {
         for (int i = 0; i < cube.vertices.rows(); i++)
         {
-            dataDes << "v"
-                    << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
+            dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[0];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[1];
             dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << cube.vertices.row(i)[2] << endl;
         }
@@ -532,30 +366,18 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const set<Cube>
     //写入线框（注意顺序首个索引从小到大）
     for (int i = 0; i < cubes.size(); i++)
     {
-        dataDes << "l"
-                << " " << 8 * i + 1 << " " << 8 * i + 2 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 4 << " " << 8 * i + 1 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 6 << " " << 8 * i + 3 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 7 << " " << 8 * i + 2 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 8 << " " << 8 * i + 1 << endl;
-        dataDes << "l"
-                << " " << 8 * i + 8 << " " << 8 * i + 5 << endl;
+        dataDes << "l" << " " << 8 * i + 1 << " " << 8 * i + 2 << endl;
+        dataDes << "l" << " " << 8 * i + 2 << " " << 8 * i + 3 << endl;
+        dataDes << "l" << " " << 8 * i + 3 << " " << 8 * i + 4 << endl;
+        dataDes << "l" << " " << 8 * i + 4 << " " << 8 * i + 1 << endl;
+        dataDes << "l" << " " << 8 * i + 4 << " " << 8 * i + 5 << endl;
+        dataDes << "l" << " " << 8 * i + 5 << " " << 8 * i + 6 << endl;
+        dataDes << "l" << " " << 8 * i + 6 << " " << 8 * i + 3 << endl;
+        dataDes << "l" << " " << 8 * i + 6 << " " << 8 * i + 7 << endl;
+        dataDes << "l" << " " << 8 * i + 7 << " " << 8 * i + 2 << endl;
+        dataDes << "l" << " " << 8 * i + 7 << " " << 8 * i + 8 << endl;
+        dataDes << "l" << " " << 8 * i + 8 << " " << 8 * i + 1 << endl;
+        dataDes << "l" << " " << 8 * i + 8 << " " << 8 * i + 5 << endl;
     }
     cout << "Save Triangular Cube Wireframes Successfully!" << endl;
     dataDes.close();
@@ -580,7 +402,6 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
     unsigned int UVAmount = 0;//纹理坐标数量
     unsigned int normalsAmount = 0;//法线数量
 
-    bool polygonMeshTypeIsConfirmed = false; // polygon mesh类型是否确定
     int polygonType = 3;                     //polygon mesh的类型（三角面片还是四边形面片，默认是三角面片）
 
     //获取数量
@@ -589,13 +410,10 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
         lineSplit = split(line, " ");
         if(lineSplit.size() != 0)
         {
-            if(line[0] == 'v')
-            {
-                if(lineSplit[0] == "v") verticesAmount++;
-                if(lineSplit[0] == "vt") UVAmount++;
-                if(lineSplit[0] == "vn") normalsAmount++;
-            }
-        if(lineSplit[0] == "f") facesAmount++;
+            if(lineSplit[0] == "v") verticesAmount++;
+            if(lineSplit[0] == "vt") UVAmount++;
+            if(lineSplit[0] == "vn") normalsAmount++;
+            if(lineSplit[0] == "f") facesAmount++;
         }
     }
 
@@ -627,34 +445,58 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
         lineSplit = split(line, " ");
         if(lineSplit.size() != 0)
         {
-            if(line[0] == 'v')
+            //顶点
+            if(lineSplit[0] == "v")
             {
-                if(lineSplit[0] == "v")
-                {
-                    polygonMeshPtr->vertices(verticesAmount, 0) = stof(lineSplit[1]);
-                    polygonMeshPtr->vertices(verticesAmount, 1) = stof(lineSplit[2]);
-                    polygonMeshPtr->vertices(verticesAmount, 2) = stof(lineSplit[3]);
-                    verticesAmount++;
-                }
-                if(lineSplit[0] == "vt")
-                {
-                    polygonMeshPtr->UVs(UVAmount, 0) = stof(lineSplit[1]);
-                    polygonMeshPtr->UVs(UVAmount, 1) = stof(lineSplit[2]);
-                    UVAmount++;
-                }
-                if(lineSplit[0] == "vn")
-                {
-                    polygonMeshPtr->normals(normalsAmount, 0) = stof(lineSplit[1]);
-                    polygonMeshPtr->normals(normalsAmount, 1) = stof(lineSplit[2]);
-                    polygonMeshPtr->normals(normalsAmount, 2) = stof(lineSplit[3]);
-                    normalsAmount++;
-                }
+                polygonMeshPtr->vertices(verticesAmount, 0) = stof(lineSplit[1]);
+                polygonMeshPtr->vertices(verticesAmount, 1) = stof(lineSplit[2]);
+                polygonMeshPtr->vertices(verticesAmount, 2) = stof(lineSplit[3]);
+                verticesAmount++;
             }
-        if(lineSplit[0] == "f") facesAmount++;
+            //顶点UV坐标
+            if(lineSplit[0] == "vt")
+            {
+                polygonMeshPtr->UVs(UVAmount, 0) = stof(lineSplit[1]);
+                polygonMeshPtr->UVs(UVAmount, 1) = stof(lineSplit[2]);
+                UVAmount++;
+            }
+            //顶点法线
+            if(lineSplit[0] == "vn")
+            {
+                polygonMeshPtr->normals(normalsAmount, 0) = stof(lineSplit[1]);
+                polygonMeshPtr->normals(normalsAmount, 1) = stof(lineSplit[2]);
+                polygonMeshPtr->normals(normalsAmount, 2) = stof(lineSplit[3]);
+                normalsAmount++;
+            }
+            //面片
+            if(lineSplit[0] == "f")
+            {
+                vector<string> indicesSplit1 = split(lineSplit[1], "/");
+                vector<string> indicesSplit2 = split(lineSplit[2], "/");
+                vector<string> indicesSplit3 = split(lineSplit[3], "/");
+                //面片顶点索引
+                polygonMeshPtr->verticesIndices(facesAmount, 0) = stoi(indicesSplit1[0]);
+                polygonMeshPtr->verticesIndices(facesAmount, 1) = stoi(indicesSplit2[0]);
+                polygonMeshPtr->verticesIndices(facesAmount, 2) = stoi(indicesSplit3[0]);
+                //面片UV坐标索引
+                polygonMeshPtr->UVIndices(facesAmount, 0) = stoi(indicesSplit1[1]);
+                polygonMeshPtr->UVIndices(facesAmount, 1) = stoi(indicesSplit2[1]);
+                polygonMeshPtr->UVIndices(facesAmount, 2) = stoi(indicesSplit3[1]);
+                //面片顶点法线索引
+                polygonMeshPtr->normalsIndices(facesAmount, 0) = stoi(indicesSplit1[2]);
+                polygonMeshPtr->normalsIndices(facesAmount, 1) = stoi(indicesSplit2[2]);
+                polygonMeshPtr->normalsIndices(facesAmount, 2) = stoi(indicesSplit3[2]);
+                facesAmount++;
+            }
         }
     }
-    cout << polygonMeshPtr->normals << endl;
-    cout << "Load Polygon Mesh Successfull!" << endl;
+    // cout << polygonMeshPtr->verticesIndices.rows() << endl;
+    // cout << polygonMeshPtr->UVIndices.rows() << endl;
+    // cout << polygonMeshPtr->normalsIndices.rows() << endl;
+    // cout << polygonMeshPtr->vertices.rows() << endl;
+    // cout << polygonMeshPtr->UVs.rows() << endl;
+    // cout << polygonMeshPtr->normals.rows() << endl;
+    cout << "Load Polygon Mesh Successfully!" << endl;
     dataSrc.close();
 }
 
@@ -681,8 +523,7 @@ void wh::utils::io::savePolygonMeshObj(const string fileName, PolygonMesh *polyg
     //存入点数据
     for (int i = 0; i < polygonMeshPtr->vertices.rows(); i++)
     {
-        dataDes << "v"
-                << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[0];
+        dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[0];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[1];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << polygonMeshPtr->vertices.row(i)[2] << endl;
     }
@@ -790,8 +631,7 @@ void wh::utils::io::saveSkeletonObj(const string fileName, Skeleton *skeletonPtr
     int pointsSize = skeletonPtr->points.rows();
     for (int i = 0; i < pointsSize; i++)
     { //写入骨架点
-        dataDes << "v"
-                << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[0];
+        dataDes << "v" << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[0];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[1];
         dataDes << " " << setiosflags(ios::fixed) << setprecision(10) << skeletonPtr->points.row(i)[2] << endl;
     }
@@ -799,8 +639,7 @@ void wh::utils::io::saveSkeletonObj(const string fileName, Skeleton *skeletonPtr
     int edgesSize = skeletonPtr->edges.rows();
     for (int i = 0; i < edgesSize; i++)
     {
-        dataDes << "l"
-                << " " << skeletonPtr->edges(i, 0);
+        dataDes << "l" << " " << skeletonPtr->edges(i, 0);
         dataDes << " " << skeletonPtr->edges(i, 1) << endl;
     }
     cout << "Save Skeleton Successfully!" << endl;
