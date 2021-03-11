@@ -24,7 +24,8 @@ namespace wh
             unsigned int VBO;//mesh的VBO
             unsigned int EBO;//mesh的EBO
             bool show;//是否显示
-            glm::vec4 color;//颜色
+            glm::vec4 faceColor;//面片颜色
+            glm::vec4 pointAndLineColor;//点和线的颜色
             glm::mat4 model;//model矩阵
             float scale;//缩放大小
             float transX;//X轴的位移

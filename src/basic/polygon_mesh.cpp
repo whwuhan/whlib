@@ -14,7 +14,7 @@ bool isExist(const unsigned int i, const RowVector3i &vec); //判断vec中是否
 //构造函数
 PolygonMesh::PolygonMesh() : 
 vertices(), verticesIndices(), VAO(0), VBO(0), EBO(0), show(true), 
-color(0.6f, 0.6f, 0.6f, 1.0f), model(1.0f),
+faceColor(0.6f, 0.6f, 0.6f, 1.0f), pointAndLineColor(0.0f, 0.0f, 0.0f, 1.0f), model(1.0f),
 scale(1.0f),
 transX(0.0f),
 transY(0.0f),
@@ -27,7 +27,7 @@ pointSize(5.0f)
     
 PolygonMesh::PolygonMesh(MatrixXd &vertices, MatrixXi &verticesIndices) : 
 vertices(vertices), verticesIndices(verticesIndices), VAO(0), VBO(0), EBO(0), show(true), 
-color(0.6f, 0.6f, 0.6f, 1.0f), model(1.0f),
+faceColor(0.6f, 0.6f, 0.6f, 1.0f), pointAndLineColor(0.0f, 0.0f, 0.0f, 1.0f), model(1.0f),
 scale(1.0f),
 transX(0.0f),
 transY(0.0f),
