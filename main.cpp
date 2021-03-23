@@ -1,26 +1,38 @@
 #include <whlib.h>
 #include <iostream>
-using namespace std;
-using namespace wh::basic;
-using namespace wh::alg;
-using namespace wh::utils::io;
 
 int main()
 {
-    // PointCloud pointcloud;
-    // //读取点云
-    // loadPointCloudObj
-    // (
-    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2.obj",
-    //     &pointcloud
-    // );
-    // Cube boundingBox = pointcloud.getBoundingBox();
+    //读取点云
+    wh::basic::PointCloud pointCloud;
+    wh::utils::io::loadPointCloudObj("model/BirdM2.obj", &pointCloud);
+
+    //获取点云boundingbox，返回一个Cube
+    wh::basic::Cube boundingBox = pointCloud.getBoundingBox();
+    //点云归一化，返回归一化后的boundingbox
+    wh::basic::Cube norPointCloudBoundingBox = pointCloud.getNormalizedPointCloud();
+    //保存boundingbox
+    wh::utils::io::saveCubeWireframeObj("model/boundingBox.obj", &boundingBox);
+    wh::utils::io::saveCubeWireframeObj("model/norPointCloudBoundingBox.obj", &norPointCloudBoundingBox);
+    //保存点云
+    wh::utils::io::savePointCloudObj("model/BirdM3.obj", &pointCloud);
+
+    // //获取点云的体素网格模型并保存
+    float leafSize = 0.02;//体素的大小
+    //获取体素对应的Cube
+    std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(boundingBox, leafSize);
+    //将体素保存为线框
+    wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
+    //将体素保存为mesh
+    wh::utils::io::saveTriCubeMeshesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
+    
+    // Cube boundingBox = pointCloud.getBoundingBox();
     // double leafSize = 0.02;
     // //获取点云体素
     // set<Cube> pointCloudVoxel =
-    // pointcloud.voxelization(boundingBox, leafSize);
+    // pointCloud.voxelization(boundingBox, leafSize);
     
-    // vector<int> voxelIndex = pointcloud.getVoxelIndex(boundingBox,leafSize);
+    // vector<int> voxelIndex = pointCloud.getVoxelIndex(boundingBox,leafSize);
     // vector<Cube> cubeVoxel = boundingBox.voxelization(leafSize);
     // vector<int> voxelIndexTemp = voxelIndex;
     // VoxelAlg::getSolidVoxelIndex(boundingBox, voxelIndex);
@@ -46,12 +58,11 @@ int main()
     //     pointCloudVoxel
     // );
 
-    // PolygonMesh mesh;
-    // loadPolygonMeshObj
-    // (
-    //     "/Users/wuhan/wuhan/CodingSpace/Coolender/3rdsrc/whlib/model/BirdM2_vox_0.02_2.obj",
-    //     &mesh
-    // );
+    // //读入多边形网格
+    // wh::basic::PolygonMesh mesh;
+    // wh::utils::io::loadPolygonMeshObj("model/BirdM2_vox_0.02_2.obj", &mesh);
+    // //存放多边形网格
+    // wh::utils::io::savePolygonMeshObj("model/BirdM2_vox_0.02_3.obj", &mesh);
     
     // mesh.triMeshSubdivision();
 
@@ -87,10 +98,15 @@ int main()
     //     boundingBoxVoxel
     // );
 
-    PolygonMesh mesh;
-    loadPolygonMeshObj("model/african_head.obj", &mesh);
-    // cout << mesh.vertices << endl;
-    // cout << mesh.verticesIndices << endl;
+    // PolygonMesh mesh;
+    // loadPolygonMeshObj("model/african_head.obj", &mesh);
+
     //savePolygonMeshObj("model/BirdMeshTest.obj", &mesh);
+
+    //读取骨架线
+    // wh::basic::Skeleton skel;
+    // wh::utils::io::loadSkeletonObj("model/tree4_84336_nor_bb_wf_vox_0.05.obj", &skel);
+    // // //存放骨架
+    // wh::utils::io::saveSkeletonObj("model/tree4_84336_nor_bb_wf_vox_0.05.obj", &skel);
     return 0;
 }

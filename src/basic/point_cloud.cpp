@@ -251,11 +251,11 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
         
     //cube的左下后方原点（cube的局部坐标系）
     RowVector3d origin = boundingBox.vertices.row(0);
+    
     //体素的位置
     int xIndex = 0;
     int yIndex = 0;
     int zIndex = 0;
-
     for (int i = 0; i < points.rows(); i++)
     {
         RowVector3d index = (points.row(i) - origin) / leafSize; //获取体素位置

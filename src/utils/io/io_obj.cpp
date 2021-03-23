@@ -468,9 +468,9 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
                 polygonMeshPtr->normals(normalsAmount, 2) = stof(lineSplit[3]);
                 normalsAmount++;
             }
-            //面片
-            if(lineSplit[0] == "f")
-            {
+            //面片包含 vertex/uv/normals
+            if(lineSplit[0] == "f" && split(lineSplit[1], "/").size() == 3 )
+            {   
                 vector<string> indicesSplit1 = split(lineSplit[1], "/");
                 vector<string> indicesSplit2 = split(lineSplit[2], "/");
                 vector<string> indicesSplit3 = split(lineSplit[3], "/");
@@ -487,6 +487,12 @@ void wh::utils::io::loadPolygonMeshObj(const string fileName, PolygonMesh *polyg
                 polygonMeshPtr->normalsIndices(facesAmount, 1) = stoi(indicesSplit2[2]);
                 polygonMeshPtr->normalsIndices(facesAmount, 2) = stoi(indicesSplit3[2]);
                 facesAmount++;
+            }
+            else if(lineSplit[0] == "f")//面片只包含vertex index
+            {
+                polygonMeshPtr->verticesIndices(facesAmount, 0) = stoi(lineSplit[1]);
+                polygonMeshPtr->verticesIndices(facesAmount, 1) = stoi(lineSplit[2]);
+                polygonMeshPtr->verticesIndices(facesAmount, 2) = stoi(lineSplit[3]);
             }
         }
     }
