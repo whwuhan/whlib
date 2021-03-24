@@ -160,15 +160,21 @@ wh::utils::io::savePointCloudObj("model/BirdM3.obj", &pointCloud);
 
 // //获取点云的体素网格模型并保存
 float leafSize = 0.02;//体素的大小
-//获取体素对应的Cube
-std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(boundingBox, leafSize);
+//获取体素对应的Cube 函数参数：1点云对应bounding box，体素划分的大小
+std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(norPointCloudBoundingBox, leafSize);
 //将体素保存为线框
-wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
+wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxelWireframe.obj", pointCloudVoxel);
 //将体素保存为mesh
-wh::utils::io::saveTriCubeMeshesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
+wh::utils::io::saveTriCubeMeshesObj("model/pointCloudVoxelMesh.obj", pointCloudVoxel);
 ```
 
+原始点云
 
+![whlib](img/tree_point_cloud.png)
+
+体素化后的mesh:
+
+![whlib](img/vox_mesh.png)
 
 ## 其他
 
