@@ -224,28 +224,24 @@ Cube PointCloud::getBoundingBox()
 }
 
 //体素化点云
-set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize)
-{
+set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize){
     set<Cube> res;
     //体素化boundingBox，
     vector<Cube> voxel = boundingBox.voxelization(leafSize);
-
+    cout << voxel.size() << endl;
     //获取xyz方向细分的个数
     int xAmount = boundingBox.x / leafSize;
     int yAmount = boundingBox.y / leafSize;
     int zAmount = boundingBox.z / leafSize;
 
     //一个点恰好在boundingBox的一个面上，不再增加细分cube的个数，否则增加一个cube的长度
-    if (xAmount < boundingBox.x / leafSize)
-    {
+    if (xAmount < boundingBox.x / leafSize){
         xAmount++;
     }
-    if (yAmount < boundingBox.y / leafSize)
-    {
+    if (yAmount < boundingBox.y / leafSize){
         yAmount++;
     }
-    if (zAmount < boundingBox.z / leafSize)
-    {
+    if (zAmount < boundingBox.z / leafSize){
         zAmount++;
     }
         
@@ -256,37 +252,36 @@ set<Cube> PointCloud::voxelization(wh::basic::Cube &boundingBox, double leafSize
     int xIndex = 0;
     int yIndex = 0;
     int zIndex = 0;
-    for (int i = 0; i < points.rows(); i++)
-    {
+    cout << 2 << endl;
+    for (int i = 0; i < points.rows(); i++){
         RowVector3d index = (points.row(i) - origin) / leafSize; //获取体素位置
         xIndex = index[0];
         yIndex = index[1];
         zIndex = index[2];
         //计算体素在vector中的位置
         //边界位置处理（恰好在boundingBox的一个面上）
-        if (xIndex == xAmount)
-        {
+        if (xIndex == xAmount){
             xIndex--;
         }
-        if (yIndex == yAmount)
-        {
+        if (yIndex == yAmount){
             yIndex--;
         }
-        if (zIndex == zAmount)
-        {
+        if (zIndex == zAmount){
             zIndex--;
         }
         //获取体素的位置
         int voxIndex = zIndex * xAmount * yAmount + yIndex * xAmount + xIndex;
+        cout << voxIndex << endl;
         res.insert(voxel[voxIndex]);
+        
     }
+    
     return res;
 }
 
 //获取点云体素在cube体素中的位置 vector里面是0表示当前cube体素不在点云体素中
 //1表示在点云的体素中
-vector<int> PointCloud::getVoxelIndex(wh::basic::Cube &boundingBox, double leafSize)
-{
+vector<int> PointCloud::getVoxelIndex(wh::basic::Cube &boundingBox, double leafSize){
     //体素化boundingBox，
     vector<Cube> voxel = boundingBox.voxelization(leafSize);
 
@@ -296,16 +291,13 @@ vector<int> PointCloud::getVoxelIndex(wh::basic::Cube &boundingBox, double leafS
     int zAmount = boundingBox.z / leafSize;
 
     //一个点恰好在boundingBox的一个面上，不再增加细分cube的个数，否则增加一个cube的长度
-    if (xAmount < boundingBox.x / leafSize)
-    {
+    if (xAmount < boundingBox.x / leafSize){
         xAmount++;
     }
-    if (yAmount < boundingBox.y / leafSize)
-    {
+    if (yAmount < boundingBox.y / leafSize){
         yAmount++;
     }
-    if (zAmount < boundingBox.z / leafSize)
-    {
+    if (zAmount < boundingBox.z / leafSize){
         zAmount++;
     }
     

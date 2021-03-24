@@ -1,8 +1,7 @@
 #include <whlib.h>
 #include <iostream>
 
-int main()
-{
+int main(){
     //读取点云
     wh::basic::PointCloud pointCloud;
     wh::utils::io::loadPointCloudObj("model/BirdM2.obj", &pointCloud);
@@ -19,8 +18,8 @@ int main()
 
     // //获取点云的体素网格模型并保存
     float leafSize = 0.02;//体素的大小
-    //获取体素对应的Cube
-    std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(boundingBox, leafSize);
+    //获取体素对应的Cube 函数参数：1点云对应bounding box，体素划分的大小
+    std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(norPointCloudBoundingBox, leafSize);
     //将体素保存为线框
     wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
     //将体素保存为mesh
