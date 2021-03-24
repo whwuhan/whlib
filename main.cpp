@@ -21,9 +21,9 @@ int main(){
     //获取体素对应的Cube 函数参数：1点云对应bounding box，体素划分的大小
     std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(norPointCloudBoundingBox, leafSize);
     //将体素保存为线框
-    wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
+    wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxelWireframe.obj", pointCloudVoxel);
     //将体素保存为mesh
-    wh::utils::io::saveTriCubeMeshesObj("model/pointCloudVoxel.obj", pointCloudVoxel);
+    wh::utils::io::saveTriCubeMeshesObj("model/pointCloudVoxelMesh.obj", pointCloudVoxel);
     
     // Cube boundingBox = pointCloud.getBoundingBox();
     // double leafSize = 0.02;
