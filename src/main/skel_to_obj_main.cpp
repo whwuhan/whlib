@@ -27,7 +27,7 @@ int main()
         {
             vector<Curve<Point3d> > curves;
             io::loadCurvesSkel("C:\\Users\\Administrator\\Desktop\\Alan\\skel\\" + line, &curves);
-            io::saveCurvesObj("C:\\Users\\Administrator\\Desktop\\Alan\\skel\\" + lineSplit[0] + ".obj", &curves);
+            io::save_curves_obj("C:\\Users\\Administrator\\Desktop\\Alan\\skel\\" + lineSplit[0] + ".obj", &curves);
         }
     }
     fileList.close();

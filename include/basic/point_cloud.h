@@ -25,65 +25,61 @@ namespace wh{
             glm::vec4 color;//颜色
             glm::mat4 model;//model矩阵
             float scale;//缩放大小
-            float transX;//X轴的位移
-            float transY;//Y轴的位移
-            float transZ;//Z轴的位移
-            float rotateX;//绕X轴旋转
-            float rotateY;//绕Y轴旋转
-            float rotateZ;//绕Z轴旋转
-            float pointSize;//点的大小
-            bool changePointSize;//是否改变了点云的pointSize
-            unsigned int pointModelMatricesBuffer;//点云存放的每个点的平移矩阵的buffer
+            float trans_x;//X轴的位移
+            float trans_y;//Y轴的位移
+            float trans_z;//Z轴的位移
+            float rotate_x;//绕X轴旋转
+            float rotate_y;//绕Y轴旋转
+            float rotate_z;//绕Z轴旋转
+            float point_size;//点的大小
+            bool change_point_size;//是否改变了点云的point_size
+            unsigned int point_model_matrices_buffer;//点云存放的每个点的平移矩阵的buffer
             
             //构造函数
             PointCloud();
-            PointCloud(const unsigned int size, const int pointSize = POINT3D_SIZE);
+            PointCloud(const unsigned int size, const int point_size = POINT3D_SIZE);
             PointCloud(const Eigen::MatrixXd& points);
 
             //重载运算符
-            PointCloud operator+(const PointCloud& pointCloud);
-            PointCloud operator-(const PointCloud& pointCloud);
-            PointCloud operator*(const Eigen::MatrixXd transformMatrix);
+            PointCloud operator+(const PointCloud& point_cloud);
+            PointCloud operator-(const PointCloud& point_cloud);
+            PointCloud operator*(const Eigen::MatrixXd transform_matrix);
             Point3d operator[](const unsigned int index);
-            friend std::ostream& operator<<(std::ostream& ost, const PointCloud pointCloud);
+            friend std::ostream& operator<<(std::ostream& ost, const PointCloud point_cloud);
 
             //改变维度，注意resize()会改变矩阵内部数据
             void resize(const unsigned int rows, const unsigned int cols);
 
             //如果维度比原有的维度小，那么数据不改变，相当于裁剪矩阵，如果扩张了维度，数据会是随机值
-            void conservativeResize (const unsigned int rows, const unsigned int cols);
+            void conservative_resize (const unsigned int rows, const unsigned int cols);
 
             //获取点云几何中心
-            Eigen::RowVector3d getGeometricCenter();
+            Eigen::RowVector3d get_geometric_center();
 
             //将点云放回原点
-            void getCenteredPointCloud();
+            void get_centered_point_cloud();
 
             //归一化点云
-            wh::basic::Cube getNormalizedPointCloud();
+            wh::basic::Cube get_normalized_point_cloud();
 
             //点云转化为vector存储
-            std::vector<Point3d> pointsToVector();
+            std::vector<Point3d> points_to_vector();
 
             //点云体素化
-            std::set<wh::basic::Cube> voxelization(wh::basic::Cube& boundingBox,double leafSize);
+            std::set<wh::basic::Cube> voxelization(wh::basic::Cube& bounding_box,double leaf_size);
             //获取点云体素在cube体素中的位置 vector里面是0表示当前cube体素不在点云体素中
             //1表示在点云的体素中
-            std::vector<int> getVoxelIndex(wh::basic::Cube& boundingBox,double leafSize);
+            std::vector<int> get_voxel_index(wh::basic::Cube& bounding_box,double leaf_size);
 
             //获取Boundingbox
-            wh::basic::Cube getBoundingBox();
-
-            //获取C++原生数据
-            // float* getGLData();
-
+            wh::basic::Cube get_bounding_box();
         } POINT_CLOUD;
         //注意这里要声明友元函数，结构体里面不是声明这个函数，而是说明这个是友元函数
-        std::ostream& operator<<(std::ostream& ost, const PointCloud pointCloud);
+        std::ostream& operator<<(std::ostream& ost, const PointCloud point_cloud);
 
         //体素化点云
         typedef struct VoxelPointCloud{
 
         } VOXEL_POINT_CLOUD;
-    }
-}
+    }// end namespace basic
+}// end namespace wh
