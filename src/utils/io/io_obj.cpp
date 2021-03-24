@@ -70,10 +70,10 @@ void wh::utils::io::savePointCloudObj(const string fileName, const struct PointC
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -100,10 +100,10 @@ void wh::utils::io::saveTriCubeMeshObj(const string fileName, Cube *cubePtr)
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -145,10 +145,10 @@ void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const vector<Cub
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -197,10 +197,10 @@ void wh::utils::io::saveTriCubeMeshesObj(const string fileName, const set<Cube> 
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -256,10 +256,10 @@ void wh::utils::io::saveCubeWireframeObj(const string fileName, Cube *cubePtr)
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -300,10 +300,10 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const vector<Cu
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -349,10 +349,10 @@ void wh::utils::io::saveCubeWireframesObj(const string fileName, const set<Cube>
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -522,10 +522,10 @@ void wh::utils::io::savePolygonMeshObj(const string fileName, PolygonMesh *polyg
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
@@ -631,10 +631,10 @@ void wh::utils::io::saveSkeletonObj(const string fileName, Skeleton *skeletonPtr
 
     //获取当地时间
     time_t now = time(0);
-    string dateTime(ctime(&now));
+    string date_time(ctime(&now));
 
     //注意时间后面自带换行
-    data_des << "# " << dateTime; //写入存储时间
+    data_des << "# " << date_time; //写入存储时间
 
     //存储对象名
     vector<string> fileNameSplit = wh::utils::split(fileName, "/.\\");
