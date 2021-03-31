@@ -149,10 +149,10 @@ Cube PointCloud::get_normalized_point_cloud(){
     RowVector3d min_xyz = points.colwise().minCoeff(); //xyz坐标的最小值
 
     //包围盒中心
-    RowVector3d boundingBoxCenter = (max_xyz + min_xyz) / 2.0;
+    RowVector3d bounding_box_center = (max_xyz + min_xyz) / 2.0;
     //将点云中心放置到坐标原点
     for (int i = 0; i < size; i++){
-        points.row(i) = points.row(i) - boundingBoxCenter;
+        points.row(i) = points.row(i) - bounding_box_center;
     }
 
     //bounding_box的xyz轴上的边长
@@ -191,11 +191,11 @@ Cube PointCloud::get_bounding_box(){
     RowVector3d min_xyz = points.colwise().minCoeff(); //xyz坐标的最小值
 
     //包围盒中心
-    RowVector3d boundingBoxCenter = (max_xyz + min_xyz) / 2.0;
+    RowVector3d bounding_box_center = (max_xyz + min_xyz) / 2.0;
     //bounding_box的xyz轴上的边长
     RowVector3d bounding_box_side_length = max_xyz - min_xyz;
 
-    Cube bounding_box(boundingBoxCenter, bounding_box_side_length[0], bounding_box_side_length[1], bounding_box_side_length[2]);
+    Cube bounding_box(bounding_box_center, bounding_box_side_length[0], bounding_box_side_length[1], bounding_box_side_length[2]);
     return bounding_box;
 }
 
@@ -292,16 +292,13 @@ vector<int> PointCloud::get_voxel_index(wh::basic::Cube &bounding_box, double le
         z_index = index[2];
         //计算体素在vector中的位置
         //边界位置处理（恰好在bounding_box的一个面上）
-        if (x_index == x_amount)
-        {
+        if (x_index == x_amount){
             x_index--;
         }
-        if (y_index == y_amount)
-        {
+        if (y_index == y_amount){
             y_index--;
         }
-        if (z_index == z_amount)
-        {
+        if (z_index == z_amount){
             z_index--;
         }
         //获取体素的位置
