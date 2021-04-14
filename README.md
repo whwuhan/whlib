@@ -56,9 +56,9 @@ make -j8 STATIC_LIB=TRUE //编译成静态库
 int main(){
   //读取点云
   wh::basic::PointCloud point_cloud;
-  wh::utils::io::load_point_CloudObj("model/BirdM2.obj", &point_cloud);
+  wh::utils::io::load_point_cloud_obj("model/BirdM2.obj", &point_cloud);
   //保存点云
-  wh::utils::io::savePointCloudObj("model/BirdM3.obj", &point_cloud);
+  wh::utils::io::save_point_cloud_obj("model/BirdM3.obj", &point_cloud);
   return 0;
 }
 
@@ -77,9 +77,9 @@ Save Point Cloud Successfully!
 int main(){
   //读入多边形网格
   wh::basic::PolygonMesh mesh;
-  wh::utils::io::loadPolygonMeshObj("model/BirdM2_vox_0.02_2.obj", &mesh);
+  wh::utils::io::load_polygon_mesh_obj("model/BirdM2_vox_0.02_2.obj", &mesh);
   //存放多边形网格
-  wh::utils::io::savePolygonMeshObj("model/BirdM2_vox_0.02_3.obj", &mesh);
+  wh::utils::io::save_polygon_mesh_obj("model/BirdM2_vox_0.02_3.obj", &mesh);
   return 0;
 }
 
@@ -103,9 +103,9 @@ Save Polygon Mesh Successfully!
 int main(){
   //读取骨架线
   wh::basic::Skeleton skel;
-  wh::utils::io::loadSkeletonObj("model/tree4_84336_nor_bb_wf_vox_0.05.obj", &skel);
+  wh::utils::io::load_skeleton_obj("model/tree4_84336_nor_bb_wf_vox_0.05.obj", &skel);
   // //存放骨架
-  wh::utils::io::saveSkeletonObj("model/tree4_84336_nor_bb_wf_vox_0.05.obj", &skel);
+  wh::utils::io::save_skeleton_obj("model/tree4_84336_nor_bb_wf_vox_0.05.obj", &skel);
   return 0;
 }
 
@@ -123,22 +123,22 @@ Save Skeleton Successfully!
 
 ## 点云常用操作
 
-### 获取点云boundingbox，归一化
+### 获取点云bounding_box，归一化
 
 ```C++
 //读取点云
 wh::basic::PointCloud point_cloud;
 wh::utils::io::load_point_cloud_obj("model/BirdM2.obj", &point_cloud);
 
-//获取点云boundingbox，返回一个Cube
-wh::basic::Cube boundingBox = point_cloud.getBoundingBox();
-//点云归一化，返回归一化后的boundingbox
-wh::basic::Cube norPointCloudBoundingBox = point_cloud.getNormalizedPointCloud();
-//保存boundingbox
-wh::utils::io::saveCubeWireframeObj("model/boundingBox.obj", &boundingBox);
-wh::utils::io::saveCubeWireframeObj("model/norPointCloudBoundingBox.obj", &norPointCloudBoundingBox);
+//获取点云bounding_box，返回一个Cube
+wh::basic::Cube bounding_box = point_cloud.get_bounding_box();
+//点云归一化，返回归一化后的bounding_box
+wh::basic::Cube nor_point_cloud_bounding_box = point_cloud.get_normalized_point_cloud();
+//保存bounding_box
+wh::utils::io::save_cube_wireframe_obj("model/bounding_box.obj", &bounding_box);
+wh::utils::io::save_cube_wireframe_obj("model/nor_point_cloud_bounding_box.obj", &nor_point_cloud_bounding_box);
 //保存点云
-wh::utils::io::savePointCloudObj("model/BirdM3.obj", &point_cloud);
+wh::utils::io::save_point_cloud_obj("model/BirdM3.obj", &point_cloud);
 ```
 
 ### 获取点云的体素网格模型并保存
@@ -146,40 +146,30 @@ wh::utils::io::savePointCloudObj("model/BirdM3.obj", &point_cloud);
 ```C++
 //读取点云
 wh::basic::PointCloud point_cloud;
-wh::utils::io::load_point_CloudObj("model/BirdM2.obj", &point_cloud);
+wh::utils::io::load_point_cloud_obj("model/BirdM2.obj", &point_cloud);
 
-//获取点云boundingbox，返回一个Cube
-wh::basic::Cube boundingBox = point_cloud.getBoundingBox();
-//点云归一化，返回归一化后的boundingbox
-wh::basic::Cube norPointCloudBoundingBox = point_cloud.getNormalizedPointCloud();
-//保存boundingbox
-wh::utils::io::saveCubeWireframeObj("model/boundingBox.obj", &boundingBox);
-wh::utils::io::saveCubeWireframeObj("model/norPointCloudBoundingBox.obj", &norPointCloudBoundingBox);
+//获取点云bounding_box，返回一个Cube
+wh::basic::Cube bounding_box = point_cloud.get_bounding_box();
+//点云归一化，返回归一化后的bounding_box
+wh::basic::Cube nor_point_cloud_bounding_box = point_cloud.get_normalized_point_cloud();
+//保存bounding_box
+wh::utils::io::save_cube_wireframe_obj("model/bounding_box.obj", &bounding_box);
+wh::utils::io::save_cube_wireframe_obj("model/nor_point_cloud_bounding_box.obj", &nor_point_cloud_bounding_box);
 //保存点云
-wh::utils::io::savePointCloudObj("model/BirdM3.obj", &point_cloud);
+wh::utils::io::save_point_cloud_obj("model/BirdM3.obj", &point_cloud);
 
-// //获取点云的体素网格模型并保存
-float leafSize = 0.02;//体素的大小
-<<<<<<< HEAD
-//获取体素对应的Cube 函数参数：1点云对应bounding box，体素划分的大小
-std::set<wh::basic::Cube> pointCloudVoxel = pointCloud.voxelization(norPointCloudBoundingBox, leafSize);
-//将体素保存为线框
-wh::utils::io::saveCubeWireframesObj("model/pointCloudVoxelWireframe.obj", pointCloudVoxel);
-//将体素保存为mesh
-wh::utils::io::saveTriCubeMeshesObj("model/pointCloudVoxelMesh.obj", pointCloudVoxel);
-=======
+//获取点云的体素网格模型并保存
+float leaf_size = 0.02;//体素的大小
 //获取体素对应的Cube
-std::set<wh::basic::Cube> point_cloudVoxel = point_cloud.voxelization(boundingBox, leafSize);
+std::set<wh::basic::Cube> point_cloud_voxel = point_cloud.voxelization(nor_point_cloud_bounding_box, leaf_size);
 //将体素保存为线框
-wh::utils::io::saveCubeWireframesObj("model/point_cloudVoxel.obj", point_cloudVoxel);
+wh::utils::io::save_cube_wireframes_obj("model/point_cloud_voxel.obj", point_cloud_voxel);
 //将体素保存为mesh
-wh::utils::io::saveTriCubeMeshesObj("model/point_cloudVoxel.obj", point_cloudVoxel);
->>>>>>> dev_format
+wh::utils::io::save_tri_cube_meshes_obj("model/point_cloud_voxel.obj", point_cloud_voxel);
 ```
 
 原始点云
 
-<<<<<<< HEAD
 ![whlib](img/tree_point_cloud.png)
 
 体素化后的mesh:
@@ -194,9 +184,7 @@ wh::utils::io::saveTriCubeMeshesObj("model/point_cloudVoxel.obj", point_cloudVox
 
   * 所有文件（包括头文件）命名使用下划线命名法，例如point_cloud（除某种算法的缩写使用大写，例如LOP）；
 
-  * 所有成员变量（包括成员方法使用）命名使用小驼峰命名法，例如createUnorderedEdges();
+  * 所有成员变量（包括成员方法使用）命名使用下划线命名法，例如create_unordered_edges();
 
-=======
->>>>>>> dev_format
     
 
