@@ -5,12 +5,9 @@
 #include <fstream>
 #include <basic/curve.h>
 #include <utils/string_lib.h>
-namespace wh
-{
-    namespace utils
-    {
-        namespace io
-        {
+namespace wh{
+    namespace utils{
+        namespace io{
             //======声明======
             //读取skel文件中的骨架线
             template <typename T>
@@ -72,7 +69,7 @@ namespace wh
                 }
                 dataSrc.close();
             }
-        } // namespace io
-    } // namespace utils
-} // namespace wh
+        } // end namespace io
+    } // end namespace utils
+} // end namespace wh
 #endif

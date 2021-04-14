@@ -3,11 +3,9 @@
 #include <Eigen/Dense>
 namespace wh
 {
-    namespace basic
-    {
+    namespace basic{
         //三维点
-        typedef struct Point3d
-        {
+        typedef struct Point3d{
             //未来可能删除xyz
             double x;
             double y;
@@ -27,8 +25,8 @@ namespace wh
             friend Point3d operator*(Point3d &point3d, double coefficient);
             friend Point3d operator*(double coefficient, Point3d &point3d);
             //同步方法未来可能随xyz一同删除
-            void synXYZToData(); //xyz和data同步
-            void synDataToXYZ(); //data和xyz同步
+            void syn_xyz_to_data(); //xyz和data同步
+            void syn_data_to_xyz(); //data和xyz同步
 
             //归一化
             Point3d normalize();
@@ -37,5 +35,5 @@ namespace wh
         std::ostream &operator<<(std::ostream &ost, const Point3d point3d);
         Point3d operator*(Point3d &point3d, double coefficient);
         Point3d operator*(double coefficient, Point3d &point3d);
-    } // namespace basic
-} // namespace wh
+    } // end namespace basic
+} // end namespace wh

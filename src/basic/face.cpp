@@ -5,67 +5,55 @@
 using namespace wh::basic;
 using namespace std;
 
-Face::Face() : firVerIndex(0), secVerIndex(0), thdVerIndex(0)
-{
-}
+Face::Face() : fir_ver_index(0), sec_ver_index(0), thd_ver_index(0){}
 
-Face::Face(unsigned int firVerIndex, unsigned int secVerIndex, unsigned int thdVerIndex)
-{
+Face::Face(unsigned int fir_ver_index, unsigned int sec_ver_index, unsigned int thd_ver_index){
     vector<unsigned int> indices(3);
-    indices[0] = firVerIndex;
-    indices[1] = secVerIndex;
-    indices[2] = thdVerIndex;
+    indices[0] = fir_ver_index;
+    indices[1] = sec_ver_index;
+    indices[2] = thd_ver_index;
     sort(indices.begin(), indices.end());
-    firVerIndex = indices[0];
-    secVerIndex = indices[1];
-    thdVerIndex = indices[2];
+    fir_ver_index = indices[0];
+    sec_ver_index = indices[1];
+    thd_ver_index = indices[2];
 }
 
-Face::Face(Eigen::RowVector3i faceIndex)
-{
+Face::Face(Eigen::RowVector3i face_index){
     vector<unsigned int> indices(3);
-    indices[0] = faceIndex[0];
-    indices[1] = faceIndex[1];
-    indices[2] = faceIndex[2];
+    indices[0] = face_index[0];
+    indices[1] = face_index[1];
+    indices[2] = face_index[2];
     sort(indices.begin(), indices.end());
-    firVerIndex = indices[0];
-    secVerIndex = indices[1];
-    thdVerIndex = indices[2];
+    fir_ver_index = indices[0];
+    sec_ver_index = indices[1];
+    thd_ver_index = indices[2];
 }
 
-bool Face::operator<(const Face &face) const
-{
-    if (firVerIndex < face.firVerIndex)
-    {
+bool Face::operator<(const Face &face) const{
+    if (fir_ver_index < face.fir_ver_index){
         return true;
     }
-    else if (firVerIndex > face.firVerIndex)
-    {
+    else if (fir_ver_index > face.fir_ver_index){
         return false;
     }
 
-    if (secVerIndex < face.secVerIndex)
-    {
+    if (sec_ver_index < face.sec_ver_index){
         return true;
     }
-    else if (secVerIndex > face.secVerIndex)
-    {
+    else if (sec_ver_index > face.sec_ver_index){
         return false;
     }
 
-    if (thdVerIndex < face.thdVerIndex)
-    {
+    if (thd_ver_index < face.thd_ver_index){
         return true;
     }
-    else if (thdVerIndex > face.thdVerIndex)
-    {
+    else if (thd_ver_index > face.thd_ver_index){
         return false;
     }
     return false;
 }
 
-std::ostream &wh::basic::operator<<(std::ostream &ost, const wh::basic::Face face)
-{
-    ost << face.firVerIndex << " " << face.secVerIndex << " " << face.thdVerIndex;
+std::ostream &wh::basic::operator<<(std::ostream &ost, const wh::basic::Face face){
+    ost << face.fir_ver_index << " " << face.sec_ver_index << " " << face.thd_ver_index;
     return ost;
 }
