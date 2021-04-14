@@ -22,7 +22,7 @@ namespace wh{
             unsigned int EBO;//mesh的EBO
             bool show;//是否显示
             glm::vec4 face_color;//面片颜色
-            glm::vec4 point_and_line_color;//点和线的颜色
+            glm::vec4 point_line_color;//点和线的颜色
             glm::mat4 model;//model矩阵
             float scale;//缩放大小
             float trans_x;//X轴的位移
@@ -32,11 +32,6 @@ namespace wh{
             float rotate_y;//绕Y轴旋转
             float rotate_z;//绕Z轴旋转
             float point_size;//点的大小
-
-
-
-
-
 
             //std::set<wh::basic::Edge> edges;//边集合
             //构造函数
