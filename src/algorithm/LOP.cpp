@@ -18,18 +18,21 @@ iter(iter), amount(amount), h(h), mu(mu){}
 LOP::LOP() {}
 
 LOP::LOP(string &file_name, MatrixXd &X, MatrixXd &P, LOP_PARAMETERS &parameters) : 
-file_name(file_name), X(X), P(P), parameters(parameters){
+file_name(file_name), X(X), P(P), parameters(parameters)
+{
     PointCloud point_cloud;
     load_point_cloud_obj(file_name, &point_cloud);
     P = point_cloud.points;
 }
 
-void LOP::set_file_name(const string file_name){
+void LOP::set_file_name(const string file_name)
+{
     this->file_name = file_name;
 }
 
 void LOP::init(){
-    if (file_name == ""){
+    if (file_name == "")
+    {
         cout << "init() 请先设置原始点云路径" << endl;
         return;
     }
@@ -40,7 +43,8 @@ void LOP::init(){
     load_point_cloud_obj(file_name, &point_cloud);
     P = point_cloud.points;
 
-    if (P.rows() != 0 && P.cols() != 0){
+    if (P.rows() != 0 && P.cols() != 0)
+    {
         X = MatrixXd::Random(parameters.amount, P.cols()) * P.maxCoeff();
         string rand_save_name = out_file_name + "_rand.obj";
         cout << "随机初始化点云保存到文件:" << rand_save_name << endl;
@@ -53,25 +57,31 @@ void LOP::init(){
         cout << "初始迭代点云保存到文件:" << init_save_name << endl;
         PointCloud init_point_cloud(X);
         save_point_cloud_obj(init_save_name, &init_point_cloud);
-    }else{
+    }
+    else
+    {
         cerr << "init() LOP初始化失败，没有获取原始点云" << endl;
     }
 }
 
-void LOP::run(){
-    if (P.rows() == 0 || P.cols() == 0){
+void LOP::run()
+{
+    if (P.rows() == 0 || P.cols() == 0)
+    {
         cerr << "run() 没有原始点云" << endl;
         return;
     }
 
-    if (X.rows() == 0 || X.cols() == 0){
+    if (X.rows() == 0 || X.cols() == 0)
+    {
         cerr << "run() 没有使用init()初始化参数" << endl;
         return;
     }
 
     auto file_name_split = split(file_name, "./\\");
     string out_file_name = file_name_split[file_name_split.size() - 2];
-    for (int iter = 0; iter < parameters.iter; iter++){
+    for (int iter = 0; iter < parameters.iter; iter++)
+    {
         cout << "第" << iter + 1 << "次迭代开始" << endl;
         X = LOP_outer(X, P);
         string save_name = out_file_name + "_iter_" + to_string(iter + 1) + ".obj";
@@ -81,22 +91,27 @@ void LOP::run(){
     }
 }
 
-double LOP::theta(double r){
+double LOP::theta(double r)
+{
     return exp((-pow(r, 2)) / pow(parameters.h / 4, 2));
 }
 
-double LOP::eta(double r){
+double LOP::eta(double r)
+{
     return 1 / 3 * pow(r, 3);
 }
 
-MatrixXd LOP::get_x_prime1(){
+MatrixXd LOP::get_x_prime1()
+{
     int x_size = X.rows();
     int p_size = P.rows();
     RowVector3d res_top;
     double res_bottom = 0.0;
     MatrixXd X_Prime(X.rows(), X.cols());
-    for (int i = 0; i < x_size; i++){
-        for (int j = 0; j < p_size; j++){
+    for (int i = 0; i < x_size; i++)
+    {
+        for (int j = 0; j < p_size; j++)
+        {
             res_top += P.row(j) * theta((P.row(j) - X.row(i)).norm());
             res_bottom += theta((P.row(j) - X.row(i)).norm());
         }
@@ -108,42 +123,51 @@ MatrixXd LOP::get_x_prime1(){
     return X_Prime;
 }
 
-double LOP::get_alpha(const RowVector3d &x_prime, const RowVector3d &p){
+double LOP::get_alpha(const RowVector3d &x_prime, const RowVector3d &p)
+{
     double res_top = theta((x_prime - p).norm());
     double res_bottom = (x_prime - p).norm();
     // cout<<"get_alpha"<<endl;
     return res_top / res_bottom;
 }
 
-double LOP::get_beta(const RowVector3d &x, const RowVector3d &x_prime){
+double LOP::get_beta(const RowVector3d &x, const RowVector3d &x_prime)
+{
     double res_top = theta((x_prime - x).norm());
     double res_bottom = (x_prime - x).norm();
     // cout<<"get_beta"<<endl;
     return res_top * res_bottom;
 }
 
-RowVector3d LOP::LOP_inner(const RowVector3d &x_prime){
+RowVector3d LOP::LOP_inner(const RowVector3d &x_prime)
+{
     RowVector3d fir;
     RowVector3d sec;
     int x_size = X.rows();
     int p_size = P.rows();
     // cout<<"get_alpha"<<endl;
     double alphaTotal = 0.0;
-    for (int j = 0; j < p_size; j++){
+    for (int j = 0; j < p_size; j++)
+    {
         alphaTotal += get_alpha(x_prime, P.row(j));
     }
-    for (int j = 0; j < p_size; j++){
+    for (int j = 0; j < p_size; j++)
+    {
         fir += (P.row(j) * get_alpha(x_prime, P.row(j))) / alphaTotal;
     }
 
     double beta_total = 0.0;
-    for (int i = 0; i < x_size; i++){
-        if (x_prime != X.row(i)){
+    for (int i = 0; i < x_size; i++)
+    {
+        if (x_prime != X.row(i))
+        {
             beta_total += get_beta(X.row(i), x_prime);
         }
     }
-    for (int i = 0; i < x_size; i++){
-        if (x_prime != X.row(i)){
+    for (int i = 0; i < x_size; i++)
+    {
+        if (x_prime != X.row(i))
+        {
             sec += (x_prime - X.row(i)) * get_beta(X.row(i), x_prime) / beta_total;
         }
     }
@@ -151,10 +175,12 @@ RowVector3d LOP::LOP_inner(const RowVector3d &x_prime){
     return fir + parameters.mu * sec;
 }
 
-MatrixXd LOP::LOP_outer(const MatrixXd &X, const MatrixXd &P){
+MatrixXd LOP::LOP_outer(const MatrixXd &X, const MatrixXd &P)
+{
     int x_size = X.rows();
     MatrixXd X_prime_K_add_one(X.rows(), X.cols());
-    for (int i = 0; i < x_size; i++){
+    for (int i = 0; i < x_size; i++)
+    {
         X_prime_K_add_one.row(i) = LOP_inner(X.row(i));
     }
     return X_prime_K_add_one;

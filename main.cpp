@@ -1,7 +1,8 @@
 #include <whlib.h>
 #include <iostream>
 
-// int main(){
+// int main()
+// {
 //     //读取点云
 //     wh::basic::PointCloud point_cloud;
 //     wh::utils::io::load_point_cloud_obj("model/BirdM2.obj", &point_cloud);
@@ -29,7 +30,8 @@
 // }
 
 #include <whlib.h>
-int main(){
+int main()
+{
     //读取点云
     wh::basic::PointCloud point_cloud;
     wh::utils::io::load_point_cloud_obj("model/BirdM2.obj", &point_cloud);
