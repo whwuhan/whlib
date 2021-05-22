@@ -12,10 +12,12 @@ wh::basic::Skeleton::Skeleton() : points(), edges(){}
 
 wh::basic::Skeleton::Skeleton(Eigen::MatrixXd &points, Eigen::MatrixXi &edges) : points(points), edges(edges){}
 
-Eigen::MatrixXi wh::basic::Skeleton::get_adj_mat(){
+Eigen::MatrixXi wh::basic::Skeleton::get_adj_mat()
+{
     int size = points.rows();
     MatrixXi adj_mat = MatrixXi::Zero(size, size);
-    for (int row = 0; row < edges.rows(); row++){
+    for (int row = 0; row < edges.rows(); row++)
+    {
         adj_mat(edges(row, 0) - 1, edges(row, 1) - 1) = 1;
         adj_mat(edges(row, 1) - 1, edges(row, 0) - 1) = 1;
     }
@@ -26,13 +28,16 @@ Eigen::MatrixXi wh::basic::Skeleton::get_adj_mat(){
 //显示特化要放到实现文件中，不能放到头文件中
 //获取分支数组
 template <>
-std::vector<wh::basic::Curve<wh::basic::Point3d> > wh::basic::Skeleton::get_branches(){
+std::vector<wh::basic::Curve<wh::basic::Point3d> > wh::basic::Skeleton::get_branches()
+{
     MatrixXi adj_mat = get_adj_mat(); //获取邻接矩阵
 
     //获取顶点的度
     vector<int> points_degree(points.rows(), 0);
-    for (int row = 0; row < adj_mat.rows(); row++){
-        for (int col = 0; col < adj_mat.cols(); col++){
+    for (int row = 0; row < adj_mat.rows(); row++)
+    {
+        for (int col = 0; col < adj_mat.cols(); col++)
+        {
             if (adj_mat(row, col) == 1)
             {
                 points_degree[row]++;
@@ -45,21 +50,26 @@ std::vector<wh::basic::Curve<wh::basic::Point3d> > wh::basic::Skeleton::get_bran
     vector<int> flag(points.rows(), 0); //当前顶点是否被访问
 
     int row = 0;
-    while (get_next_degree1_index(flag, points_degree) != -1){
+    while (get_next_degree1_index(flag, points_degree) != -1)
+    {
         int nextOneDegreeIndex = get_next_degree1_index(flag, points_degree);
         Curve<Point3d> curve;
         //获取下一个度为一的，没有被访问的点位置
-        if (-1 != nextOneDegreeIndex){
+        if (-1 != nextOneDegreeIndex)
+        {
             Point3d newPoint(points.row(nextOneDegreeIndex));
             curve.add_point_back(newPoint);
             row = nextOneDegreeIndex;
             flag[nextOneDegreeIndex] = 1;
         }
         //获取一条分支
-        while (true){
+        while (true)
+        {
             int last_row = row;
-            for (int col = 0; col < adj_mat.cols(); col++){
-                if (adj_mat(row, col) == 1 && flag[col] == 0){
+            for (int col = 0; col < adj_mat.cols(); col++)
+            {
+                if (adj_mat(row, col) == 1 && flag[col] == 0)
+                {
                     Point3d newPoint(points.row(col));
                     curve.add_point_back(newPoint);
                     flag[col] = 1;
@@ -68,7 +78,8 @@ std::vector<wh::basic::Curve<wh::basic::Point3d> > wh::basic::Skeleton::get_bran
                 }
             }
 
-            if (last_row == row){
+            if (last_row == row)
+            {
                 //curve.show();
                 res.push_back(curve);
                 // save_curves_obj("curve.obj",&res);
@@ -80,16 +91,19 @@ std::vector<wh::basic::Curve<wh::basic::Point3d> > wh::basic::Skeleton::get_bran
 }
 
 //获取相邻骨架点的平均间隔距离
-double wh::basic::Skeleton::get_ave_interval(){
+double wh::basic::Skeleton::get_ave_interval()
+{
     int edge_size = edges.rows();
     double dis_sum = get_tol_len();
     return dis_sum / edge_size;
 }
 
-double wh::basic::Skeleton::get_tol_len(){
+double wh::basic::Skeleton::get_tol_len()
+{
     int edge_size = edges.rows();
     double dis_sum = 0.0;
-    for (int i = 0; i < edge_size; i++){
+    for (int i = 0; i < edge_size; i++)
+    {
         dis_sum += (points.row(edges(i, 0) - 1) - points.row(edges(i, 1) - 1)).norm();
         //cout << "dis_sum:" << dis_sum << endl;
     }
@@ -97,9 +111,12 @@ double wh::basic::Skeleton::get_tol_len(){
 }
 
 //是否所有点都被访问
-bool is_all_visited(vector<int> &flag){
-    for (int i : flag){
-        if (i == 0){
+bool is_all_visited(vector<int> &flag)
+{
+    for (int i : flag)
+    {
+        if (i == 0)
+        {
             return false;
         }
     }
@@ -107,9 +124,12 @@ bool is_all_visited(vector<int> &flag){
 }
 
 //获取下一个度为一的，没有被访问的点位置
-int get_next_degree1_index(vector<int> &flag, vector<int> &points_degree){
-    for (int i = 0; i < flag.size(); i++){
-        if (flag[i] == 0 && points_degree[i] == 1){
+int get_next_degree1_index(vector<int> &flag, vector<int> &points_degree)
+{
+    for (int i = 0; i < flag.size(); i++)
+    {
+        if (flag[i] == 0 && points_degree[i] == 1)
+        {
             return i;
         }
     }
