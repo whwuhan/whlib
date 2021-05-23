@@ -1,8 +1,11 @@
 #pragma once
 #include <iostream>
-namespace wh{
-    namespace basic{
-        typedef struct Edge{
+namespace wh
+{
+    namespace basic
+    {
+        typedef struct Edge
+        {
             //无序边默认第一个顶点一定比第二个顶点位置小
             unsigned int fir_ver_index; //第一个顶点位置
             unsigned int sec_ver_index; //第二个顶点位置

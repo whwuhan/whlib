@@ -3,9 +3,12 @@
 #include <vector>
 #include <Eigen/Dense>
 #include <basic/point3d.h>
-namespace wh{
-    namespace basic{
-        typedef struct Cube{
+namespace wh
+{
+    namespace basic
+    {
+        typedef struct Cube
+        {
             Eigen::MatrixXd vertices;    //正方形顶点
             Eigen::RowVector3d position; //立方体的位置(中心位置)
             double side_len;             //边长

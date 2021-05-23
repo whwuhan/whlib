@@ -1,9 +1,12 @@
 #pragma once
 #include <iostream>
 #include <Eigen/Dense>
-namespace wh{
-    namespace basic{
-        typedef struct Face{
+namespace wh
+{
+    namespace basic
+    {
+        typedef struct Face
+        {
             unsigned int fir_ver_index; //第一个顶点位置
             unsigned int sec_ver_index; //第二个顶点位置
             unsigned int thd_ver_index; //第三个顶点位置
