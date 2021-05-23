@@ -3,9 +3,12 @@
 #include <Eigen/Dense>
 #include <basic/curve.h>
 #include <basic/point3d.h>
-namespace wh{
-    namespace basic{
-        typedef struct Skeleton{
+namespace wh
+{
+    namespace basic
+    {
+        typedef struct Skeleton
+        {
             Eigen::MatrixXd points; //骨架点
             Eigen::MatrixXi edges;  //骨架边
 
