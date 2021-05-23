@@ -2,10 +2,13 @@
 #define LOP_H
 #include <Eigen/Dense>
 #include <utils/io/io_obj.h>
-namespace wh{
-    namespace alg{
+namespace wh
+{
+    namespace alg
+    {
         //LOP参数
-        typedef struct LOP_parameters{
+        typedef struct LOP_parameters
+        {
             int iter;   //迭代次数
             int amount; //采样点数
             double h;   //theta范围半径
@@ -14,13 +17,17 @@ namespace wh{
             LOP_parameters(int iter, int amount, double r, double h, double mu);
         } LOP_PARAMETERS;
         
-        class LOP{
+        class LOP
+        {
         public:
             LOP();
-            LOP(std::string &file_name,
+            LOP
+            (
+                std::string &file_name,
                 Eigen::MatrixXd &X,
                 Eigen::MatrixXd &P,
-                LOP_parameters &parameters);
+                LOP_parameters &parameters
+            );
             
             std::string file_name;           //点云文件路径
             Eigen::MatrixXd X;              //初始点云
@@ -40,5 +47,4 @@ namespace wh{
         };
     } // namespace alg
 } // namespace wh
-
 #endif
