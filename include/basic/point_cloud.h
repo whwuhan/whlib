@@ -6,11 +6,14 @@
 #include <basic/cube.h>
 #include <set>
 #include <glm/glm.hpp>
-namespace wh{
-    namespace basic{
+namespace wh
+{
+    namespace basic
+    {
         const int POINT3D_SIZE = 3;
         //点云
-        typedef struct PointCloud{
+        typedef struct PointCloud
+        {
             // C中的struct不允许定义static变量，但是C++的可以，一般直接编译会出现warning
             // static enum point_type{POINT, SPHERE};
             //点云数据
@@ -78,7 +81,8 @@ namespace wh{
         std::ostream& operator<<(std::ostream& ost, const PointCloud point_cloud);
 
         //体素化点云
-        typedef struct VoxelPointCloud{
+        typedef struct VoxelPointCloud
+        {
 
         } VOXEL_POINT_CLOUD;
     }// end namespace basic

@@ -4,8 +4,10 @@
 #include <Eigen/Dense>
 #include <set>
 #include <vector>
-namespace wh{
-    namespace basic{
+namespace wh
+{
+    namespace basic
+    {
         //声明
         //八叉树类型枚举
         enum OctreeNodeType{
@@ -23,7 +25,8 @@ namespace wh{
 
         //八叉树声明
         template <typename T>
-        class OctreeNode{
+        class OctreeNode
+        {
         public:
             T data;                        //节点数据(都用set存储)
             OctreeNodeType octree_node_type; //节点类型
@@ -72,10 +75,12 @@ namespace wh{
             OctreeNode<T> *insert(T &data);
 
             //获取某个节点(范围)中的数据
-            T get_data_at(
+            T get_data_at
+            (
                 const Eigen::RowVector3d &position,
                 double x, double y, double z,
-                Eigen::MatrixXd &vertices);
+                Eigen::MatrixXd &vertices
+            );
 
             //判断面片是否在包含在节点内
             bool is_contained(T &data);
@@ -100,7 +105,8 @@ namespace wh{
 
         //polygon_mesh 八叉树 data是面片索引(Eigen::MatrixXi faces)，顶点信息不保存在octree中，在创建octree的时候传入
         template <typename T>
-        OctreeNode<T>::OctreeNode(
+        OctreeNode<T>::OctreeNode
+        (
             T data,
             OctreeNodeType octree_node_type,
             Eigen::RowVector3d position,
@@ -116,27 +122,28 @@ namespace wh{
             // OctreeNode <T>*bottom_right_front,
             // OctreeNode <T>*bottom_right_back,
             unsigned int level,
-            unsigned int max_level) : data(data),
-                                     octree_node_type(octree_node_type),
-                                     position(position),
-                                     x(x),
-                                     y(y),
-                                     z(z),
-                                     // top_left_front(top_left_front),
-                                     // top_left_back(top_left_back),
-                                     // top_right_front(top_right_front),
-                                     // top_right_back(top_right_back),
-                                     // bottom_left_front(bottom_left_front),
-                                     // bottom_left_back(bottom_left_back),
-                                     // bottom_right_front(bottom_right_front),
-                                     // bottom_right_back(bottom_right_back),
-                                     level(level),
-                                     max_level(max_level)
-        {}
+            unsigned int max_level
+        ) : data(data),
+            octree_node_type(octree_node_type),
+            position(position),
+            x(x),
+            y(y),
+            z(z),
+            // top_left_front(top_left_front),
+            // top_left_back(top_left_back),
+            // top_right_front(top_right_front),
+            // top_right_back(top_right_back),
+            // bottom_left_front(bottom_left_front),
+            // bottom_left_back(bottom_left_back),
+            // bottom_right_front(bottom_right_front),
+            // bottom_right_back(bottom_right_back),
+            level(level),
+            max_level(max_level){}
 
         //判断面片是否在包含在节点内
         template <typename T>
-        bool OctreeNode<T>::is_contained(T &data){
+        bool OctreeNode<T>::is_contained(T &data)
+        {
             //获取限制
             double xMin = position[0] - x / 2.0;
             double xMax = position[0] + x / 2.0;
@@ -148,9 +155,12 @@ namespace wh{
 
         //获取某个节点(范围)中的mesh数据
         template <typename T>
-        T OctreeNode<T>::get_data_at(
+        T OctreeNode<T>::get_data_at
+        (
             const Eigen::RowVector3d &position,
-            double x, double y, double z, Eigen::MatrixXd &vertices){
+            double x, double y, double z, Eigen::MatrixXd &vertices
+        )
+        {
             //获取限制
             double xMin = position[0] - x / 2.0;
             double xMax = position[0] + x / 2.0;
@@ -160,30 +170,38 @@ namespace wh{
             double zMax = position[2] + z / 2.0;
 
             std::set<wh::basic::Face> faces;
-            for (int i = 0; i < data.rows(); i++){
-                if (
+            for (int i = 0; i < data.rows(); i++)
+            {
+                if 
+                (
                     (
                         vertices(data.row(i)[0], 0) > xMin && vertices(data.row(i)[0], 0) < xMax &&
                         vertices(data.row(i)[0], 1) > yMin && vertices(data.row(i)[0], 1) < yMax &&
-                        vertices(data.row(i)[0], 2) > zMin && vertices(data.row(i)[0], 2) < zMax) ||
+                        vertices(data.row(i)[0], 2) > zMin && vertices(data.row(i)[0], 2) < zMax
+                    ) ||
                     (
                         vertices(data.row(i)[1], 0) > xMin && vertices(data.row(i)[1], 0) < xMax &&
                         vertices(data.row(i)[1], 1) > yMin && vertices(data.row(i)[1], 1) < yMax &&
-                        vertices(data.row(i)[1], 2) > zMin && vertices(data.row(i)[1], 2) < zMax) ||
+                        vertices(data.row(i)[1], 2) > zMin && vertices(data.row(i)[1], 2) < zMax
+                    ) ||
                     (
                         vertices(data.row(i)[2], 0) > xMin && vertices(data.row(i)[2], 0) < xMax &&
                         vertices(data.row(i)[2], 1) > yMin && vertices(data.row(i)[2], 1) < yMax &&
-                        vertices(data.row(i)[2], 2) > zMin && vertices(data.row(i)[2], 2) < zMax)
+                        vertices(data.row(i)[2], 2) > zMin && vertices(data.row(i)[2], 2) < zMax
+                    )
 
-                ){
+                )
+                {
                     faces.insert(wh::basic::Face(data.row(i)));
                 } //end if
             }
             //返回某个节点的面片数据
             int size = faces.size();
             T data(size, 3);
-            for (auto iter = faces.begin(); iter != faces.end(); iter++){
-                for (int i = 0; i < size; i++){
+            for (auto iter = faces.begin(); iter != faces.end(); iter++)
+            {
+                for (int i = 0; i < size; i++)
+                {
                     data(i, 0) = iter->fir_ver_index;
                     data(i, 1) = iter->sec_ver_index;
                     data(i, 2) = iter->thd_ver_index;
@@ -194,9 +212,11 @@ namespace wh{
 
         //创建polygon_mesh八叉树
         template <typename T>
-        void OctreeNode<T>::create_octree(int level, Eigen::MatrixXd &vertices){
+        void OctreeNode<T>::create_octree(int level, Eigen::MatrixXd &vertices)
+        {
             //递归地进行八叉树空间划分，直到最大深度
-            if (level == max_level){
+            if (level == max_level)
+            {
                 return;
             }
             //创建子节点

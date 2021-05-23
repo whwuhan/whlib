@@ -5,9 +5,12 @@
 #include <set>
 #include <map>
 #include <glm/glm.hpp>
-namespace wh{
-    namespace basic{
-        typedef struct PolygonMesh {
+namespace wh
+{
+    namespace basic
+    {
+        typedef struct PolygonMesh
+        {
             Eigen::MatrixXd vertices; //多边型顶点
             Eigen::MatrixXd uvs;//纹理坐标
             Eigen::MatrixXd normals;//法线
