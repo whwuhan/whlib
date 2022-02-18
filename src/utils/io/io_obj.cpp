@@ -439,11 +439,12 @@ void wh::utils::io::load_polygon_mesh_obj(const string file_name, PolygonMesh *p
                 polygon_mesh_ptr->normals(normals_amount, 2) = stof(line_split[3]);
                 normals_amount++;
             }
+            vector<string> indices_split1 = split(line_split[1], "/");
+            vector<string> indices_split2 = split(line_split[2], "/");
+            vector<string> indices_split3 = split(line_split[3], "/");
             //面片包含 vertex/uv/normals
-            if(line_split[0] == "f" && split(line_split[1], "/").size() == 3 ){   
-                vector<string> indices_split1 = split(line_split[1], "/");
-                vector<string> indices_split2 = split(line_split[2], "/");
-                vector<string> indices_split3 = split(line_split[3], "/");
+            if(line_split[0] == "f" && split(line_split[1], "/").size() == 3 )
+            {   
                 //面片顶点索引
                 polygon_mesh_ptr->vertices_indices(faces_amount, 0) = stoi(indices_split1[0]);
                 polygon_mesh_ptr->vertices_indices(faces_amount, 1) = stoi(indices_split2[0]);
@@ -456,6 +457,19 @@ void wh::utils::io::load_polygon_mesh_obj(const string file_name, PolygonMesh *p
                 polygon_mesh_ptr->normals_indices(faces_amount, 0) = stoi(indices_split1[2]);
                 polygon_mesh_ptr->normals_indices(faces_amount, 1) = stoi(indices_split2[2]);
                 polygon_mesh_ptr->normals_indices(faces_amount, 2) = stoi(indices_split3[2]);
+                faces_amount++;
+            }
+            //面片信息只有顶点坐标和法线
+            else if(line_split[0] == "f" && split(line_split[1], "/").size() == 2)
+            {
+                //面片顶点索引
+                polygon_mesh_ptr->vertices_indices(faces_amount, 0) = stoi(indices_split1[0]);
+                polygon_mesh_ptr->vertices_indices(faces_amount, 1) = stoi(indices_split2[0]);
+                polygon_mesh_ptr->vertices_indices(faces_amount, 2) = stoi(indices_split3[0]);
+                //面片顶点法线索引
+                polygon_mesh_ptr->normals_indices(faces_amount, 0) = stoi(indices_split1[1]);
+                polygon_mesh_ptr->normals_indices(faces_amount, 1) = stoi(indices_split2[1]);
+                polygon_mesh_ptr->normals_indices(faces_amount, 2) = stoi(indices_split3[1]);
                 faces_amount++;
             }
             else if(line_split[0] == "f")//面片只包含vertex index
